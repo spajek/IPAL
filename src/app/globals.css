@@ -1,0 +1,450 @@
+:root[data-high-contrast="true"] {
+  --mantine-color-scheme: dark !important;
+  --mantine-color-body: #000000 !important;
+  --mantine-color-text: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] body {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] {
+  background-color: #000000 !important;
+
+  --mantine-color-white: #000000 !important;
+  --mantine-color-black: #ffff00 !important;
+
+  --mantine-color-default: #000000 !important;
+  --mantine-color-default-bg: #000000 !important;
+  --mantine-color-default-color: #ffff00 !important;
+  --mantine-color-default-border: #ffff00 !important;
+  --mantine-color-default-hover: #000000 !important;
+
+  --mantine-primary-color-filled: #ffff00 !important;
+  --mantine-primary-color-filled-hover: #e6e600 !important;
+  --mantine-primary-color-light: #333300 !important;
+  --mantine-primary-color-light-hover: #4d4d00 !important;
+  --mantine-primary-color-light-color: #ffff00 !important;
+
+  --mantine-primary-color-text: #000000 !important;
+  --mantine-primary-color-bg: #ffff00 !important;
+
+  --mantine-primary-color-0: #ffffcc !important;
+  --mantine-primary-color-1: #ffff99 !important;
+  --mantine-primary-color-2: #ffff66 !important;
+  --mantine-primary-color-3: #ffff33 !important;
+  --mantine-primary-color-4: #ffff00 !important;
+  --mantine-primary-color-5: #e6e600 !important;
+  --mantine-primary-color-6: #cccc00 !important;
+  --mantine-primary-color-7: #b3b300 !important;
+  --mantine-primary-color-8: #999900 !important;
+  --mantine-primary-color-9: #808000 !important;
+
+  --input-bd: #ffff00 !important;
+  --input-bg: #000000 !important;
+  --input-color: #ffff00 !important;
+  --input-placeholder-color: #aaff00 !important;
+}
+
+:root[data-high-contrast="true"] a {
+  color: #ffff00 !important;
+  text-decoration: underline;
+}
+
+:root[data-high-contrast="true"] .tabler-icon {
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-ActionIcon-root {
+  background-color: #000000 !important;
+  border-color: #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-ActionIcon-root[disabled],
+:root[data-high-contrast="true"] .mantine-ActionIcon-root[data-disabled] {
+  background-color: #000000 !important;
+  border-color: #ffff00 !important;
+  color: #ffff00 !important;
+  opacity: 0.5 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Button-root[disabled],
+:root[data-high-contrast="true"] .mantine-Button-root[data-disabled] {
+  background-color: #000000 !important;
+  border-color: #ffff00 !important;
+  color: #ffff00 !important;
+  opacity: 0.5 !important;
+}
+
+/* Modal components */
+:root[data-high-contrast="true"] .mantine-Modal-overlay {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Modal-content {
+  background-color: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Modal-header {
+  background-color: #000000 !important;
+  border-bottom: 1px solid #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Modal-title {
+  color: #ffff00 !important;
+  font-weight: bold !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Modal-close {
+  background-color: #000000 !important;
+  border: 1px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+/* Tabs components */
+:root[data-high-contrast="true"] .mantine-Tabs-root {
+  background-color: #000000 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Tabs-list {
+  background-color: #000000 !important;
+  border-bottom: 2px solid #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Tabs-tab {
+  background-color: #000000 !important;
+  border: 1px solid #ffff00 !important;
+  color: #ffff00 !important;
+  border-bottom: none !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Tabs-tab[data-active="true"] {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  font-weight: bold !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Tabs-panel {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border: 1px solid #ffff00 !important;
+  border-top: none !important;
+}
+
+/* Paper components */
+/* Normal mode Paper fixes */
+.mantine-Paper-root {
+  background-color: var(--mantine-color-body) !important;
+}
+
+/* High contrast mode */
+:root[data-high-contrast="true"] .mantine-Paper-root {
+  background-color: #000000 !important;
+  border: 1px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+/* Card components - remove duplicate since handled below */
+
+/* High contrast mode */
+:root[data-high-contrast="true"] .mantine-Card-root {
+  background-color: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Card-root:hover {
+  background-color: #1a1a00 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Badge components */
+:root[data-high-contrast="true"] .mantine-Badge-root {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 1px solid #ffff00 !important;
+}
+
+/* Input components */
+:root[data-high-contrast="true"] .mantine-Input-input {
+  background-color: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Input-input::placeholder {
+  color: #aaff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-InputWrapper-label {
+  color: #ffff00 !important;
+  font-weight: bold !important;
+}
+
+/* Select components */
+:root[data-high-contrast="true"] .mantine-Select-input {
+  background-color: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Select-dropdown {
+  background-color: #000000 !important;
+  border: 2px solid #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Select-option {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Select-option[data-hovered="true"],
+:root[data-high-contrast="true"] .mantine-Select-option[data-selected="true"] {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}
+
+/* Text and Typography */
+:root[data-high-contrast="true"] .mantine-Text-root {
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Title-root {
+  color: #ffff00 !important;
+}
+
+/* Progress components */
+:root[data-high-contrast="true"] .mantine-Progress-root {
+  background-color: #000000 !important;
+  border: 1px solid #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Progress-section {
+  background-color: #ffff00 !important;
+}
+
+/* Accordion components */
+:root[data-high-contrast="true"] .mantine-Accordion-root {
+  background-color: #000000 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Accordion-control {
+  background-color: #000000 !important;
+  border: 1px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Accordion-content {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border: 1px solid #ffff00 !important;
+  border-top: none !important;
+}
+
+/* Timeline components */
+:root[data-high-contrast="true"] .mantine-Timeline-root {
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Timeline-itemBullet {
+  background-color: #ffff00 !important;
+  border: 2px solid #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Timeline-itemTitle {
+  color: #ffff00 !important;
+  font-weight: bold !important;
+}
+
+/* Group and Stack */
+:root[data-high-contrast="true"] .mantine-Group-root,
+:root[data-high-contrast="true"] .mantine-Stack-root {
+  color: #ffff00 !important;
+}
+
+/* Tooltip */
+:root[data-high-contrast="true"] .mantine-Tooltip-tooltip {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+
+/* AppShell */
+:root[data-high-contrast="true"] .mantine-AppShell-root {
+  background-color: #000000 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-AppShell-header {
+  background-color: #000000 !important;
+  border-bottom: 2px solid #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-AppShell-main {
+  background-color: #000000 !important;
+}
+
+/* Burger menu */
+:root[data-high-contrast="true"] .mantine-Burger-root {
+  color: #ffff00 !important;
+}
+
+/* Anchor links */
+:root[data-high-contrast="true"] .mantine-Anchor-root {
+  color: #ffff00 !important;
+  text-decoration: underline !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Anchor-root:hover {
+  color: #ffffff !important;
+}
+
+/* Rating components */
+:root[data-high-contrast="true"] .mantine-Rating-root {
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Rating-symbolBody {
+  color: #ffff00 !important;
+}
+
+/* Divider */
+:root[data-high-contrast="true"] .mantine-Divider-root {
+  border-color: #ffff00 !important;
+}
+
+/* Grid */
+:root[data-high-contrast="true"] .mantine-Grid-root,
+:root[data-high-contrast="true"] .mantine-Grid-col {
+  color: #ffff00 !important;
+}
+
+/* Container */
+:root[data-high-contrast="true"] .mantine-Container-root {
+  color: #ffff00 !important;
+}
+
+/* Focus indicators */
+:root[data-high-contrast="true"] *:focus {
+  outline: 3px solid #ffff00 !important;
+  outline-offset: 2px !important;
+}
+
+body {
+  background-color: var(--mantine-color-body) !important;
+}
+
+.mantine-Grid-col .mantine-Card-root {
+  background-color: var(--mantine-color-body) !important;
+}
+
+.mantine-Grid-col:nth-child(even) .mantine-Card-root,
+.mantine-Grid-col:nth-child(odd) .mantine-Card-root,
+.mantine-Grid-col:nth-child(2n) .mantine-Card-root,
+.mantine-Grid-col:nth-child(2n+1) .mantine-Card-root {
+  background-color: var(--mantine-color-body) !important;
+}
+
+.mantine-Card-root:hover {
+  background-color: var(--mantine-primary-color-light) !important;
+}
+
+.mantine-Table-root {
+  background-color: var(--mantine-color-body) !important;
+}
+
+.mantine-Table-tr:nth-of-type(even) {
+  background-color: var(--mantine-color-gray-0) !important;
+}
+
+.mantine-Table-tr:nth-of-type(odd) {
+  background-color: var(--mantine-color-body) !important;
+}
+
+.mantine-Table-tr:hover {
+  background-color: var(--mantine-primary-color-light) !important;
+}
+
+.mantine-Card-root {
+  background-color: var(--mantine-color-body) !important;
+  transition: all 0.2s ease !important;
+}
+
+.mantine-Card-root:hover {
+  background-color: var(--mantine-primary-color-light-hover) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Normal mode Paper fixes */
+.mantine-Paper-root {
+  background-color: var(--mantine-color-body) !important;
+}
+
+:root[data-high-contrast="true"] body {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Card-root {
+  background-color: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Card-root:hover {
+  background-color: #1a1a00 !important;
+  transform: translateY(-2px) !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Table-root {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border-color: #ffff00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Table-thead {
+  background-color: #000000 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Table-th {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border-color: #ffff00 !important;
+  font-weight: bold !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Table-td {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border-color: #ffff00 !important;
+}
+
+/* Fix striped table rows */
+:root[data-high-contrast="true"] .mantine-Table-tr {
+  background-color: #000000 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Table-tr:nth-of-type(odd) {
+  background-color: #000000 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Table-tr:nth-of-type(even) {
+  background-color: #000000 !important;
+}
+
+/* Fix table hover effects */
+:root[data-high-contrast="true"] .mantine-Table-tr:hover {
+  background-color: #1a1a00 !important;
+}
+
+:root[data-high-contrast="true"] .mantine-Table-tr:hover .mantine-Table-td {
+  background-color: #1a1a00 !important;
+}
+
+/* ScrollContainer */
+:root[data-high-contrast="true"] .mantine-Table-scrollContainer {
+  background-color: #000000 !important;
+}
