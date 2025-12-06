@@ -19,7 +19,7 @@ import {
   Stack,
   Rating,
   ActionIcon,
-  Progress
+  Progress,
 } from "@mantine/core";
 import {
   IconSearch,
@@ -36,12 +36,16 @@ import {
   IconClock,
   IconMapPin,
   IconVideo,
-  IconBrain
+  IconBrain,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fakeFetchUstawy, Act } from "../../mocks/sejmMock";
-import { preConsultationProjects, consultationProjects, PreConsultationProject } from "../../mocks/prekonsultacjeMock";
+import {
+  preConsultationProjects,
+  consultationProjects,
+  PreConsultationProject,
+} from "../../mocks/prekonsultacjeMock";
 import { Comments } from "../Comments/Comments";
 import { ProjectRating } from "../ProjectRating/ProjectRating";
 import { AICommentsAnalysis } from "../AIAnalysis/AICommentsAnalysis";
@@ -51,13 +55,19 @@ export default function HomeCards() {
   const [activeTab, setActiveTab] = useState<string | null>("ustawy");
   const [data, setData] = useState<Act[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState<PreConsultationProject | null>(null);
-  const [prekonsultacjeData, setPrekonsultacjeData] = useState(preConsultationProjects);
+  const [selectedProject, setSelectedProject] =
+    useState<PreConsultationProject | null>(null);
+  const [prekonsultacjeData, setPrekonsultacjeData] = useState(
+    preConsultationProjects
+  );
   const [konsultacjeData] = useState(consultationProjects);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState<Act[]>([]);
-  const [filteredPrekonsultacje, setFilteredPrekonsultacje] = useState(preConsultationProjects);
-  const [filteredKonsultacje, setFilteredKonsultacje] = useState(consultationProjects);
+  const [filteredPrekonsultacje, setFilteredPrekonsultacje] = useState(
+    preConsultationProjects
+  );
+  const [filteredKonsultacje, setFilteredKonsultacje] =
+    useState(consultationProjects);
 
   useEffect(() => {
     const loadData = async () => {
@@ -79,7 +89,7 @@ export default function HomeCards() {
   // Funkcja wyszukiwania
   useEffect(() => {
     const query = searchQuery.toLowerCase();
-    
+
     if (!query) {
       setFilteredData(data);
       setFilteredPrekonsultacje(prekonsultacjeData);
@@ -88,26 +98,29 @@ export default function HomeCards() {
     }
 
     // Filtrowanie ustaw
-    const filteredUstawy = data.filter(item =>
-      item.title.toLowerCase().includes(query) ||
-      item.ELI.toLowerCase().includes(query) ||
-      item.status.toLowerCase().includes(query)
+    const filteredUstawy = data.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.ELI.toLowerCase().includes(query) ||
+        item.status.toLowerCase().includes(query)
     );
 
     // Filtrowanie prekonsultacji
-    const filteredPrek = prekonsultacjeData.filter(project =>
-      project.title.toLowerCase().includes(query) ||
-      project.description.toLowerCase().includes(query) ||
-      project.category.toLowerCase().includes(query) ||
-      project.institution.toLowerCase().includes(query)
+    const filteredPrek = prekonsultacjeData.filter(
+      (project) =>
+        project.title.toLowerCase().includes(query) ||
+        project.description.toLowerCase().includes(query) ||
+        project.category.toLowerCase().includes(query) ||
+        project.institution.toLowerCase().includes(query)
     );
 
     // Filtrowanie konsultacji
-    const filteredKons = konsultacjeData.filter(project =>
-      project.title.toLowerCase().includes(query) ||
-      project.description.toLowerCase().includes(query) ||
-      project.category.toLowerCase().includes(query) ||
-      project.institution.toLowerCase().includes(query)
+    const filteredKons = konsultacjeData.filter(
+      (project) =>
+        project.title.toLowerCase().includes(query) ||
+        project.description.toLowerCase().includes(query) ||
+        project.category.toLowerCase().includes(query) ||
+        project.institution.toLowerCase().includes(query)
     );
 
     setFilteredData(filteredUstawy);
@@ -115,53 +128,75 @@ export default function HomeCards() {
     setFilteredKonsultacje(filteredKons);
   }, [searchQuery, data, prekonsultacjeData, konsultacjeData]);
 
-  const handleAddComment = (projectId: string, content: string, rating: number) => {
+  const handleAddComment = (
+    projectId: string,
+    content: string,
+    rating: number
+  ) => {
     const newComment = {
       id: `${projectId}-${Date.now()}`,
-      author: 'Bieżący użytkownik',
+      author: "Bieżący użytkownik",
       content,
       date: new Date().toISOString(),
-      rating: rating || undefined
+      rating: rating || undefined,
     };
 
-    setPrekonsultacjeData(prev => prev.map(project => 
-      project.id === projectId 
-        ? { 
-            ...project, 
-            comments: [...project.comments, newComment],
-            ratingsCount: rating ? project.ratingsCount + 1 : project.ratingsCount,
-            averageRating: rating ? 
-              ((project.averageRating * project.ratingsCount) + rating) / (project.ratingsCount + 1) :
-              project.averageRating
-          }
-        : project
-    ));
+    setPrekonsultacjeData((prev) =>
+      prev.map((project) =>
+        project.id === projectId
+          ? {
+              ...project,
+              comments: [...project.comments, newComment],
+              ratingsCount: rating
+                ? project.ratingsCount + 1
+                : project.ratingsCount,
+              averageRating: rating
+                ? (project.averageRating * project.ratingsCount + rating) /
+                  (project.ratingsCount + 1)
+                : project.averageRating,
+            }
+          : project
+      )
+    );
 
     if (selectedProject?.id === projectId) {
-      setSelectedProject(prev => prev ? {
-        ...prev,
-        comments: [...prev.comments, newComment],
-        ratingsCount: rating ? prev.ratingsCount + 1 : prev.ratingsCount,
-        averageRating: rating ? 
-          ((prev.averageRating * prev.ratingsCount) + rating) / (prev.ratingsCount + 1) :
-          prev.averageRating
-      } : null);
+      setSelectedProject((prev) =>
+        prev
+          ? {
+              ...prev,
+              comments: [...prev.comments, newComment],
+              ratingsCount: rating ? prev.ratingsCount + 1 : prev.ratingsCount,
+              averageRating: rating
+                ? (prev.averageRating * prev.ratingsCount + rating) /
+                  (prev.ratingsCount + 1)
+                : prev.averageRating,
+            }
+          : null
+      );
     }
   };
 
-  const handleRateProject = (projectId: string, rating: number, review?: string) => {
+  const handleRateProject = (
+    projectId: string,
+    rating: number,
+    review?: string
+  ) => {
     if (review) {
       handleAddComment(projectId, review, rating);
     } else {
-      setPrekonsultacjeData(prev => prev.map(project => 
-        project.id === projectId 
-          ? { 
-              ...project,
-              ratingsCount: project.ratingsCount + 1,
-              averageRating: ((project.averageRating * project.ratingsCount) + rating) / (project.ratingsCount + 1)
-            }
-          : project
-      ));
+      setPrekonsultacjeData((prev) =>
+        prev.map((project) =>
+          project.id === projectId
+            ? {
+                ...project,
+                ratingsCount: project.ratingsCount + 1,
+                averageRating:
+                  (project.averageRating * project.ratingsCount + rating) /
+                  (project.ratingsCount + 1),
+              }
+            : project
+        )
+      );
     }
   };
 
@@ -220,17 +255,26 @@ export default function HomeCards() {
         </Tabs.List>
 
         <Tabs.Panel value="ustawy">
-          <DashboardGrid data={filteredData} loading={loading} type="ustawy" searchQuery={searchQuery} />
+          <DashboardGrid
+            data={filteredData}
+            loading={loading}
+            type="ustawy"
+            searchQuery={searchQuery}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="konsultacje">
-          <KonsultacjeGrid data={filteredKonsultacje} loading={false} searchQuery={searchQuery} />
+          <KonsultacjeGrid
+            data={filteredKonsultacje}
+            loading={false}
+            searchQuery={searchQuery}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="prekonsultacje">
-          <PrekonsultacjeGrid 
-            data={filteredPrekonsultacje} 
-            loading={false} 
+          <PrekonsultacjeGrid
+            data={filteredPrekonsultacje}
+            loading={false}
             onProjectClick={setSelectedProject}
             searchQuery={searchQuery}
           />
@@ -258,16 +302,25 @@ export default function HomeCards() {
         {selectedProject && (
           <Tabs defaultValue="details">
             <Tabs.List>
-              <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
+              <Tabs.Tab
+                value="details"
+                leftSection={<IconFileText size={16} />}
+              >
                 Szczegóły
               </Tabs.Tab>
-              <Tabs.Tab value="comments" leftSection={<IconMessage size={16} />}>
+              <Tabs.Tab
+                value="comments"
+                leftSection={<IconMessage size={16} />}
+              >
                 Komentarze ({selectedProject.comments.length})
               </Tabs.Tab>
               <Tabs.Tab value="rating" leftSection={<IconStar size={16} />}>
                 Oceny
               </Tabs.Tab>
-              <Tabs.Tab value="ai-analysis" leftSection={<IconBrain size={16} />}>
+              <Tabs.Tab
+                value="ai-analysis"
+                leftSection={<IconBrain size={16} />}
+              >
                 Analiza AI
               </Tabs.Tab>
             </Tabs.List>
@@ -275,8 +328,21 @@ export default function HomeCards() {
             <Tabs.Panel value="details" pt="md">
               <Stack gap="md">
                 <Group>
-                  <Badge color={selectedProject.status === 'active' ? 'green' : selectedProject.status === 'draft' ? 'yellow' : 'gray'} variant="light">
-                    {selectedProject.status === 'active' ? 'Aktywne' : selectedProject.status === 'draft' ? 'Projekt' : 'Zakończone'}
+                  <Badge
+                    color={
+                      selectedProject.status === "active"
+                        ? "green"
+                        : selectedProject.status === "draft"
+                        ? "yellow"
+                        : "gray"
+                    }
+                    variant="light"
+                  >
+                    {selectedProject.status === "active"
+                      ? "Aktywne"
+                      : selectedProject.status === "draft"
+                      ? "Projekt"
+                      : "Zakończone"}
                   </Badge>
                   <Badge variant="outline">{selectedProject.category}</Badge>
                 </Group>
@@ -290,7 +356,12 @@ export default function HomeCards() {
                   </Group>
                   <Group gap="xs">
                     <IconCalendar size={16} />
-                    <Text size="sm">Do: {new Date(selectedProject.deadline).toLocaleDateString('pl-PL')}</Text>
+                    <Text size="sm">
+                      Do:{" "}
+                      {new Date(selectedProject.deadline).toLocaleDateString(
+                        "pl-PL"
+                      )}
+                    </Text>
                   </Group>
                 </Group>
               </Stack>
@@ -299,7 +370,9 @@ export default function HomeCards() {
             <Tabs.Panel value="comments" pt="md">
               <Comments
                 comments={selectedProject.comments}
-                onAddComment={(content, rating) => handleAddComment(selectedProject.id, content, rating)}
+                onAddComment={(content, rating) =>
+                  handleAddComment(selectedProject.id, content, rating)
+                }
               />
             </Tabs.Panel>
 
@@ -307,7 +380,9 @@ export default function HomeCards() {
               <ProjectRating
                 averageRating={selectedProject.averageRating}
                 ratingsCount={selectedProject.ratingsCount}
-                onRate={(rating, review) => handleRateProject(selectedProject.id, rating, review)}
+                onRate={(rating, review) =>
+                  handleRateProject(selectedProject.id, rating, review)
+                }
               />
             </Tabs.Panel>
 
@@ -441,14 +516,24 @@ function PrekonsultacjeGrid({
     <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
       {displayData.map((project) => (
         <Card key={project.id} padding="lg" withBorder className={classes.card}>
-          <Stack justify="space-between" style={{ height: '100%' }}>
+          <Stack justify="space-between" style={{ height: "100%" }}>
             <div>
               <Group justify="space-between" mb="xs">
                 <Badge
-                  color={project.status === 'active' ? 'green' : project.status === 'draft' ? 'yellow' : 'gray'}
+                  color={
+                    project.status === "active"
+                      ? "green"
+                      : project.status === "draft"
+                      ? "yellow"
+                      : "gray"
+                  }
                   variant="light"
                 >
-                  {project.status === 'active' ? 'Aktywne' : project.status === 'draft' ? 'Projekt' : 'Zakończone'}
+                  {project.status === "active"
+                    ? "Aktywne"
+                    : project.status === "draft"
+                    ? "Projekt"
+                    : "Zakończone"}
                 </Badge>
                 <Badge variant="outline">{project.category}</Badge>
               </Group>
@@ -469,7 +554,7 @@ function PrekonsultacjeGrid({
                 <Group gap="xs">
                   <IconCalendar size={14} />
                   <Text size="xs">
-                    Do: {new Date(project.deadline).toLocaleDateString('pl-PL')}
+                    Do: {new Date(project.deadline).toLocaleDateString("pl-PL")}
                   </Text>
                 </Group>
                 <Group gap="xs">
@@ -484,14 +569,16 @@ function PrekonsultacjeGrid({
                 {project.comments.length > 0 && (
                   <Group gap="xs">
                     <IconBrain size={14} />
-                    <Text size="xs" c="blue">Analiza AI</Text>
+                    <Text size="xs" c="blue">
+                      Analiza AI
+                    </Text>
                   </Group>
                 )}
               </Stack>
             </div>
 
             <Button
-              variant="light"
+              variant="default"
               fullWidth
               leftSection={<IconEye size={16} />}
               onClick={() => onProjectClick(project)}
@@ -532,15 +619,25 @@ function KonsultacjeGrid({
     <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
       {displayData.map((project) => (
         <Card key={project.id} padding="lg" withBorder className={classes.card}>
-          <Stack justify="space-between" style={{ height: '100%' }}>
+          <Stack justify="space-between" style={{ height: "100%" }}>
             <div>
               <Group justify="space-between" mb="xs">
                 <Badge
-                  color={project.status === 'active' ? 'green' : project.status === 'planned' ? 'blue' : 'gray'}
+                  color={
+                    project.status === "active"
+                      ? "green"
+                      : project.status === "planned"
+                      ? "blue"
+                      : "gray"
+                  }
                   variant="light"
                   size="lg"
                 >
-                  {project.status === 'active' ? 'Trwające' : project.status === 'planned' ? 'Planowane' : 'Zakończone'}
+                  {project.status === "active"
+                    ? "Trwające"
+                    : project.status === "planned"
+                    ? "Planowane"
+                    : "Zakończone"}
                 </Badge>
                 <Badge variant="outline">{project.category}</Badge>
               </Group>
@@ -561,7 +658,7 @@ function KonsultacjeGrid({
                 <Group gap="xs">
                   <IconCalendar size={14} />
                   <Text size="xs">
-                    Do: {new Date(project.deadline).toLocaleDateString('pl-PL')}
+                    Do: {new Date(project.deadline).toLocaleDateString("pl-PL")}
                   </Text>
                 </Group>
                 <Group gap="xs">
@@ -574,11 +671,15 @@ function KonsultacjeGrid({
                 </Group>
               </Stack>
 
-              {project.status === 'active' && (
+              {project.status === "active" && (
                 <div>
                   <Group justify="space-between" mb="xs">
-                    <Text size="xs" fw={500}>Postęp konsultacji</Text>
-                    <Text size="xs" c="dimmed">65%</Text>
+                    <Text size="xs" fw={500}>
+                      Postęp konsultacji
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      65%
+                    </Text>
                   </Group>
                   <Progress value={65} color="green" size="sm" mb="md" />
                 </div>
@@ -586,7 +687,7 @@ function KonsultacjeGrid({
             </div>
 
             <Button
-              variant="light"
+              variant="default"
               fullWidth
               leftSection={<IconEye size={16} />}
               component={Link}
