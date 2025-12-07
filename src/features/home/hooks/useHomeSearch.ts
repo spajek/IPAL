@@ -4,7 +4,7 @@ import { Act, PreConsultationProject, ConsultationProject } from '@/types'
 export function useHomeSearch(
   actsData: Act[],
   prekonsultacjeData: PreConsultationProject[],
-  konsultacjeData: ConsultationProject[],
+  konsultacjeData: ConsultationProject[], // Poprawiony typ trzeciego argumentu
 ) {
   const [searchQuery, setSearchQuery] = useState('')
 

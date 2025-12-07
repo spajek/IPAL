@@ -211,6 +211,7 @@ export default function LoginPage() {
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import {
   Container,
   Title,
@@ -223,15 +224,8 @@ import {
   Select,
   TextInput,
   Grid,
-  Modal,
-  Tabs,
   Paper,
-  ActionIcon,
-  Tooltip,
   Progress,
-  Timeline,
-  Anchor,
-  Divider,
   SimpleGrid,
 } from '@mantine/core'
 import {
@@ -246,15 +240,8 @@ import {
   IconClock,
   IconMapPin,
   IconVideo,
-  IconMail,
-  IconPhone,
-  IconCheck,
-  IconX,
-  IconFileDescription,
 } from '@tabler/icons-react'
 import { consultationProjects } from '../../../mocks/prekonsultacjeMock'
-import { AISummary } from '../../../components/ai/AISummary/AISummary'
-import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ConsultationProject {
   id: string
@@ -284,7 +271,6 @@ interface Meeting {
 
 export default function KonsultacjePage() {
   const [projects] = useState<ConsultationProject[]>(consultationProjects as ConsultationProject[])
-  const [selectedProject, setSelectedProject] = useState<ConsultationProject | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [filterCategory, setFilterCategory] = useState<string>('all')
@@ -546,7 +532,6 @@ export default function KonsultacjePage() {
                       </Group>
                     </Stack>
 
-                    {/* Progress bar dla trwających konsultacji */}
                     {project.status === 'active' && (
                       <div>
                         <Group justify="space-between" mb="xs">
@@ -563,10 +548,11 @@ export default function KonsultacjePage() {
                   </div>
 
                   <Button
+                    component={Link}
+                    href={`/konsultacje/${project.id}`}
                     variant="light"
                     fullWidth
                     leftSection={<IconEye size={16} />}
-                    onClick={() => setSelectedProject(project)}
                   >
                     Zobacz szczegóły
                   </Button>
@@ -576,7 +562,6 @@ export default function KonsultacjePage() {
           ))}
         </Grid>
 
-        {/* Nadchodzące spotkania */}
         <div>
           <Title order={2} mb="md">
             Nadchodzące spotkania
@@ -652,220 +637,144 @@ export default function KonsultacjePage() {
         )}
       </Stack>
 
-      {/* Modal szczegółów projektu */}
-      <Modal
-        opened={!!selectedProject}
-        onClose={() => setSelectedProject(null)}
-        title={selectedProject?.title}
-        size="xl"
-      >
-        {selectedProject && (
-          <Tabs defaultValue="details">
-            <Tabs.List>
-              <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
-                Szczegóły
-              </Tabs.Tab>
-              <Tabs.Tab value="timeline" leftSection={<IconClock size={16} />}>
-                Harmonogram
-              </Tabs.Tab>
-              <Tabs.Tab value="participants" leftSection={<IconUsers size={16} />}>
-                Uczestnicy
-              </Tabs.Tab>
-              <Tabs.Tab value="documents" leftSection={<IconDownload size={16} />}>
-                Dokumenty
-              </Tabs.Tab>
-              <Tabs.Tab value="document-summary" leftSection={<IconFileDescription size={16} />}>
-                Streszczenie dokumentu AI
-              </Tabs.Tab>
-            </Tabs.List>
-
-            <Tabs.Panel value="details" pt="md">
-              <Stack gap="md">
-                <Group>
-                  <Badge color={getStatusColor(selectedProject.status)} variant="light">
-                    {getStatusLabel(selectedProject.status)}
-                  </Badge>
-                  <Badge variant="outline">{selectedProject.category}</Badge>
-                </Group>
-
-                <Text>{selectedProject.description}</Text>
-
-                <Grid>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Instytucja:
-                    </Text>
-                    <Text size="sm">{selectedProject.institution}</Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Termin zakończenia:
-                    </Text>
-                    <Text size="sm">
-                      {new Date(selectedProject.deadline).toLocaleDateString('pl-PL')}
-                    </Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Liczba uczestników:
-                    </Text>
-                    <Text size="sm">{selectedProject.participantsCount}</Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Liczba spotkań:
-                    </Text>
-                    <Text size="sm">{selectedProject.meetingsCount}</Text>
-                  </Grid.Col>
-                </Grid>
-
-                <Divider />
-
-                <div>
-                  <Text fw={600} mb="md">
-                    Kontakt
-                  </Text>
-                  <Stack gap="xs">
-                    <Group gap="xs">
-                      <IconMail size={16} />
-                      <Anchor size="sm">
-                        konsultacje@{selectedProject.institution.toLowerCase().replace(/\s+/g, '')}
-                        .gov.pl
-                      </Anchor>
-                    </Group>
-                    <Group gap="xs">
-                      <IconPhone size={16} />
-                      <Text size="sm">+48 22 123 45 67</Text>
-                    </Group>
-                  </Stack>
-                </div>
-
-                <Button fullWidth>Weź udział w konsultacjach</Button>
-              </Stack>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="timeline" pt="md">
-              <Timeline active={2} bulletSize={24} lineWidth={2}>
-                <Timeline.Item bullet={<IconCheck size={12} />} title="Rozpoczęcie konsultacji">
-                  <Text c="dimmed" size="sm">
-                    {new Date(selectedProject.createdAt).toLocaleDateString('pl-PL')}
-                  </Text>
-                </Timeline.Item>
-
-                <Timeline.Item
-                  bullet={<IconUsers size={12} />}
-                  title="Spotkania z interesariuszami"
-                >
-                  <Text c="dimmed" size="sm">
-                    Seria {selectedProject.meetingsCount} spotkań konsultacyjnych
-                  </Text>
-                </Timeline.Item>
-
-                <Timeline.Item bullet={<IconFileText size={12} />} title="Analiza otrzymanych uwag">
-                  <Text c="dimmed" size="sm">
-                    Obecnie w trakcie
-                  </Text>
-                </Timeline.Item>
-
-                <Timeline.Item bullet={<IconX size={12} />} title="Zakończenie konsultacji">
-                  <Text c="dimmed" size="sm">
-                    {new Date(selectedProject.deadline).toLocaleDateString('pl-PL')}
-                  </Text>
-                </Timeline.Item>
-              </Timeline>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="participants" pt="md">
-              <Stack gap="md">
-                <Group justify="space-between">
-                  <Text fw={600}>Statystyki uczestników</Text>
-                  <Text c="dimmed" size="sm">
-                    Łącznie: {selectedProject.participantsCount}
-                  </Text>
-                </Group>
-
-                <SimpleGrid cols={2} spacing="md">
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Organizacje pozarządowe
-                    </Text>
-                    <Text fw={600} size="lg">
-                      23%
-                    </Text>
-                  </Paper>
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Obywatele
-                    </Text>
-                    <Text fw={600} size="lg">
-                      45%
-                    </Text>
-                  </Paper>
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Przedsiębiorcy
-                    </Text>
-                    <Text fw={600} size="lg">
-                      19%
-                    </Text>
-                  </Paper>
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Eksperci
-                    </Text>
-                    <Text fw={600} size="lg">
-                      13%
-                    </Text>
-                  </Paper>
-                </SimpleGrid>
-              </Stack>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="documents" pt="md">
-              <Stack gap="md">
-                <Text fw={600}>Dokumenty do pobrania ({selectedProject.documentsCount})</Text>
-
-                {Array.from({ length: selectedProject.documentsCount }, (_, i) => (
-                  <Paper key={i} p="md" withBorder>
-                    <Group justify="space-between">
-                      <div>
-                        <Text fw={500}>Dokument {i + 1}</Text>
-                        <Text size="sm" c="dimmed">
-                          {i === 0
-                            ? 'Główny projekt dokumentu'
-                            : i === 1
-                            ? 'Uzasadnienie'
-                            : i === 2
-                            ? 'Ocena skutków regulacji'
-                            : `Załącznik ${i - 2}`}
-                        </Text>
-                      </div>
-                      <ActionIcon variant="light">
-                        <IconDownload size={16} />
-                      </ActionIcon>
-                    </Group>
-                  </Paper>
-                ))}
-              </Stack>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="document-summary" pt="md">
-              <AISummaryGroq
-                type="konsultacja"
-                title={selectedProject.title}
-                description={selectedProject.description}
-                content={`Projekt konsultacji: ${selectedProject.title}. ${
-                  selectedProject.description
-                }. Instytucja: ${selectedProject.institution}. Termin: ${new Date(
-                  selectedProject.deadline,
-                ).toLocaleDateString('pl-PL')}.`}
-              />
-            </Tabs.Panel>
-          </Tabs>
-        )}
-      </Modal>
     </Container>
   )
+}
+
+```
+
+# src\app\(main)\konsultacje\[id]\KonsultacjaDetails.tsx:
+
+```tsx
+'use client'
+import { useMemo } from 'react'
+import { Container, Title, Button, Stack } from '@mantine/core'
+import Link from 'next/link'
+import { IconArrowLeft } from '@tabler/icons-react'
+import { ConsultationProject } from '@/types'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
+import { Tabs } from '@mantine/core'
+
+interface Props {
+  project: ConsultationProject
+}
+
+export default function KonsultacjaDetails({ project }: Props) {
+  const consultationContent = useMemo(
+    () =>
+      `Konsultacje społeczne: ${project.title}. Instytucja: ${
+        project.institution
+      }. Termin: ${new Date(project.deadline).toLocaleDateString('pl-PL')}`,
+    [project.title, project.institution, project.deadline],
+  )
+
+  return (
+    <Container size="lg" py="xl">
+      <Button
+        component={Link}
+        href="/konsultacje"
+        variant="subtle"
+        leftSection={<IconArrowLeft size={16} />}
+        mb="lg"
+      >
+        ← Wróć do listy konsultacji
+      </Button>
+
+      <Title order={1} mb="md">
+        {project.title}
+      </Title>
+
+      <Tabs defaultValue="summary" mt="xl">
+        <Tabs.List>
+          <Tabs.Tab value="summary">Streszczenie AI</Tabs.Tab>
+          <Tabs.Tab value="details">Szczegóły</Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="summary" pt="xl">
+          <AISummaryGroq
+            type="konsultacja"
+            entityId={project.id}
+            title={project.title}
+            description={project.description}
+            content={consultationContent}
+          />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="details" pt="xl">
+          <Stack gap="md">
+            <div>Instytucja: {project.institution}</div>
+            <div>Termin zakończenia: {new Date(project.deadline).toLocaleDateString('pl-PL')}</div>
+            <div>Uczestnicy: {project.participantsCount}</div>
+            <div>Dokumenty: {project.documentsCount}</div>
+            <div>Spotkania: {project.meetingsCount}</div>
+          </Stack>
+        </Tabs.Panel>
+      </Tabs>
+    </Container>
+  )
+}
+
+```
+
+# src\app\(main)\konsultacje\[id]\KonsultacjaNotFound.tsx:
+
+```tsx
+'use client'
+
+import Link from 'next/link'
+import { Container, Title, Text, Button } from '@mantine/core'
+import { IconArrowLeft } from '@tabler/icons-react'
+
+interface KonsultacjaNotFoundProps {
+  id: string
+}
+
+export default function KonsultacjaNotFound({ id }: KonsultacjaNotFoundProps) {
+  return (
+    <Container py="xl" ta="center">
+      <Title order={3} c="red" mb="md">
+        Nie znaleziono konsultacji
+      </Title>
+      <Text c="dimmed" mb="lg">
+        Identyfikator: {id}
+      </Text>
+      <Button
+        component={Link}
+        href="/konsultacje"
+        variant="default"
+        leftSection={<IconArrowLeft size={16} />}
+      >
+        Wróć do listy konsultacji
+      </Button>
+    </Container>
+  )
+}
+
+```
+
+# src\app\(main)\konsultacje\[id]\page.tsx:
+
+```tsx
+import { consultationProjects } from '@/mocks/prekonsultacjeMock'
+import KonsultacjaDetails from './KonsultacjaDetails'
+import KonsultacjaNotFound from './KonsultacjaNotFound'
+
+interface PageProps {
+  params: {
+    id: string
+  }
+}
+
+export default async function KonsultacjaDetailsPage({ params }: PageProps) {
+  const { id } = await Promise.resolve(params)
+
+  const project = consultationProjects.find((p) => p.id === id)
+
+  if (!project) {
+    return <KonsultacjaNotFound id={id} />
+  }
+
+  return <KonsultacjaDetails project={project} />
 }
 
 ```
@@ -902,38 +811,22 @@ export default function HomePage() {
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Container, Title, Text, Stack, Modal, Tabs } from '@mantine/core'
-import {
-  IconFileText,
-  IconMessage,
-  IconStar,
-  IconBrain,
-  IconFileDescription,
-} from '@tabler/icons-react'
+import { Container, Title, Text, Stack } from '@mantine/core'
 import { ProjectFilters, ProjectGrid } from '@/components/projects'
-import { Comments } from '@/components/comments'
-import { ProjectRating } from '@/components/ProjectRating/ProjectRating'
-import { AICommentsAnalysis } from '@/components/ai//AIAnalysis/AICommentsAnalysis'
 import { preConsultationProjects } from '@/mocks/prekonsultacjeMock'
-import { PreConsultationProject } from '@/types'
-import { useProjectComments } from '@/features/consultations/hooks/useProjectComments'
-import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 export default function PrekonsultacjePage() {
-  const { projects, addComment, rateProject } = useProjectComments(preConsultationProjects)
-  const [selectedProject, setSelectedProject] = useState<PreConsultationProject | null>(null)
-
-  // Filters state
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
   const [filterCategory, setFilterCategory] = useState('all')
 
-  // Get unique categories
-  const categories = useMemo(() => Array.from(new Set(projects.map((p) => p.category))), [projects])
+  const categories = useMemo(
+    () => Array.from(new Set(preConsultationProjects.map((p) => p.category))),
+    [],
+  )
 
-  // Filter projects
   const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
+    return preConsultationProjects.filter((project) => {
       const matchesSearch =
         project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -942,7 +835,7 @@ export default function PrekonsultacjePage() {
 
       return matchesSearch && matchesStatus && matchesCategory
     })
-  }, [projects, searchQuery, filterStatus, filterCategory])
+  }, [searchQuery, filterStatus, filterCategory])
 
   return (
     <Container size="xl" py="xl">
@@ -969,84 +862,155 @@ export default function PrekonsultacjePage() {
 
         <ProjectGrid
           projects={filteredProjects}
-          onProjectClick={setSelectedProject}
+          basePath="/prekonsultacje"
           emptyMessage="Nie znaleziono projektów spełniających kryteria wyszukiwania."
         />
       </Stack>
+    </Container>
+  )
+}
 
-      <Modal
-        opened={!!selectedProject}
-        onClose={() => setSelectedProject(null)}
-        title={selectedProject?.title}
-        size="xl"
+```
+
+# src\app\(main)\prekonsultacje\[id]\page.tsx:
+
+```tsx
+import { preConsultationProjects } from '@/mocks/prekonsultacjeMock'
+import PrekonsultacjaDetails from './PrekonsultacjaDetails'
+import PrekonsultacjaNotFound from './PrekonsultacjaNotFound'
+
+interface PageProps {
+  params: {
+    id: string
+  }
+}
+
+export default async function PrekonsultacjaDetailsPage({ params }: PageProps) {
+  const { id } = await Promise.resolve(params)
+
+  const project = preConsultationProjects.find((p) => p.id === id)
+
+  if (!project) {
+    return <PrekonsultacjaNotFound id={id} />
+  }
+
+  return <PrekonsultacjaDetails project={project} />
+}
+
+```
+
+# src\app\(main)\prekonsultacje\[id]\PrekonsultacjaDetails.tsx:
+
+```tsx
+'use client'
+import { Container, Title, Button } from '@mantine/core'
+import Link from 'next/link'
+import { IconArrowLeft } from '@tabler/icons-react'
+import { PreConsultationProject } from '@/types'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
+import { Comments } from '@/components/Comments'
+import { ProjectRating } from '@/components/ProjectRating/ProjectRating'
+import { AICommentsAnalysis } from '@/components/ai/AIAnalysis/AICommentsAnalysis'
+import { Tabs } from '@mantine/core'
+import { useProjectComments } from '@/features/consultations/hooks/useProjectComments'
+
+export default function PrekonsultacjaDetails({ project }: { project: PreConsultationProject }) {
+  const { projects, addComment, rateProject } = useProjectComments([project])
+  const current = projects[0]
+
+  return (
+    <Container size="lg" py="xl">
+      <Button
+        component={Link}
+        href="/prekonsultacje"
+        variant="subtle"
+        leftSection={<IconArrowLeft size={16} />}
+        mb="lg"
       >
-        {selectedProject && (
-          <Tabs defaultValue="details">
-            <Tabs.List>
-              <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
-                Szczegóły
-              </Tabs.Tab>
-              <Tabs.Tab value="comments" leftSection={<IconMessage size={16} />}>
-                Komentarze ({selectedProject.comments.length})
-              </Tabs.Tab>
-              <Tabs.Tab value="rating" leftSection={<IconStar size={16} />}>
-                Oceny
-              </Tabs.Tab>
-              <Tabs.Tab value="ai-analysis" leftSection={<IconBrain size={16} />}>
-                Analiza AI
-              </Tabs.Tab>
-              <Tabs.Tab value="document-summary" leftSection={<IconFileDescription size={16} />}>
-                Streszczenie dokumentu AI
-              </Tabs.Tab>
-            </Tabs.List>
+        ← Wróć do listy prekonsultacji
+      </Button>
 
-            <Tabs.Panel value="document-summary" pt="md">
-              {selectedProject && (
-                <AISummaryGroq
-                  type="prekonsultacja"
-                  title={selectedProject.title}
-                  description={selectedProject.description}
-                  comments={selectedProject.comments.map((c) => c.content)}
-                />
-              )}
-            </Tabs.Panel>
+      <Title order={1} mb="md">
+        {current.title}
+      </Title>
 
-            <Tabs.Panel value="comments" pt="md">
-              <Comments
-                comments={selectedProject.comments}
-                onAddComment={(content, rating) => addComment(selectedProject.id, content, rating)}
-              />
-            </Tabs.Panel>
+      <Tabs defaultValue="summary" mt="xl">
+        <Tabs.List>
+          <Tabs.Tab value="summary">Streszczenie AI</Tabs.Tab>
+          <Tabs.Tab value="comments">Komentarze ({current.comments.length})</Tabs.Tab>
+          <Tabs.Tab value="rating">Oceny</Tabs.Tab>
+          <Tabs.Tab value="ai-analysis">Analiza AI</Tabs.Tab>
+        </Tabs.List>
 
-            <Tabs.Panel value="rating" pt="md">
-              <ProjectRating
-                averageRating={selectedProject.averageRating}
-                ratingsCount={selectedProject.ratingsCount}
-                onRate={(rating, review) => rateProject(selectedProject.id, rating, review)}
-              />
-            </Tabs.Panel>
+        <Tabs.Panel value="summary" pt="xl">
+          <AISummaryGroq
+            type="prekonsultacja"
+            entityId={current.id}
+            title={current.title}
+            description={current.description}
+            comments={current.comments.map((c) => c.content)}
+          />
+        </Tabs.Panel>
 
-            <Tabs.Panel value="ai-analysis" pt="md">
-              <AICommentsAnalysis
-                comments={selectedProject.comments}
-                projectId={selectedProject.id}
-                projectTitle={selectedProject.title}
-              />
-            </Tabs.Panel>
+        <Tabs.Panel value="comments" pt="xl">
+          <Comments
+            comments={current.comments}
+            onAddComment={(c, r) => addComment(current.id, c, r)}
+          />
+        </Tabs.Panel>
 
-            <Tabs.Panel value="document-summary" pt="md">
-              <AISummaryGroq
-                type="prekonsultacja"
-                title={selectedProject.title}
-                description={selectedProject.description}
-                content=""
-                comments={selectedProject.comments.map((c) => c.content)}
-              />{' '}
-              // Analizuje komentarze!
-            </Tabs.Panel>
-          </Tabs>
-        )}
-      </Modal>
+        <Tabs.Panel value="rating" pt="xl">
+          <ProjectRating
+            averageRating={current.averageRating}
+            ratingsCount={current.ratingsCount}
+            onRate={(r, review) => rateProject(current.id, r, review)}
+          />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="ai-analysis" pt="xl">
+          <AICommentsAnalysis
+            comments={current.comments}
+            projectId={current.id}
+            projectTitle={current.title}
+          />
+        </Tabs.Panel>
+      </Tabs>
+    </Container>
+  )
+}
+
+```
+
+# src\app\(main)\prekonsultacje\[id]\PrekonsultacjaNotFound.tsx:
+
+```tsx
+'use client'
+
+import Link from 'next/link'
+import { Container, Title, Text, Button } from '@mantine/core'
+import { IconArrowLeft } from '@tabler/icons-react'
+
+interface PrekonsultacjaNotFoundProps {
+  id: string
+}
+
+export default function PrekonsultacjaNotFound({ id }: PrekonsultacjaNotFoundProps) {
+  return (
+    <Container py="xl" ta="center">
+      <Title order={3} c="red" mb="md">
+        Nie znaleziono prekonsultacji
+      </Title>
+      <Text c="dimmed" mb="lg">
+        Identyfikator: {id}
+      </Text>
+      <Button
+        component={Link}
+        href="/prekonsultacje"
+        variant="default"
+        leftSection={<IconArrowLeft size={16} />}
+      >
+        Wróć do listy prekonsultacji
+      </Button>
     </Container>
   )
 }
@@ -1058,7 +1022,7 @@ export default function PrekonsultacjePage() {
 ```tsx
 'use client'
 
-import React, { useState, useEffect, useTransition } from 'react'
+import { useState, useEffect, useTransition } from 'react'
 import Link from 'next/link'
 import {
   Container,
@@ -1101,14 +1065,13 @@ function UstawyTableContent({
 
   useEffect(() => {
     let mounted = true
-    setIsLoading(true)
-    setError(null)
 
     fakeFetchUstawy(publisher, year, page, limit)
       .then((res) => {
         if (mounted) {
           setData(res)
           setIsLoading(false)
+          setError(null)
         }
       })
       .catch((err) => {
@@ -1178,7 +1141,6 @@ function UstawyTableContent({
         </Text>
       </Table.Td>
       <Table.Td>
-        {/* WAŻNE: Encode URI component dla ID zawierającego slashe */}
         <Button
           component={Link}
           href={`/ustawy/${encodeURIComponent(ustawa.ELI)}`}
@@ -1313,6 +1275,7 @@ export default function SejmUstawyPage() {
 'use client'
 
 import Link from 'next/link'
+import { useMemo } from 'react'
 import {
   Container,
   Title,
@@ -1326,7 +1289,6 @@ import {
   Card,
   SimpleGrid,
   ThemeIcon,
-  Tooltip,
 } from '@mantine/core'
 import {
   IconCheck,
@@ -1338,7 +1300,6 @@ import {
   IconCalendar,
 } from '@tabler/icons-react'
 import { ActDetails } from '@/mocks/sejmMock'
-import { AISummary } from '../../../../components/ai/AISummary/AISummary'
 import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ActDetailsViewProps {
@@ -1346,10 +1307,8 @@ interface ActDetailsViewProps {
 }
 
 export default function ActDetailsView({ act }: ActDetailsViewProps) {
-  // Ustalanie aktywnego kroku na podstawie wypełnionych dat
   const activeIndex = act.stages.filter((s: { isCompleted: boolean }) => s.isCompleted).length - 1
 
-  // Linki do plików (konstrukcja na podstawie dokumentacji API)
   const pdfUrl = act.textPDF
     ? `https://api.sejm.gov.pl/eli/acts/${act.publisher}/${act.year}/${act.pos}/text.pdf`
     : null
@@ -1357,6 +1316,12 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
   const htmlUrl = act.textHTML
     ? `https://api.sejm.gov.pl/eli/acts/${act.publisher}/${act.year}/${act.pos}/text.html`
     : null
+
+  const actDescription = useMemo(() => `Akt prawny ${act.displayAddress}`, [act.displayAddress])
+  const actContent = useMemo(
+    () => act.fullText || act.title + ' – treść aktu prawnego zostanie wkrótce załadowana.',
+    [act.fullText, act.title],
+  )
 
   return (
     <Container size="md" py="xl">
@@ -1413,7 +1378,6 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
         </Card>
       </SimpleGrid>
 
-      {/* Sekcja pobierania tekstów źródłowych */}
       {(pdfUrl || htmlUrl) && (
         <Group mt="md">
           {pdfUrl && (
@@ -1425,7 +1389,7 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
               color="red"
               leftSection={<IconDownload size={16} />}
             >
-              Pobierz akt (PDF)
+              Pobierz ustawę (PDF)
             </Button>
           )}
           {htmlUrl && (
@@ -1442,7 +1406,6 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
         </Group>
       )}
 
-      {/* Słowa kluczowe */}
       {act.keywords && act.keywords.length > 0 && (
         <Group gap="xs" mt="lg">
           {act.keywords.map((keyword: string, index: number) => (
@@ -1511,13 +1474,11 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
         <Tabs.Panel value="ai-summary" pt="md">
           <AISummaryGroq
             type="ustawa"
+            entityId={act.ELI}
             title={act.title}
-            description={`Akt prawny ${act.displayAddress}`}
-            content={
-              act.fullText || act.title + ' – treść aktu prawnego zostanie wkrótce załadowana.'
-            }
+            description={actDescription}
+            content={actContent}
           />
-          // act.fullText – dodaj pobieranie tekstu z PDF (patrz niżej)
         </Tabs.Panel>
       </Tabs>
     </Container>
@@ -1540,7 +1501,6 @@ interface ActNotFoundProps {
 }
 
 export default function ActNotFound({ id }: ActNotFoundProps) {
-  // Dekodowanie ID dla czytelności (np. DU%2F2025%2F1 -> DU/2025/1)
   const decodedId = decodeURIComponent(id)
 
   return (
@@ -1551,9 +1511,6 @@ export default function ActNotFound({ id }: ActNotFoundProps) {
       <Text c="dimmed" mb="lg">
         Identyfikator: {decodedId}
       </Text>
-      {/* Tutaj 'component={Link}' zadziała poprawnie, 
-        ponieważ jesteśmy w komponencie "use client" 
-      */}
       <Button
         component={Link}
         href="/ustawy"
@@ -1574,7 +1531,7 @@ export default function ActNotFound({ id }: ActNotFoundProps) {
 import React from 'react'
 import { fakeFetchActDetails } from '@/mocks/sejmMock'
 import ActDetailsView from './ActDetailsView'
-import ActNotFound from './ActNotFound' // Import nowego komponentu
+import ActNotFound from './ActNotFound'
 
 interface PageProps {
   params: {
@@ -1585,16 +1542,12 @@ interface PageProps {
 export default async function UstawaDetailsPage({ params }: PageProps) {
   const { id } = await Promise.resolve(params)
 
-  // Pobranie danych z API (server-side)
   const act = await fakeFetchActDetails(id)
 
   if (!act) {
-    // Zamiast renderować UI Mantine bezpośrednio tutaj,
-    // zwracamy komponent klientowy, który to obsłuży.
     return <ActNotFound id={id} />
   }
 
-  // ActDetailsView jest już oznaczony jako "use client", więc jest bezpieczny
   return <ActDetailsView act={act} />
 }
 
@@ -1603,9 +1556,12 @@ export default async function UstawaDetailsPage({ params }: PageProps) {
 # src\app\api\ai\summary\route.ts:
 
 ```ts
-// src/app/api/ai/summary/route.ts
 import { createGroq } from '@ai-sdk/groq'
 import { generateText } from 'ai'
+import { db } from '@/db/drizzle'
+import { aiSummary } from '@/db/schema'
+import { eq, and } from 'drizzle-orm'
+import { randomUUID } from 'crypto'
 
 const groq = createGroq({
   apiKey: process.env.GROQ_API_KEY!,
@@ -1614,9 +1570,38 @@ const groq = createGroq({
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  const { type, title, description = '', content = '', comments = [] } = await req.json()
+  const {
+    type,
+    entityId,
+    title,
+    description = '',
+    content = '',
+    comments = [],
+    forceRegenerate = false,
+  } = await req.json()
 
-  const prompt = `Jesteś najlepszym polskim ekspertem legislacyjnym. Masz dwie rzeczy do zrobienia:
+  if (!type || !entityId) {
+    return Response.json({ error: 'Missing required fields: type and entityId' }, { status: 400 })
+  }
+
+  try {
+    if (!forceRegenerate) {
+      const existingSummary = await db
+        .select()
+        .from(aiSummary)
+        .where(and(eq(aiSummary.entityType, type), eq(aiSummary.entityId, entityId)))
+        .limit(1)
+
+      if (existingSummary.length > 0) {
+        const summary = existingSummary[0]
+        return Response.json({
+          humanSummary: summary.humanSummary,
+          summary: JSON.parse(summary.summaryData),
+          fromCache: true,
+        })
+      }
+    }
+    const prompt = `Jesteś najlepszym polskim ekspertem legislacyjnym. Masz dwie rzeczy do zrobienia:
 
 1. Napisz KRÓTKIE (4-6 zdań), bardzo treściwe, profesjonalne streszczenie całej ustawy/projektu – tak, jakbyś tłumaczył to posłowi w windzie. To ma być jasne, bez żargonu, z sensem.
 
@@ -1649,32 +1634,50 @@ Zwróć dokładnie tak:
   "confidence": number
 }`
 
-  try {
     const { text } = await generateText({
       model: groq('llama-3.3-70b-versatile'),
       prompt,
       temperature: 0.2,
     })
 
-    // Wyciągamy część ludzką
     const humanMatch = text.match(/### Streszczenie dla człowieka([\s\S]*?)### Szczegółowa analiza/)
     const humanSummary = humanMatch
       ? humanMatch[1].trim()
       : 'Nie udało się wygenerować streszczenia.'
 
-    // Wyciągamy JSON
     const jsonMatch = text.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error('Brak JSON w odpowiedzi AI')
 
     const data = JSON.parse(jsonMatch[0])
 
+    if (forceRegenerate) {
+      await db
+        .update(aiSummary)
+        .set({
+          humanSummary,
+          summaryData: JSON.stringify(data),
+          updatedAt: new Date(),
+        })
+        .where(and(eq(aiSummary.entityType, type), eq(aiSummary.entityId, entityId)))
+    } else {
+      await db.insert(aiSummary).values({
+        id: randomUUID(),
+        entityType: type,
+        entityId,
+        humanSummary,
+        summaryData: JSON.stringify(data),
+      })
+    }
+
     return Response.json({
-      humanSummary, // ← to jest to, czego chciałeś
-      summary: data, // ← Twój szczegółowy UI
+      humanSummary,
+      summary: data,
+      fromCache: false,
     })
-  } catch (error: any) {
-    console.error('Groq error:', error)
-    return Response.json({ error: error.message || 'Błąd AI' }, { status: 500 })
+  } catch (error: unknown) {
+    console.error('AI summary error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Błąd AI'
+    return Response.json({ error: errorMessage }, { status: 500 })
   }
 }
 
@@ -1693,8 +1696,6 @@ export const { POST, GET } = toNextJsHandler(auth)
 # src\app\api\proxy\eli\[...path]\route.ts:
 
 ```ts
-// src/app/api/proxy/eli/[...path]/route.ts
-
 import { NextRequest, NextResponse } from 'next/server'
 
 const API_BASE = 'https://api.sejm.gov.pl/eli'
@@ -1713,7 +1714,6 @@ export async function GET(
     const res = await fetch(targetUrl, {
       method: 'GET',
       headers: {
-        // KLUCZOWE NAGŁÓWKI – bez nich Sejm zwraca 403
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         Accept: 'application/json, text/plain, */*',
@@ -1727,14 +1727,10 @@ export async function GET(
         Connection: 'keep-alive',
         'Cache-Control': 'no-cache',
       },
-      // ważne – Next.js domyślnie dodaje swoje nagłówki, które mogą być wykrywane
-      // wyłączenie cache na poziomie fetch, bo i tak mamy revalidate
       next: { revalidate: 3600 },
     })
 
-    // Kopiujemy wszystkie nagłówki odpowiedzi (w tym Content-Encoding dla gzip)
     const headers = new Headers(res.headers)
-    // Usuwamy potencjalnie problematyczne nagłówki Next.js
     headers.delete('transfer-encoding')
 
     if (!res.ok) {
@@ -2456,7 +2452,7 @@ export default function AccessibilityPanel() {
 # src\components\ai\AIAnalysis\AICommentsAnalysis.tsx:
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import {
   Card,
   Text,
@@ -2466,195 +2462,209 @@ import {
   Badge,
   SimpleGrid,
   Title,
-  Divider,
-  Button,
   Alert,
   Loader,
   ThemeIcon,
-  List,
   Accordion,
-  ActionIcon,
-  Tooltip
-} from '@mantine/core';
+} from '@mantine/core'
 import {
   IconBrain,
   IconTrendingUp,
   IconTrendingDown,
   IconAlertTriangle,
-  IconRefresh,
-  IconEye,
   IconThumbUp,
-  IconThumbDown,
   IconExclamationMark,
   IconInfoCircle,
   IconUsers,
   IconMessage,
-  IconChartBar
-} from '@tabler/icons-react';
-import { Comment } from '../../../mocks/prekonsultacjeMock';
+  IconChartBar,
+} from '@tabler/icons-react'
+import { Comment } from '../../../mocks/prekonsultacjeMock'
 
 interface AIAnalysisProps {
-  comments: Comment[];
-  projectId: string;
-  projectTitle: string;
+  comments: Comment[]
+  projectId: string
+  projectTitle: string
 }
 
 interface SentimentAnalysis {
-  positive: number;
-  negative: number;
-  neutral: number;
-  overall: 'positive' | 'negative' | 'neutral';
+  positive: number
+  negative: number
+  neutral: number
+  overall: 'positive' | 'negative' | 'neutral'
 }
 
 interface KeyTheme {
-  theme: string;
-  count: number;
-  sentiment: 'positive' | 'negative' | 'neutral';
-  examples: string[];
+  theme: string
+  count: number
+  sentiment: 'positive' | 'negative' | 'neutral'
+  examples: string[]
 }
 
 interface AIInsight {
-  type: 'concern' | 'suggestion' | 'praise' | 'issue';
-  title: string;
-  description: string;
-  confidence: number;
-  commentsCount: number;
+  type: 'concern' | 'suggestion' | 'praise' | 'issue'
+  title: string
+  description: string
+  confidence: number
+  commentsCount: number
 }
 
-export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnalysisProps) {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+export function AICommentsAnalysis({ comments, projectTitle }: AIAnalysisProps) {
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [analysis, setAnalysis] = useState<{
-    sentiment: SentimentAnalysis;
-    keyThemes: KeyTheme[];
-    insights: AIInsight[];
-    summary: string;
-  } | null>(null);
+    sentiment: SentimentAnalysis
+    keyThemes: KeyTheme[]
+    insights: AIInsight[]
+    summary: string
+  } | null>(null)
 
   // Symulacja analizy AI
   const runAIAnalysis = async () => {
-    setIsAnalyzing(true);
-    
+    setIsAnalyzing(true)
+
     // Symulacja czasu analizy
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+
     // Mockowa analiza na podstawie komentarzy
     const mockAnalysis = {
       sentiment: {
         positive: Math.floor(Math.random() * 40) + 30, // 30-70%
         negative: Math.floor(Math.random() * 30) + 10, // 10-40%
         neutral: 0,
-        overall: 'positive' as 'positive' | 'negative' | 'neutral'
+        overall: 'positive' as 'positive' | 'negative' | 'neutral',
       },
       keyThemes: [
         {
           theme: 'Definicja danych wrażliwych',
           count: 12,
           sentiment: 'neutral' as const,
-          examples: ['Należy doprecyzować definicję', 'Zbyt ogólne sformułowania']
+          examples: ['Należy doprecyzować definicję', 'Zbyt ogólne sformułowania'],
         },
         {
           theme: 'Kary finansowe',
           count: 8,
           sentiment: 'negative' as const,
-          examples: ['Zbyt wysokie kary', 'Nieproporcjonalne sankcje']
+          examples: ['Zbyt wysokie kary', 'Nieproporcjonalne sankcje'],
         },
         {
           theme: 'Okres przejściowy',
           count: 15,
           sentiment: 'positive' as const,
-          examples: ['Potrzebny dłuższy okres', 'Wsparcie dla małych firm']
+          examples: ['Potrzebny dłuższy okres', 'Wsparcie dla małych firm'],
         },
         {
           theme: 'Bezpieczeństwo danych',
           count: 20,
           sentiment: 'positive' as const,
-          examples: ['Ważne dla obywateli', 'Krok w dobrą stronę']
-        }
+          examples: ['Ważne dla obywateli', 'Krok w dobrą stronę'],
+        },
       ],
       insights: [
         {
           type: 'concern' as const,
           title: 'Obawy dotyczące implementacji',
-          description: 'Wiele komentarzy wyraża obawy o trudności w implementacji nowych wymogów, szczególnie w małych jednostkach.',
+          description:
+            'Wiele komentarzy wyraża obawy o trudności w implementacji nowych wymogów, szczególnie w małych jednostkach.',
           confidence: 85,
-          commentsCount: 23
+          commentsCount: 23,
         },
         {
           type: 'suggestion' as const,
           title: 'Sugestie dotyczące kar finansowych',
-          description: 'Użytkownicy sugerują wprowadzenie progresywnej skali kar w zależności od wielkości instytucji.',
+          description:
+            'Użytkownicy sugerują wprowadzenie progresywnej skali kar w zależności od wielkości instytucji.',
           confidence: 78,
-          commentsCount: 15
+          commentsCount: 15,
         },
         {
           type: 'praise' as const,
           title: 'Pozytywne przyjęcie celów ustawy',
-          description: 'Większość komentarzy pozytywnie ocenia cel ustawy i potrzebę wzmocnienia ochrony danych.',
+          description:
+            'Większość komentarzy pozytywnie ocenia cel ustawy i potrzebę wzmocnienia ochrony danych.',
           confidence: 92,
-          commentsCount: 31
-        }
+          commentsCount: 31,
+        },
       ],
-      summary: 'Analiza wykazuje generalnie pozytywny odbiór projektu ustawy, jednak z istotnymi zastrzeżeniami dotyczącymi praktycznej implementacji i wysokości kar finansowych.'
-    };
-
-    mockAnalysis.sentiment.neutral = 100 - mockAnalysis.sentiment.positive - mockAnalysis.sentiment.negative;
-    
-    let overallSentiment: 'positive' | 'negative' | 'neutral' = 'neutral';
-    if (mockAnalysis.sentiment.positive > mockAnalysis.sentiment.negative + 20) {
-      overallSentiment = 'positive';
-    } else if (mockAnalysis.sentiment.negative > mockAnalysis.sentiment.positive + 15) {
-      overallSentiment = 'negative';
-    } else {
-      overallSentiment = 'neutral';
+      summary:
+        'Analiza wykazuje generalnie pozytywny odbiór projektu ustawy, jednak z istotnymi zastrzeżeniami dotyczącymi praktycznej implementacji i wysokości kar finansowych.',
     }
-    
-    mockAnalysis.sentiment.overall = overallSentiment;
 
-    setAnalysis(mockAnalysis);
-    setIsAnalyzing(false);
-  };
+    mockAnalysis.sentiment.neutral =
+      100 - mockAnalysis.sentiment.positive - mockAnalysis.sentiment.negative
+
+    let overallSentiment: 'positive' | 'negative' | 'neutral' = 'neutral'
+    if (mockAnalysis.sentiment.positive > mockAnalysis.sentiment.negative + 20) {
+      overallSentiment = 'positive'
+    } else if (mockAnalysis.sentiment.negative > mockAnalysis.sentiment.positive + 15) {
+      overallSentiment = 'negative'
+    } else {
+      overallSentiment = 'neutral'
+    }
+
+    mockAnalysis.sentiment.overall = overallSentiment
+
+    setAnalysis(mockAnalysis)
+    setIsAnalyzing(false)
+  }
 
   useEffect(() => {
     if (comments.length > 0) {
-      runAIAnalysis();
+      const performAnalysis = async () => {
+        await runAIAnalysis()
+      }
+      performAnalysis()
     }
-  }, [comments]);
+  }, [comments])
 
   const getSentimentColor = (sentiment: string) => {
     switch (sentiment) {
-      case 'positive': return 'green';
-      case 'negative': return 'red';
-      case 'neutral': return 'gray';
-      default: return 'blue';
+      case 'positive':
+        return 'green'
+      case 'negative':
+        return 'red'
+      case 'neutral':
+        return 'gray'
+      default:
+        return 'blue'
     }
-  };
+  }
 
   const getInsightIcon = (type: string) => {
     switch (type) {
-      case 'concern': return <IconAlertTriangle size={16} />;
-      case 'suggestion': return <IconInfoCircle size={16} />;
-      case 'praise': return <IconThumbUp size={16} />;
-      case 'issue': return <IconExclamationMark size={16} />;
-      default: return <IconInfoCircle size={16} />;
+      case 'concern':
+        return <IconAlertTriangle size={16} />
+      case 'suggestion':
+        return <IconInfoCircle size={16} />
+      case 'praise':
+        return <IconThumbUp size={16} />
+      case 'issue':
+        return <IconExclamationMark size={16} />
+      default:
+        return <IconInfoCircle size={16} />
     }
-  };
+  }
 
   const getInsightColor = (type: string) => {
     switch (type) {
-      case 'concern': return 'orange';
-      case 'suggestion': return 'blue';
-      case 'praise': return 'green';
-      case 'issue': return 'red';
-      default: return 'gray';
+      case 'concern':
+        return 'orange'
+      case 'suggestion':
+        return 'blue'
+      case 'praise':
+        return 'green'
+      case 'issue':
+        return 'red'
+      default:
+        return 'gray'
     }
-  };
+  }
 
   if (comments.length === 0) {
     return (
       <Alert icon={<IconInfoCircle size={16} />} title="Brak komentarzy" color="blue">
         Nie ma jeszcze komentarzy do analizy. Dodaj pierwsze komentarze, aby uruchomić analizę AI.
       </Alert>
-    );
+    )
   }
 
   return (
@@ -2667,14 +2677,6 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
             Analiza {comments.length} komentarzy dla: {projectTitle}
           </Text>
         </div>
-        <Button
-          variant="light"
-          leftSection={<IconRefresh size={16} />}
-          onClick={runAIAnalysis}
-          loading={isAnalyzing}
-        >
-          Odśwież analizę
-        </Button>
       </Group>
 
       {isAnalyzing ? (
@@ -2698,11 +2700,14 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                 size="lg"
                 variant="light"
               >
-                {analysis.sentiment.overall === 'positive' ? 'Pozytywny' :
-                 analysis.sentiment.overall === 'negative' ? 'Negatywny' : 'Neutralny'}
+                {analysis.sentiment.overall === 'positive'
+                  ? 'Pozytywny'
+                  : analysis.sentiment.overall === 'negative'
+                  ? 'Negatywny'
+                  : 'Neutralny'}
               </Badge>
             </Group>
-            
+
             <Stack gap="xs">
               <Group justify="space-between">
                 <Group gap="xs">
@@ -2711,10 +2716,12 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </ThemeIcon>
                   <Text size="sm">Pozytywne</Text>
                 </Group>
-                <Text size="sm" fw={500}>{analysis.sentiment.positive}%</Text>
+                <Text size="sm" fw={500}>
+                  {analysis.sentiment.positive}%
+                </Text>
               </Group>
               <Progress value={analysis.sentiment.positive} color="green" size="sm" />
-              
+
               <Group justify="space-between">
                 <Group gap="xs">
                   <ThemeIcon color="red" variant="light" size="sm">
@@ -2722,10 +2729,12 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </ThemeIcon>
                   <Text size="sm">Negatywne</Text>
                 </Group>
-                <Text size="sm" fw={500}>{analysis.sentiment.negative}%</Text>
+                <Text size="sm" fw={500}>
+                  {analysis.sentiment.negative}%
+                </Text>
               </Group>
               <Progress value={analysis.sentiment.negative} color="red" size="sm" />
-              
+
               <Group justify="space-between">
                 <Group gap="xs">
                   <ThemeIcon color="gray" variant="light" size="sm">
@@ -2733,7 +2742,9 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </ThemeIcon>
                   <Text size="sm">Neutralne</Text>
                 </Group>
-                <Text size="sm" fw={500}>{analysis.sentiment.neutral}%</Text>
+                <Text size="sm" fw={500}>
+                  {analysis.sentiment.neutral}%
+                </Text>
               </Group>
               <Progress value={analysis.sentiment.neutral} color="gray" size="sm" />
             </Stack>
@@ -2741,12 +2752,16 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
 
           {/* Kluczowe tematy */}
           <Card shadow="sm" p="md" withBorder>
-            <Title order={4} mb="md">Kluczowe tematy w komentarzach</Title>
+            <Title order={4} mb="md">
+              Kluczowe tematy w komentarzach
+            </Title>
             <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
               {analysis.keyThemes.map((theme, index) => (
                 <Card key={index} p="sm" withBorder>
                   <Group justify="space-between" mb="xs">
-                    <Text fw={500} size="sm">{theme.theme}</Text>
+                    <Text fw={500} size="sm">
+                      {theme.theme}
+                    </Text>
                     <Badge color={getSentimentColor(theme.sentiment)} variant="light" size="sm">
                       {theme.count}
                     </Badge>
@@ -2761,17 +2776,15 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
 
           {/* Kluczowe spostrzeżenia */}
           <Card shadow="sm" p="md" withBorder>
-            <Title order={4} mb="md">Kluczowe spostrzeżenia AI</Title>
+            <Title order={4} mb="md">
+              Kluczowe spostrzeżenia AI
+            </Title>
             <Accordion>
               {analysis.insights.map((insight, index) => (
                 <Accordion.Item key={index} value={`insight-${index}`}>
                   <Accordion.Control>
                     <Group>
-                      <ThemeIcon 
-                        color={getInsightColor(insight.type)} 
-                        variant="light" 
-                        size="sm"
-                      >
+                      <ThemeIcon color={getInsightColor(insight.type)} variant="light" size="sm">
                         {getInsightIcon(insight.type)}
                       </ThemeIcon>
                       <div>
@@ -2780,9 +2793,7 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                           <Text size="xs" c="dimmed">
                             Pewność: {insight.confidence}%
                           </Text>
-                          <Text size="xs" c="dimmed">
-                            •
-                          </Text>
+                          <Text size="xs" c="dimmed"></Text>
                           <Text size="xs" c="dimmed">
                             {insight.commentsCount} komentarzy
                           </Text>
@@ -2792,11 +2803,11 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </Accordion.Control>
                   <Accordion.Panel>
                     <Text size="sm">{insight.description}</Text>
-                    <Progress 
-                      value={insight.confidence} 
-                      color={getInsightColor(insight.type)} 
-                      size="xs" 
-                      mt="xs" 
+                    <Progress
+                      value={insight.confidence}
+                      color={getInsightColor(insight.type)}
+                      size="xs"
+                      mt="xs"
                     />
                   </Accordion.Panel>
                 </Accordion.Item>
@@ -2821,64 +2832,76 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
               <ThemeIcon color="blue" size="lg" mx="auto" mb="xs">
                 <IconMessage size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{comments.length}</Text>
-              <Text size="sm" c="dimmed">Komentarzy</Text>
+              <Text fw={600} size="lg">
+                {comments.length}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Komentarzy
+              </Text>
             </Card>
-            
+
             <Card p="md" withBorder ta="center">
               <ThemeIcon color="green" size="lg" mx="auto" mb="xs">
                 <IconUsers size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{new Set(comments.map(c => c.author)).size}</Text>
-              <Text size="sm" c="dimmed">Unikalnych autorów</Text>
+              <Text fw={600} size="lg">
+                {new Set(comments.map((c) => c.author)).size}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Unikalnych autorów
+              </Text>
             </Card>
-            
+
             <Card p="md" withBorder ta="center">
               <ThemeIcon color="orange" size="lg" mx="auto" mb="xs">
                 <IconChartBar size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{analysis.keyThemes.length}</Text>
-              <Text size="sm" c="dimmed">Głównych tematów</Text>
+              <Text fw={600} size="lg">
+                {analysis.keyThemes.length}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Głównych tematów
+              </Text>
             </Card>
-            
+
             <Card p="md" withBorder ta="center">
               <ThemeIcon color="violet" size="lg" mx="auto" mb="xs">
                 <IconBrain size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{analysis.insights.length}</Text>
-              <Text size="sm" c="dimmed">Spostrzeżeń AI</Text>
+              <Text fw={600} size="lg">
+                {analysis.insights.length}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Spostrzeżeń AI
+              </Text>
             </Card>
           </SimpleGrid>
         </>
       ) : null}
     </Stack>
-  );
+  )
 }
+
 ```
 
 # src\components\ai\AISummary\AISummary.tsx:
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import {
   Card,
   Text,
   Stack,
   Group,
-  Button,
   Alert,
   Loader,
   ThemeIcon,
   Badge,
-  Divider,
   List,
-  ActionIcon,
-  Tooltip,
-  Progress
-} from '@mantine/core';
+  Progress,
+} from '@mantine/core'
 import {
   IconBrain,
-  IconRefresh,
   IconInfoCircle,
   IconBulb,
   IconAlertTriangle,
@@ -2886,155 +2909,185 @@ import {
   IconClock,
   IconScale,
   IconUsers,
-  IconFileText
-} from '@tabler/icons-react';
+  IconFileText,
+} from '@tabler/icons-react'
 
 interface AISummaryProps {
-  type: 'ustawa' | 'konsultacja' | 'prekonsultacja';
-  title: string;
-  description?: string;
-  content?: string;
-  comments?: any[];
-  participants?: number;
-  status?: string;
+  type: 'ustawa' | 'konsultacja' | 'prekonsultacja'
+  title: string
+  description?: string
+  content?: string
+  comments?: string[]
+  participants?: number
+  status?: string
 }
 
 interface AISummaryData {
-  mainPoints: string[];
-  impact: string;
-  complexity: 'low' | 'medium' | 'high';
-  stakeholders: string[];
-  timeline: string;
-  risks: string[];
-  opportunities: string[];
-  recommendation: string;
-  confidence: number;
+  mainPoints: string[]
+  impact: string
+  complexity: 'low' | 'medium' | 'high'
+  stakeholders: string[]
+  timeline: string
+  risks: string[]
+  opportunities: string[]
+  recommendation: string
+  confidence: number
 }
 
-export function AISummary({ type, title, description, content, comments, participants, status }: AISummaryProps) {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [summary, setSummary] = useState<AISummaryData | null>(null);
-
-  const generateAISummary = async () => {
-    setIsAnalyzing(true);
-    
-    // Symulacja czasu analizy
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Mockowe streszczenie AI na podstawie typu
-    let mockSummary: AISummaryData;
-    
-    if (type === 'ustawa') {
-      mockSummary = {
-        mainPoints: [
-          'Wprowadzenie nowych standardów ochrony danych osobowych',
-          'Wzmocnienie kar za naruszenie przepisów',
-          'Uproszczenie procedur dla małych organizacji',
-          'Rozszerzenie definicji danych wrażliwych'
-        ],
-        impact: 'Średni - wpłynie na wszystkie instytucje publiczne i część sektora prywatnego',
-        complexity: 'medium',
-        stakeholders: ['Instytucje publiczne', 'Firmy IT', 'Organizacje pozarządowe', 'Obywatele'],
-        timeline: 'Wejście w życie planowane na 6 miesięcy od publikacji',
-        risks: [
-          'Wysokie koszty implementacji dla małych firm',
-          'Możliwe opóźnienia w dostosowaniu systemów IT',
-          'Potrzeba szkoleń dla personelu'
-        ],
-        opportunities: [
-          'Zwiększenie zaufania obywateli do instytucji',
-          'Harmonizacja z regulacjami UE',
-          'Rozwój sektora cyberbezpieczeństwa'
-        ],
-        recommendation: 'Ustawa jest potrzebna, ale wymaga wydłużenia okresu przejściowego i dodatkowego wsparcia dla małych organizacji.',
-        confidence: 87
-      };
-    } else if (type === 'konsultacja') {
-      mockSummary = {
-        mainPoints: [
-          'Reforma ma na celu poprawę dostępności usług zdrowotnych',
-          'Planowane zwiększenie finansowania o 15%',
-          'Digitalizacja procesów medycznych',
-          'Nowe standardy jakości opieki'
-        ],
-        impact: 'Wysoki - dotknie wszystkich pacjentów i pracowników służby zdrowia',
-        complexity: 'high',
-        stakeholders: ['Pacjenci', 'Lekarze', 'Pielęgniarki', 'Szpitale', 'NFZ', 'Firmy farmaceutyczne'],
-        timeline: 'Implementacja w ciągu 2-3 lat w fazach',
-        risks: [
-          'Opór środowiska medycznego wobec zmian',
-          'Wysokie koszty modernizacji infrastruktury',
-          'Możliwe przerwy w świadczeniu usług'
-        ],
-        opportunities: [
-          'Skrócenie kolejek do specjalistów',
-          'Lepsza koordynacja opieki',
-          'Rozwój telemedycyny'
-        ],
-        recommendation: `Na podstawie ${participants || 'wielu'} uczestników konsultacji, reforma jest potrzebna ale wymaga ostrożnej implementacji.`,
-        confidence: 92
-      };
-    } else { // prekonsultacja
-      mockSummary = {
-        mainPoints: [
-          'Projekt wprowadza nowe mechanizmy partycypacji obywatelskiej',
-          'Cyfryzacja procesów konsultacyjnych',
-          'Zwiększenie transparentności procesów legislacyjnych',
-          'Nowe narzędzia komunikacji z społeczeństwem'
-        ],
-        impact: 'Średni - wpłynie na jakość procesów demokratycznych',
-        complexity: 'low',
-        stakeholders: ['Obywatele', 'Organizacje społeczne', 'Urzędy', 'Media', 'Eksperci'],
-        timeline: 'Pilotaż w wybranych urzędach w ciągu 6 miesięcy',
-        risks: [
-          'Niska aktywność obywateli w nowych formach konsultacji',
-          'Problemy techniczne z platformami cyfrowymi',
-          'Opór części urzędników'
-        ],
-        opportunities: [
-          'Większe zaangażowanie społeczne w tworzenie prawa',
-          'Lepsza jakość projektów ustaw',
-          'Wzrost zaufania do instytucji'
-        ],
-        recommendation: `Projekt ma duży potencjał. ${comments?.length || 0} komentarzy wskazuje na zainteresowanie społeczne.`,
-        confidence: 78
-      };
-    }
-    
-    setSummary(mockSummary);
-    setIsAnalyzing(false);
-  };
+export function AISummary({ type, title, comments, participants }: AISummaryProps) {
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [summary, setSummary] = useState<AISummaryData | null>(null)
 
   useEffect(() => {
-    generateAISummary();
-  }, [type, title]);
+    const generateAISummary = async () => {
+      setIsAnalyzing(true)
+
+      // Symulacja czasu analizy
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+
+      // Mockowe streszczenie AI na podstawie typu
+      let mockSummary: AISummaryData
+
+      if (type === 'ustawa') {
+        mockSummary = {
+          mainPoints: [
+            'Wprowadzenie nowych standardów ochrony danych osobowych',
+            'Wzmocnienie kar za naruszenie przepisów',
+            'Uproszczenie procedur dla małych organizacji',
+            'Rozszerzenie definicji danych wrażliwych',
+          ],
+          impact: 'Średni - wpłynie na wszystkie instytucje publiczne i część sektora prywatnego',
+          complexity: 'medium',
+          stakeholders: [
+            'Instytucje publiczne',
+            'Firmy IT',
+            'Organizacje pozarządowe',
+            'Obywatele',
+          ],
+          timeline: 'Wejście w życie planowane na 6 miesięcy od publikacji',
+          risks: [
+            'Wysokie koszty implementacji dla małych firm',
+            'Możliwe opóźnienia w dostosowaniu systemów IT',
+            'Potrzeba szkoleń dla personelu',
+          ],
+          opportunities: [
+            'Zwiększenie zaufania obywateli do instytucji',
+            'Harmonizacja z regulacjami UE',
+            'Rozwój sektora cyberbezpieczeństwa',
+          ],
+          recommendation:
+            'Ustawa jest potrzebna, ale wymaga wydłużenia okresu przejściowego i dodatkowego wsparcia dla małych organizacji.',
+          confidence: 87,
+        }
+      } else if (type === 'konsultacja') {
+        mockSummary = {
+          mainPoints: [
+            'Reforma ma na celu poprawę dostępności usług zdrowotnych',
+            'Planowane zwiększenie finansowania o 15%',
+            'Digitalizacja procesów medycznych',
+            'Nowe standardy jakości opieki',
+          ],
+          impact: 'Wysoki - dotknie wszystkich pacjentów i pracowników służby zdrowia',
+          complexity: 'high',
+          stakeholders: [
+            'Pacjenci',
+            'Lekarze',
+            'Pielęgniarki',
+            'Szpitale',
+            'NFZ',
+            'Firmy farmaceutyczne',
+          ],
+          timeline: 'Implementacja w ciągu 2-3 lat w fazach',
+          risks: [
+            'Opór środowiska medycznego wobec zmian',
+            'Wysokie koszty modernizacji infrastruktury',
+            'Możliwe przerwy w świadczeniu usług',
+          ],
+          opportunities: [
+            'Skrócenie kolejek do specjalistów',
+            'Lepsza koordynacja opieki',
+            'Rozwój telemedycyny',
+          ],
+          recommendation: `Na podstawie ${
+            participants || 'wielu'
+          } uczestników konsultacji, reforma jest potrzebna ale wymaga ostrożnej implementacji.`,
+          confidence: 92,
+        }
+      } else {
+        // prekonsultacja
+        mockSummary = {
+          mainPoints: [
+            'Projekt wprowadza nowe mechanizmy partycypacji obywatelskiej',
+            'Cyfryzacja procesów konsultacyjnych',
+            'Zwiększenie transparentności procesów legislacyjnych',
+            'Nowe narzędzia komunikacji z społeczeństwem',
+          ],
+          impact: 'Średni - wpłynie na jakość procesów demokratycznych',
+          complexity: 'low',
+          stakeholders: ['Obywatele', 'Organizacje społeczne', 'Urzędy', 'Media', 'Eksperci'],
+          timeline: 'Pilotaż w wybranych urzędach w ciągu 6 miesięcy',
+          risks: [
+            'Niska aktywność obywateli w nowych formach konsultacji',
+            'Problemy techniczne z platformami cyfrowymi',
+            'Opór części urzędników',
+          ],
+          opportunities: [
+            'Większe zaangażowanie społeczne w tworzenie prawa',
+            'Lepsza jakość projektów ustaw',
+            'Wzrost zaufania do instytucji',
+          ],
+          recommendation: `Projekt ma duży potencjał. ${
+            comments?.length || 0
+          } komentarzy wskazuje na zainteresowanie społeczne.`,
+          confidence: 78,
+        }
+      }
+
+      setSummary(mockSummary)
+      setIsAnalyzing(false)
+    }
+
+    generateAISummary()
+  }, [type, title, participants, comments])
 
   const getComplexityColor = (complexity: string) => {
     switch (complexity) {
-      case 'low': return 'green';
-      case 'medium': return 'yellow';
-      case 'high': return 'red';
-      default: return 'gray';
+      case 'low':
+        return 'green'
+      case 'medium':
+        return 'yellow'
+      case 'high':
+        return 'red'
+      default:
+        return 'gray'
     }
-  };
+  }
 
   const getComplexityLabel = (complexity: string) => {
     switch (complexity) {
-      case 'low': return 'Niska';
-      case 'medium': return 'Średnia';
-      case 'high': return 'Wysoka';
-      default: return 'Nieznana';
+      case 'low':
+        return 'Niska'
+      case 'medium':
+        return 'Średnia'
+      case 'high':
+        return 'Wysoka'
+      default:
+        return 'Nieznana'
     }
-  };
+  }
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'ustawa': return 'Ustawy';
-      case 'konsultacja': return 'Konsultacji';
-      case 'prekonsultacja': return 'Prekonsultacji';
-      default: return 'Dokumentu';
+      case 'ustawa':
+        return 'Ustawy'
+      case 'konsultacja':
+        return 'Konsultacji'
+      case 'prekonsultacja':
+        return 'Prekonsultacji'
+      default:
+        return 'Dokumentu'
     }
-  };
+  }
 
   if (isAnalyzing) {
     return (
@@ -3050,7 +3103,7 @@ export function AISummary({ type, title, description, content, comments, partici
           </Text>
         </Stack>
       </Card>
-    );
+    )
   }
 
   if (!summary) {
@@ -3058,7 +3111,7 @@ export function AISummary({ type, title, description, content, comments, partici
       <Alert icon={<IconInfoCircle size={16} />} title="Streszczenie AI" color="blue">
         Brak danych do analizy. Spróbuj ponownie później.
       </Alert>
-    );
+    )
   }
 
   return (
@@ -3080,15 +3133,6 @@ export function AISummary({ type, title, description, content, comments, partici
           <Badge color="blue" variant="light">
             Pewność: {summary.confidence}%
           </Badge>
-          <Tooltip label="Wygeneruj ponownie">
-            <ActionIcon
-              variant="light"
-              onClick={generateAISummary}
-              loading={isAnalyzing}
-            >
-              <IconRefresh size={16} />
-            </ActionIcon>
-          </Tooltip>
         </Group>
       </Group>
 
@@ -3098,7 +3142,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="blue" variant="light" size="sm">
             <IconFileText size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Kluczowe punkty</Text>
+          <Text fw={600} size="sm">
+            Kluczowe punkty
+          </Text>
         </Group>
         <List spacing="xs" size="sm">
           {summary.mainPoints.map((point, index) => (
@@ -3114,17 +3160,21 @@ export function AISummary({ type, title, description, content, comments, partici
             <ThemeIcon color="orange" variant="light" size="sm">
               <IconUsers size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Wpływ</Text>
+            <Text fw={600} size="sm">
+              Wpływ
+            </Text>
           </Group>
           <Text size="sm">{summary.impact}</Text>
         </Card>
-        
+
         <Card p="md" withBorder>
           <Group mb="xs">
             <ThemeIcon color={getComplexityColor(summary.complexity)} variant="light" size="sm">
               <IconScale size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Złożoność</Text>
+            <Text fw={600} size="sm">
+              Złożoność
+            </Text>
           </Group>
           <Badge color={getComplexityColor(summary.complexity)} variant="light">
             {getComplexityLabel(summary.complexity)}
@@ -3138,7 +3188,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="grape" variant="light" size="sm">
             <IconUsers size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Kluczowi interesariusze</Text>
+          <Text fw={600} size="sm">
+            Kluczowi interesariusze
+          </Text>
         </Group>
         <Group gap="xs">
           {summary.stakeholders.map((stakeholder, index) => (
@@ -3155,7 +3207,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="teal" variant="light" size="sm">
             <IconClock size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Harmonogram</Text>
+          <Text fw={600} size="sm">
+            Harmonogram
+          </Text>
         </Group>
         <Text size="sm">{summary.timeline}</Text>
       </Card>
@@ -3167,7 +3221,9 @@ export function AISummary({ type, title, description, content, comments, partici
             <ThemeIcon color="red" variant="light" size="sm">
               <IconAlertTriangle size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Ryzyka</Text>
+            <Text fw={600} size="sm">
+              Ryzyka
+            </Text>
           </Group>
           <List spacing="xs" size="sm">
             {summary.risks.map((risk, index) => (
@@ -3175,13 +3231,15 @@ export function AISummary({ type, title, description, content, comments, partici
             ))}
           </List>
         </Card>
-        
+
         <Card p="md" withBorder>
           <Group mb="md">
             <ThemeIcon color="green" variant="light" size="sm">
               <IconBulb size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Możliwości</Text>
+            <Text fw={600} size="sm">
+              Możliwości
+            </Text>
           </Group>
           <List spacing="xs" size="sm">
             {summary.opportunities.map((opportunity, index) => (
@@ -3197,7 +3255,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="blue" variant="light" size="sm">
             <IconCheck size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Rekomendacja AI</Text>
+          <Text fw={600} size="sm">
+            Rekomendacja AI
+          </Text>
         </Group>
         <Text size="sm">{summary.recommendation}</Text>
         <Progress value={summary.confidence} color="blue" size="xs" mt="xs" />
@@ -3206,8 +3266,9 @@ export function AISummary({ type, title, description, content, comments, partici
         </Text>
       </Card>
     </Stack>
-  );
+  )
 }
+
 ```
 
 # src\components\ai\AISummaryGroq.tsx:
@@ -3246,53 +3307,99 @@ import {
 
 interface Props {
   type: 'ustawa' | 'konsultacja' | 'prekonsultacja'
+  entityId: string
   title: string
   description?: string
   content?: string
   comments?: string[]
 }
 
-export function AISummaryGroq({ type, title, description, content = '', comments = [] }: Props) {
-  const [data, setData] = useState<any>(null)
+interface SummaryData {
+  humanSummary: string
+  summary: {
+    confidence: number
+    mainPoints: string[]
+    impact: string
+    complexity: 'low' | 'medium' | 'high'
+    stakeholders: string[]
+    timeline: string
+    risks: string[]
+    opportunities: string[]
+    recommendation: string
+  }
+  fromCache?: boolean
+}
+
+export function AISummaryGroq({
+  type,
+  entityId,
+  title,
+  description,
+  content = '',
+  comments = [],
+}: Props) {
+  const [data, setData] = useState<SummaryData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchSummary = async () => {
+  const fetchSummary = async (forceRegenerate = false) => {
     setLoading(true)
     setError(null)
     try {
       const res = await fetch('/api/ai/summary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, title, description, content, comments }),
+        body: JSON.stringify({
+          type,
+          entityId,
+          title,
+          description,
+          content,
+          comments,
+          forceRegenerate,
+        }),
       })
       const json = await res.json()
       if (json.error) throw new Error(json.error)
-      setData(json) // { humanSummary, summary }
-    } catch (err: any) {
-      setError(err.message || 'Błąd analizy')
+      setData(json)
+    } catch (err: Error | unknown) {
+      setError(err instanceof Error ? err.message : 'Błąd analizy')
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    if (content || comments.length > 0) fetchSummary()
+    if (entityId) {
+      fetchSummary()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [entityId])
 
   if (loading)
     return (
-      <Card p="xl" ta="center" withBorder>
-        <Loader size="lg" />
-        <Text mt="md">AI czyta ustawę...</Text>
-      </Card>
+      <Stack gap="lg" align="center">
+        <Card p="xl" withBorder radius="md" w="100%">
+          <Stack align="center" gap="md">
+            <Loader size="lg" color="blue" />
+            <Stack gap="xs" align="center">
+              <Text fw={600} size="lg">
+                AI analizuje dokument
+              </Text>
+              <Progress value={100} color="blue" animated w="80%" />
+              <Text size="sm" c="dimmed">
+                Czytanie i przetwarzanie treści...
+              </Text>
+            </Stack>
+          </Stack>
+        </Card>
+      </Stack>
     )
   if (error)
     return (
-      <Alert color="red" title="Błąd" icon={<IconBrain />}>
+      <Alert color="red" title="Błąd">
         {error}{' '}
-        <Button size="xs" onClick={fetchSummary} leftSection={<IconRefresh />}>
+        <Button size="xs" onClick={() => fetchSummary()} leftSection={<IconRefresh />}>
           Spróbuj ponownie
         </Button>
       </Alert>
@@ -3305,13 +3412,29 @@ export function AISummaryGroq({ type, title, description, content = '', comments
     <Stack gap="xl">
       {/* TO JEST TO, CZEGO CHCIAŁEŚ – zwięzłe streszczenie całej ustawy */}
       <Paper withBorder p="lg" radius="md" bg="gray.0">
-        <Group mb="md">
-          <ThemeIcon size="lg" radius="md" color="blue" variant="light">
-            <IconQuote />
-          </ThemeIcon>
-          <Text fw={700} size="lg">
-            Streszczenie aktu prawnego
-          </Text>
+        <Group mb="md" justify="space-between">
+          <Group>
+            <ThemeIcon size="lg" radius="md" color="blue" variant="light">
+              <IconQuote />
+            </ThemeIcon>
+            <Text fw={700} size="lg">
+              Streszczenie aktu prawnego
+            </Text>
+          </Group>
+          {data.fromCache && (
+            <Badge color="green" variant="light" leftSection={<IconCheck size={14} />}>
+              Z pamięci
+            </Badge>
+          )}
+          <Button
+            size="xs"
+            variant="subtle"
+            onClick={() => fetchSummary(true)}
+            leftSection={<IconRefresh size={14} />}
+            disabled={loading}
+          >
+            Regeneruj
+          </Button>
         </Group>
         <Blockquote color="blue" icon={null}>
           <Text size="lg" lh={1.55}>
@@ -3349,7 +3472,7 @@ export function AISummaryGroq({ type, title, description, content = '', comments
         </Group>
         <List spacing="xs">
           {s.mainPoints.map((p: string, i: number) => (
-            <List.Item key={i}>• {p}</List.Item>
+            <List.Item key={i}> {p}</List.Item>
           ))}
         </List>
       </Card>
@@ -3419,7 +3542,7 @@ export function AISummaryGroq({ type, title, description, content = '', comments
           </Group>
           <List spacing="xs" size="sm">
             {s.risks.map((r: string, i: number) => (
-              <List.Item key={i}>• {r}</List.Item>
+              <List.Item key={i}> {r}</List.Item>
             ))}
           </List>
         </Card>
@@ -3432,7 +3555,7 @@ export function AISummaryGroq({ type, title, description, content = '', comments
           </Group>
           <List spacing="xs" size="sm">
             {s.opportunities.map((o: string, i: number) => (
-              <List.Item key={i}>• {o}</List.Item>
+              <List.Item key={i}> {o}</List.Item>
             ))}
           </List>
         </Card>
@@ -3459,7 +3582,7 @@ export function AISummaryGroq({ type, title, description, content = '', comments
 
 ```
 
-# src\components\comments\CommentForm\CommentForm.tsx:
+# src\components\Comments\CommentForm\CommentForm.tsx:
 
 ```tsx
 'use client'
@@ -3520,14 +3643,14 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
 
 ```
 
-# src\components\comments\CommentForm\index.ts:
+# src\components\Comments\CommentForm\index.ts:
 
 ```ts
 export { CommentForm } from './CommentForm'
 
 ```
 
-# src\components\comments\CommentItem\CommentActions\CommentActions.tsx:
+# src\components\Comments\CommentItem\CommentActions\CommentActions.tsx:
 
 ```tsx
 'use client'
@@ -3586,20 +3709,20 @@ export function CommentActions({
 
 ```
 
-# src\components\comments\CommentItem\CommentActions\index.ts:
+# src\components\Comments\CommentItem\CommentActions\index.ts:
 
 ```ts
 export { CommentActions } from './CommentActions'
 
 ```
 
-# src\components\comments\CommentItem\CommentItem.tsx:
+# src\components\Comments\CommentItem\CommentItem.tsx:
 
 ```tsx
 'use client'
 
 import { useState } from 'react'
-import { Card, Text, Group, Avatar, Rating, Badge, Stack } from '@mantine/core'
+import { Card, Text, Group, Avatar, Rating, Badge } from '@mantine/core'
 import { Comment } from '@/types'
 import { CommentActions } from './CommentActions'
 
@@ -3665,7 +3788,7 @@ export function CommentItem({ comment }: CommentItemProps) {
 
 ```
 
-# src\components\comments\CommentItem\index.ts:
+# src\components\Comments\CommentItem\index.ts:
 
 ```ts
 export { CommentItem } from './CommentItem'
@@ -3673,7 +3796,7 @@ export { CommentActions } from './CommentActions'
 
 ```
 
-# src\components\comments\CommentList\CommentList.tsx:
+# src\components\Comments\CommentList\CommentList.tsx:
 
 ```tsx
 'use client'
@@ -3709,14 +3832,14 @@ export function CommentList({ comments }: CommentListProps) {
 
 ```
 
-# src\components\comments\CommentList\index.ts:
+# src\components\Comments\CommentList\index.ts:
 
 ```ts
 export { CommentList } from './CommentList'
 
 ```
 
-# src\components\comments\Comments.tsx:
+# src\components\Comments\Comments.tsx:
 
 ```tsx
 'use client'
@@ -3737,7 +3860,7 @@ export function Comments({ comments, onAddComment }: CommentsProps) {
 
   const handleSubmit = async (content: string, rating: number) => {
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 500))
     onAddComment(content, rating)
     setIsSubmitting(false)
   }
@@ -3752,7 +3875,7 @@ export function Comments({ comments, onAddComment }: CommentsProps) {
 
 ```
 
-# src\components\comments\index.ts:
+# src\components\Comments\index.ts:
 
 ```ts
 export { Comments } from './Comments'
@@ -3809,7 +3932,7 @@ import { useHomeData } from '@/features/home/hooks/useHomeData'
 import { useHomeSearch } from '@/features/home/hooks/useHomeSearch'
 import { HomeSearch, HomeTabs } from '@/features/home/components'
 import { useProjectComments } from '@/features/consultations/hooks/useProjectComments'
-import { Comments } from '@/components/comments'
+import { Comments } from '@/components/Comments'
 import { ProjectRating } from '@/components/ProjectRating/ProjectRating'
 import { AICommentsAnalysis } from '@/components/ai/AIAnalysis/AICommentsAnalysis'
 import { AISummary } from '@/components/ai/AISummary/AISummary'
@@ -3819,17 +3942,14 @@ export default function HomeCards() {
   const [activeTab, setActiveTab] = useState<string | null>('ustawy')
   const [selectedProject, setSelectedProject] = useState<PreConsultationProject | null>(null)
 
-  // Load data based on active tab
   const { actsData, prekonsultacjeData, konsultacjeData, loading } = useHomeData(activeTab)
 
-  // Initialize project comments hook
   const {
     projects: prekonsultacjeWithComments,
     addComment,
     rateProject,
   } = useProjectComments(prekonsultacjeData)
 
-  // Search functionality
   const { searchQuery, setSearchQuery, filteredActs, filteredPrekonsultacje, filteredKonsultacje } =
     useHomeSearch(actsData, prekonsultacjeWithComments, konsultacjeData)
 
@@ -3850,7 +3970,6 @@ export default function HomeCards() {
         />
       </Stack>
 
-      {/* Project Details Modal */}
       <Modal
         opened={!!selectedProject}
         onClose={() => setSelectedProject(null)}
@@ -3927,7 +4046,6 @@ export default function HomeCards() {
 'use client'
 
 import { Stack, Group, Text, Badge, Grid } from '@mantine/core'
-import { IconBuilding, IconCalendar } from '@tabler/icons-react'
 import { PreConsultationProject } from '@/types'
 import { StatusBadge } from '@/components/shared'
 
@@ -3980,20 +4098,20 @@ export default function ProjectDetailsTab({ project }: ProjectDetailsTabProps) {
 # src\components\Layout\AppShell.tsx:
 
 ```tsx
-"use client";
+'use client'
 
-import { AppShell, Burger, Group, Text, Anchor } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { type ReactNode } from "react";
-import Link from "next/link";
-import AccessibilityPanel from "../AccessibilityPanel/AccessibilityPanel";
+import { AppShell, Burger, Group, Anchor } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { type ReactNode } from 'react'
+import Link from 'next/link'
+import AccessibilityPanel from '../AccessibilityPanel/AccessibilityPanel'
 
 interface AppShellLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export default function AppShellLayout({ children }: AppShellLayoutProps) {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle }] = useDisclosure(false)
 
   return (
     <AppShell padding="md" header={{ height: 60 }}>
@@ -4013,15 +4131,15 @@ export default function AppShellLayout({ children }: AppShellLayoutProps) {
               fw={700}
               c="inherit"
               td="none"
-              style={{ 
-                cursor: "pointer",
-                transition: "color 0.2s ease"
+              style={{
+                cursor: 'pointer',
+                transition: 'color 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--mantine-color-blue-6)";
+                e.currentTarget.style.color = 'var(--mantine-color-blue-6)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = "inherit";
+                e.currentTarget.style.color = 'inherit'
               }}
             >
               INTERAKTYWNY PORTAL ANALIZ LEGISLACYJNYCH (IPAL)
@@ -4036,7 +4154,7 @@ export default function AppShellLayout({ children }: AppShellLayoutProps) {
 
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
-  );
+  )
 }
 
 ```
@@ -4054,12 +4172,10 @@ import {
   Stack,
   Progress,
   Badge,
-  ActionIcon,
-  Tooltip,
   Modal,
   Textarea,
 } from '@mantine/core'
-import { IconStar, IconUsers, IconCalendar, IconBuilding } from '@tabler/icons-react'
+import { IconStar, IconUsers } from '@tabler/icons-react'
 
 interface ProjectRatingProps {
   averageRating: number
@@ -4264,6 +4380,7 @@ export { ProjectCardInfo } from './ProjectCardInfo'
 ```tsx
 'use client'
 
+import Link from 'next/link'
 import { Card, Text, Stack, Button } from '@mantine/core'
 import { IconEye } from '@tabler/icons-react'
 import { PreConsultationProject } from '@/types'
@@ -4273,10 +4390,10 @@ import classes from './ProjectCard.module.css'
 
 interface ProjectCardProps {
   project: PreConsultationProject
-  onViewDetails: (project: PreConsultationProject) => void
+  basePath?: string
 }
 
-export function ProjectCard({ project, onViewDetails }: ProjectCardProps) {
+export function ProjectCard({ project, basePath = '/prekonsultacje' }: ProjectCardProps) {
   return (
     <Card padding="lg" withBorder className={classes.card}>
       <Stack justify="space-between" h="100%">
@@ -4303,10 +4420,11 @@ export function ProjectCard({ project, onViewDetails }: ProjectCardProps) {
         </div>
 
         <Button
+          component={Link}
+          href={`${basePath}/${project.id}`}
           variant="default"
           fullWidth
           leftSection={<IconEye size={16} />}
-          onClick={() => onViewDetails(project)}
         >
           Zobacz szczegóły
         </Button>
@@ -4525,14 +4643,14 @@ import { EmptyState } from '@/components/shared'
 interface ProjectGridProps {
   projects: PreConsultationProject[]
   isLoading?: boolean
-  onProjectClick: (project: PreConsultationProject) => void
+  basePath?: string
   emptyMessage?: string
 }
 
 export function ProjectGrid({
   projects,
   isLoading,
-  onProjectClick,
+  basePath = '/prekonsultacje',
   emptyMessage = 'Nie znaleziono projektów',
 }: ProjectGridProps) {
   if (isLoading) {
@@ -4557,7 +4675,7 @@ export function ProjectGrid({
     <Grid>
       {projects.map((project) => (
         <Grid.Col key={project.id} span={{ base: 12, md: 6, lg: 4 }}>
-          <ProjectCard project={project} onViewDetails={onProjectClick} />
+          <ProjectCard project={project} basePath={basePath} />
         </Grid.Col>
       ))}
     </Grid>
@@ -4818,79 +4936,73 @@ export function StatusBadge({ status, size = 'md', variant = 'light' }: StatusBa
 # src\context\AccessibilityContext.tsx:
 
 ```tsx
-"use client";
+'use client'
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 
 interface AccessibilityContextType {
-  highContrast: boolean;
-  toggleHighContrast: () => void;
-  fontSizePercent: number;
-  increaseFont: () => void;
-  decreaseFont: () => void;
-  resetAccessibility: () => void;
+  highContrast: boolean
+  toggleHighContrast: () => void
+  fontSizePercent: number
+  increaseFont: () => void
+  decreaseFont: () => void
+  resetAccessibility: () => void
 }
 
-const AccessibilityContext = createContext<
-  AccessibilityContextType | undefined
->(undefined);
+const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined)
 
 export function AccessibilityProvider({ children }: { children: ReactNode }) {
-  const [highContrast, setHighContrast] = useState(false);
-  const [fontSizePercent, setFontSizePercent] = useState(100);
-
-  useEffect(() => {
-    // Only run on client side
+  const [highContrast, setHighContrast] = useState(() => {
     if (typeof window !== 'undefined') {
-      const storedContrast = localStorage.getItem("high-contrast");
-      const storedFontSize = localStorage.getItem("font-size-percent");
-
-      if (storedContrast === "true") setHighContrast(true);
-      if (storedFontSize) setFontSizePercent(parseInt(storedFontSize, 10));
+      const storedContrast = localStorage.getItem('high-contrast')
+      return storedContrast === 'true'
     }
-  }, []);
+    return false
+  })
+
+  const [fontSizePercent, setFontSizePercent] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const storedFontSize = localStorage.getItem('font-size-percent')
+      return storedFontSize ? parseInt(storedFontSize, 10) : 100
+    }
+    return 100
+  })
 
   useEffect(() => {
     // Only run on client side
     if (typeof window !== 'undefined') {
-      const html = document.documentElement;
+      const html = document.documentElement
 
       if (highContrast) {
-        html.setAttribute("data-high-contrast", "true");
-        localStorage.setItem("high-contrast", "true");
+        html.setAttribute('data-high-contrast', 'true')
+        localStorage.setItem('high-contrast', 'true')
         // Force a re-render by adding/removing a class
-        document.body.classList.add("high-contrast-active");
+        document.body.classList.add('high-contrast-active')
       } else {
-        html.removeAttribute("data-high-contrast");
-        localStorage.setItem("high-contrast", "false");
-        document.body.classList.remove("high-contrast-active");
+        html.removeAttribute('data-high-contrast')
+        localStorage.setItem('high-contrast', 'false')
+        document.body.classList.remove('high-contrast-active')
       }
 
-      html.style.fontSize = `${fontSizePercent}%`;
-      localStorage.setItem("font-size-percent", fontSizePercent.toString());
+      html.style.fontSize = `${fontSizePercent}%`
+      localStorage.setItem('font-size-percent', fontSizePercent.toString())
     }
-  }, [highContrast, fontSizePercent]);
+  }, [highContrast, fontSizePercent])
 
-  const toggleHighContrast = () => setHighContrast((prev) => !prev);
+  const toggleHighContrast = () => setHighContrast((prev) => !prev)
 
   const increaseFont = () => {
-    setFontSizePercent((prev) => Math.min(prev + 10, 150));
-  };
+    setFontSizePercent((prev) => Math.min(prev + 10, 150))
+  }
 
   const decreaseFont = () => {
-    setFontSizePercent((prev) => Math.max(prev - 10, 80));
-  };
+    setFontSizePercent((prev) => Math.max(prev - 10, 80))
+  }
 
   const resetAccessibility = () => {
-    setHighContrast(false);
-    setFontSizePercent(100);
-  };
+    setHighContrast(false)
+    setFontSizePercent(100)
+  }
 
   return (
     <AccessibilityContext.Provider
@@ -4905,17 +5017,15 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </AccessibilityContext.Provider>
-  );
+  )
 }
 
 export function useAccessibility() {
-  const context = useContext(AccessibilityContext);
+  const context = useContext(AccessibilityContext)
   if (!context) {
-    throw new Error(
-      "useAccessibility must be used within an AccessibilityProvider"
-    );
+    throw new Error('useAccessibility must be used within an AccessibilityProvider')
   }
-  return context;
+  return context
 }
 
 ```
@@ -4942,106 +5052,124 @@ export const db = drizzle(pool, { schema });
 # src\db\schema.ts:
 
 ```ts
-import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { relations } from 'drizzle-orm'
+import { pgTable, text, timestamp, boolean, index } from 'drizzle-orm/pg-core'
 
-export const user = pgTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified").default(false).notNull(),
-  image: text("image"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
+export const user = pgTable('user', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  emailVerified: boolean('email_verified').default(false).notNull(),
+  image: text('image'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
-});
+})
 
 export const session = pgTable(
-  "session",
+  'session',
   {
-    id: text("id").primaryKey(),
-    expiresAt: timestamp("expires_at").notNull(),
-    token: text("token").notNull().unique(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    id: text('id').primaryKey(),
+    expiresAt: timestamp('expires_at').notNull(),
+    token: text('token').notNull().unique(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
-    ipAddress: text("ip_address"),
-    userAgent: text("user_agent"),
-    userId: text("user_id")
+    ipAddress: text('ip_address'),
+    userAgent: text('user_agent'),
+    userId: text('user_id')
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: 'cascade' }),
   },
-  (table) => [index("session_userId_idx").on(table.userId)]
-);
+  (table) => [index('session_userId_idx').on(table.userId)],
+)
 
 export const account = pgTable(
-  "account",
+  'account',
   {
-    id: text("id").primaryKey(),
-    accountId: text("account_id").notNull(),
-    providerId: text("provider_id").notNull(),
-    userId: text("user_id")
+    id: text('id').primaryKey(),
+    accountId: text('account_id').notNull(),
+    providerId: text('provider_id').notNull(),
+    userId: text('user_id')
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    accessToken: text("access_token"),
-    refreshToken: text("refresh_token"),
-    idToken: text("id_token"),
-    accessTokenExpiresAt: timestamp("access_token_expires_at"),
-    refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
-    scope: text("scope"),
-    password: text("password"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+      .references(() => user.id, { onDelete: 'cascade' }),
+    accessToken: text('access_token'),
+    refreshToken: text('refresh_token'),
+    idToken: text('id_token'),
+    accessTokenExpiresAt: timestamp('access_token_expires_at'),
+    refreshTokenExpiresAt: timestamp('refresh_token_expires_at'),
+    scope: text('scope'),
+    password: text('password'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("account_userId_idx").on(table.userId)]
-);
+  (table) => [index('account_userId_idx').on(table.userId)],
+)
 
 export const verification = pgTable(
-  "verification",
+  'verification',
   {
-    id: text("id").primaryKey(),
-    identifier: text("identifier").notNull(),
-    value: text("value").notNull(),
-    expiresAt: timestamp("expires_at").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    id: text('id').primaryKey(),
+    identifier: text('identifier').notNull(),
+    value: text('value').notNull(),
+    expiresAt: timestamp('expires_at').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
       .defaultNow()
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("verification_identifier_idx").on(table.identifier)]
-);
+  (table) => [index('verification_identifier_idx').on(table.identifier)],
+)
 
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
-}));
+}))
 
 export const sessionRelations = relations(session, ({ one }) => ({
   user: one(user, {
     fields: [session.userId],
     references: [user.id],
   }),
-}));
+}))
 
 export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
     references: [user.id],
   }),
-}));
+}))
+
+export const aiSummary = pgTable(
+  'ai_summary',
+  {
+    id: text('id').primaryKey(),
+    entityType: text('entity_type').notNull(),
+    entityId: text('entity_id').notNull(),
+    humanSummary: text('human_summary').notNull(),
+    summaryData: text('summary_data').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [index('ai_summary_entity_idx').on(table.entityType, table.entityId)],
+)
 
 export const schema = {
   user,
   session,
   account,
   verification,
-};
+  aiSummary,
+}
 
 ```
 
@@ -5392,14 +5520,14 @@ import Link from 'next/link'
 import { ActsTab } from './ActsTab'
 import { PreConsultationsTab } from './PreConsultationsTab'
 import { ConsultationsTab } from './ConsultationsTab'
-import { Act, PreConsultationProject } from '@/types'
+import { Act, PreConsultationProject, ConsultationProject } from '@/types'
 
 interface HomeTabsProps {
   activeTab: string | null
   onTabChange: (value: string | null) => void
   actsData: Act[]
   prekonsultacjeData: PreConsultationProject[]
-  konsultacjeData: any[]
+  konsultacjeData: ConsultationProject[]
   loading: boolean
   searchQuery: string
   onProjectClick: (project: PreConsultationProject) => void
@@ -5554,64 +5682,41 @@ export function useHomeData(activeTab: string | null) {
 # src\features\home\hooks\useHomeSearch.ts:
 
 ```ts
-'use client'
-
-import { useState, useEffect } from 'react'
-import { Act } from '@/types'
-import { PreConsultationProject } from '@/types'
+import { useState, useMemo } from 'react'
+import { Act, PreConsultationProject, ConsultationProject } from '@/types'
 
 export function useHomeSearch(
   actsData: Act[],
   prekonsultacjeData: PreConsultationProject[],
-  konsultacjeData: any[],
+  konsultacjeData: ConsultationProject[],
 ) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [filteredActs, setFilteredActs] = useState(actsData)
-  const [filteredPrekonsultacje, setFilteredPrekonsultacje] = useState(prekonsultacjeData)
-  const [filteredKonsultacje, setFilteredKonsultacje] = useState(konsultacjeData)
 
-  useEffect(() => {
+  const filteredActs = useMemo(() => {
+    if (!searchQuery) return actsData
     const query = searchQuery.toLowerCase()
+    return actsData.filter((act) => act.title.toLowerCase().includes(query))
+  }, [actsData, searchQuery])
 
-    if (!query) {
-      setFilteredActs(actsData)
-      setFilteredPrekonsultacje(prekonsultacjeData)
-      setFilteredKonsultacje(konsultacjeData)
-      return
-    }
-
-    // Filter acts
-    setFilteredActs(
-      actsData.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.ELI.toLowerCase().includes(query) ||
-          item.status.toLowerCase().includes(query),
-      ),
+  const filteredPrekonsultacje = useMemo(() => {
+    if (!searchQuery) return prekonsultacjeData
+    const query = searchQuery.toLowerCase()
+    return prekonsultacjeData.filter(
+      (project) =>
+        project.title.toLowerCase().includes(query) ||
+        project.description?.toLowerCase().includes(query),
     )
+  }, [prekonsultacjeData, searchQuery])
 
-    // Filter prekonsultacje
-    setFilteredPrekonsultacje(
-      prekonsultacjeData.filter(
-        (project) =>
-          project.title.toLowerCase().includes(query) ||
-          project.description.toLowerCase().includes(query) ||
-          project.category.toLowerCase().includes(query) ||
-          project.institution.toLowerCase().includes(query),
-      ),
+  const filteredKonsultacje = useMemo(() => {
+    if (!searchQuery) return konsultacjeData
+    const query = searchQuery.toLowerCase()
+    return konsultacjeData.filter(
+      (project) =>
+        project.title.toLowerCase().includes(query) ||
+        project.description?.toLowerCase().includes(query),
     )
-
-    // Filter konsultacje
-    setFilteredKonsultacje(
-      konsultacjeData.filter(
-        (project) =>
-          project.title.toLowerCase().includes(query) ||
-          project.description.toLowerCase().includes(query) ||
-          project.category.toLowerCase().includes(query) ||
-          project.institution.toLowerCase().includes(query),
-      ),
-    )
-  }, [searchQuery, actsData, prekonsultacjeData, konsultacjeData])
+  }, [konsultacjeData, searchQuery])
 
   return {
     searchQuery,
@@ -5839,46 +5944,41 @@ export const auth = betterAuth({
 
 ```
 
-# src\lib\utils\index.ts:
-
-```ts
-export * from './validation'
-export * from './filters'
-export * from './sort'
-
-```
-
 # src\mocks\prekonsultacjeMock.ts:
 
 ```ts
+import { Status } from '@/types/common'
+import { ConsultationProject } from '@/types/consultations'
+
 export interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  date: string;
-  rating?: number;
+  id: string
+  author: string
+  content: string
+  date: string
+  rating?: number
 }
 
 export interface PreConsultationProject {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  status: 'active' | 'closed' | 'draft';
-  deadline: string;
-  createdAt: string;
-  institution: string;
-  comments: Comment[];
-  averageRating: number;
-  ratingsCount: number;
-  documentsCount: number;
+  id: string
+  title: string
+  description: string
+  category: string
+  status: Status
+  deadline: string
+  createdAt: string
+  institution: string
+  comments: Comment[]
+  averageRating: number
+  ratingsCount: number
+  documentsCount: number
 }
 
 export const preConsultationProjects: PreConsultationProject[] = [
   {
     id: '1',
     title: 'Projekt ustawy o ochronie danych osobowych w sektorze publicznym',
-    description: 'Projekt ustawy mającej na celu wzmocnienie ochrony danych osobowych obywateli w instytucjach publicznych oraz wprowadzenie nowych standardów bezpieczeństwa informacji.',
+    description:
+      'Projekt ustawy mającej na celu wzmocnienie ochrony danych osobowych obywateli w instytucjach publicznych oraz wprowadzenie nowych standardów bezpieczeństwa informacji.',
     category: 'Ochrona danych',
     status: 'active',
     deadline: '2025-01-15',
@@ -5891,30 +5991,34 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '1-1',
         author: 'Jan Kowalski',
-        content: 'Uważam, że projekt jest bardzo potrzebny, ale należałoby doprecyzować definicję "danych wrażliwych" w artykule 3.',
+        content:
+          'Uważam, że projekt jest bardzo potrzebny, ale należałoby doprecyzować definicję "danych wrażliwych" w artykule 3.',
         date: '2024-12-01',
-        rating: 4
+        rating: 4,
       },
       {
         id: '1-2',
         author: 'Anna Nowak',
-        content: 'Proponuję dodanie przepisów przejściowych dla małych gmin, które mogą mieć problemy z implementacją nowych wymogów technicznych.',
+        content:
+          'Proponuję dodanie przepisów przejściowych dla małych gmin, które mogą mieć problemy z implementacją nowych wymogów technicznych.',
         date: '2024-12-03',
-        rating: 5
+        rating: 5,
       },
       {
         id: '1-3',
         author: 'Piotr Wiśniewski',
-        content: 'Artykuł 15 dotyczący kar finansowych wydaje się zbyt surowy dla jednostek samorządu terytorialnego.',
+        content:
+          'Artykuł 15 dotyczący kar finansowych wydaje się zbyt surowy dla jednostek samorządu terytorialnego.',
         date: '2024-12-05',
-        rating: 3
-      }
-    ]
+        rating: 3,
+      },
+    ],
   },
   {
     id: '2',
     title: 'Nowelizacja ustawy o transporcie publicznym',
-    description: 'Projekt nowelizacji mający na celu usprawnienie systemu transportu publicznego w miastach oraz zwiększenie dostępności dla osób niepełnosprawnych.',
+    description:
+      'Projekt nowelizacji mający na celu usprawnienie systemu transportu publicznego w miastach oraz zwiększenie dostępności dla osób niepełnosprawnych.',
     category: 'Transport',
     status: 'active',
     deadline: '2025-02-28',
@@ -5927,30 +6031,34 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '2-1',
         author: 'Maria Zielińska',
-        content: 'Świetna inicjatywa! Szczególnie podoba mi się nacisk na dostępność dla osób niepełnosprawnych.',
+        content:
+          'Świetna inicjatywa! Szczególnie podoba mi się nacisk na dostępność dla osób niepełnosprawnych.',
         date: '2024-11-20',
-        rating: 5
+        rating: 5,
       },
       {
         id: '2-2',
         author: 'Tomasz Lewandowski',
-        content: 'Czy przewidziano dodatkowe finansowanie dla mniejszych miast na implementację tych rozwiązań?',
+        content:
+          'Czy przewidziano dodatkowe finansowanie dla mniejszych miast na implementację tych rozwiązań?',
         date: '2024-11-25',
-        rating: 4
+        rating: 4,
       },
       {
         id: '2-3',
         author: 'Katarzyna Dąbrowska',
-        content: 'Warto rozważyć również ekologiczne aspekty transportu - może warto dodać zachęty dla pojazdów elektrycznych?',
+        content:
+          'Warto rozważyć również ekologiczne aspekty transportu - może warto dodać zachęty dla pojazdów elektrycznych?',
         date: '2024-12-02',
-        rating: 4
-      }
-    ]
+        rating: 4,
+      },
+    ],
   },
   {
     id: '3',
     title: 'Ustawa o cyfryzacji usług administracyjnych',
-    description: 'Projekt kompleksowej ustawy wprowadzającej cyfrowe usługi administracyjne oraz upraszczającej procedury biurokratyczne dla obywateli i przedsiębiorców.',
+    description:
+      'Projekt kompleksowej ustawy wprowadzającej cyfrowe usługi administracyjne oraz upraszczającej procedury biurokratyczne dla obywateli i przedsiębiorców.',
     category: 'Cyfryzacja',
     status: 'draft',
     deadline: '2025-03-31',
@@ -5963,23 +6071,25 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '3-1',
         author: 'Adam Kowalczyk',
-        content: 'Projekt bardzo potrzebny! Mam nadzieję, że rzeczywiście uprości życie przedsiębiorców.',
+        content:
+          'Projekt bardzo potrzebny! Mam nadzieję, że rzeczywiście uprości życie przedsiębiorców.',
         date: '2024-12-04',
-        rating: 5
+        rating: 5,
       },
       {
         id: '3-2',
         author: 'Beata Sikora',
         content: 'Czy przewidziano szkolenia dla urzędników z obsługi nowych systemów cyfrowych?',
         date: '2024-12-05',
-        rating: 4
-      }
-    ]
+        rating: 4,
+      },
+    ],
   },
   {
     id: '4',
     title: 'Projekt rozporządzenia w sprawie ochrony środowiska',
-    description: 'Nowe rozporządzenie mające na celu ograniczenie emisji zanieczyszczeń oraz wprowadzenie surowszych norm ekologicznych dla przemysłu.',
+    description:
+      'Nowe rozporządzenie mające na celu ograniczenie emisji zanieczyszczeń oraz wprowadzenie surowszych norm ekologicznych dla przemysłu.',
     category: 'Środowisko',
     status: 'closed',
     deadline: '2024-12-01',
@@ -5992,33 +6102,35 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '4-1',
         author: 'Michał Górski',
-        content: 'Normy są bardzo restrykcyjne, może warto wprowadzić okres przejściowy dla małych firm?',
+        content:
+          'Normy są bardzo restrykcyjne, może warto wprowadzić okres przejściowy dla małych firm?',
         date: '2024-10-10',
-        rating: 3
+        rating: 3,
       },
       {
         id: '4-2',
         author: 'Agnieszka Król',
         content: 'Doskonały projekt! Wreszcie konkretne działania na rzecz środowiska.',
         date: '2024-10-15',
-        rating: 5
+        rating: 5,
       },
       {
         id: '4-3',
         author: 'Robert Pawlak',
         content: 'Czy przeprowadzono analizę wpływu na konkurencyjność polskich firm?',
         date: '2024-10-20',
-        rating: 3
-      }
-    ]
-  }
-];
+        rating: 3,
+      },
+    ],
+  },
+]
 
-export const consultationProjects = [
+export const consultationProjects: ConsultationProject[] = [
   {
     id: 'c1',
     title: 'Konsultacje ws. reformy systemu opieki zdrowotnej',
-    description: 'Szerokie konsultacje społeczne dotyczące planowanej reformy systemu opieki zdrowotnej w Polsce.',
+    description:
+      'Szerokie konsultacje społeczne dotyczące planowanej reformy systemu opieki zdrowotnej w Polsce.',
     category: 'Zdrowie',
     status: 'active',
     deadline: '2025-04-30',
@@ -6026,12 +6138,13 @@ export const consultationProjects = [
     institution: 'Ministerstwo Zdrowia',
     participantsCount: 1250,
     documentsCount: 12,
-    meetingsCount: 8
+    meetingsCount: 8,
   },
   {
     id: 'c2',
     title: 'Konsultacje reformy edukacji',
-    description: 'Konsultacje społeczne dotyczące zmian w systemie edukacji podstawowej i średniej.',
+    description:
+      'Konsultacje społeczne dotyczące zmian w systemie edukacji podstawowej i średniej.',
     category: 'Edukacja',
     status: 'active',
     deadline: '2025-05-15',
@@ -6039,12 +6152,13 @@ export const consultationProjects = [
     institution: 'Ministerstwo Edukacji i Nauki',
     participantsCount: 890,
     documentsCount: 8,
-    meetingsCount: 12
+    meetingsCount: 12,
   },
   {
     id: 'c3',
     title: 'Konsultacje ws. polityki mieszkaniowej',
-    description: 'Konsultacje dotyczące nowych rozwiązań w polityce mieszkaniowej i wsparcia dla młodych rodzin.',
+    description:
+      'Konsultacje dotyczące nowych rozwiązań w polityce mieszkaniowej i wsparcia dla młodych rodzin.',
     category: 'Mieszkalnictwo',
     status: 'closed',
     deadline: '2024-11-30',
@@ -6052,16 +6166,15 @@ export const consultationProjects = [
     institution: 'Ministerstwo Rozwoju i Technologii',
     participantsCount: 2100,
     documentsCount: 15,
-    meetingsCount: 20
-  }
-];
+    meetingsCount: 20,
+  },
+]
+
 ```
 
 # src\mocks\sejmMock.ts:
 
 ```ts
-// src/mocks/sejmMock.ts
-
 export interface Act {
   ELI: string
   title: string
@@ -6088,7 +6201,7 @@ export interface ActDetails extends Act {
   entryIntoForce?: string
   stages: Stage[]
   keywords: string[]
-  fullText?: string // DODANE – teraz TS wie, że istnieje
+  fullText?: string
 }
 
 export interface ApiResponse {
@@ -6145,7 +6258,7 @@ export async function fakeFetchUstawy(
       totalCount: data.totalCount || 0,
       count: data.count || 0,
       offset: data.offset || 0,
-      items: (data.items || []).map((item: any) => ({
+      items: (data.items || []).map((item: Act) => ({
         ELI: item.ELI,
         title: item.title,
         year: item.year,
@@ -6191,14 +6304,24 @@ export async function fakeFetchActDetails(eliId: string): Promise<ActDetails | n
       ...data,
       fullText: `Pełny tekst aktu prawnego ${data.displayAddress}\n\nTytuł: ${data.title}\n\nTreść dostępna w formacie PDF i HTML na stronie Sejmu RP.\n\nAI wkrótce przeanalizuje pełną treść!`,
       stages: [
-        { stepNumber: 1, name: 'Data wydania', date: data.announcementDate, isCompleted: true },
+        {
+          stepNumber: 1,
+          name: 'Data wydania',
+          date: data.announcementDate,
+          isCompleted: true,
+        },
         {
           stepNumber: 2,
           name: 'Data ogłoszenia',
           date: data.promulgation,
           isCompleted: !!data.promulgation,
         },
-        { stepNumber: 3, name: 'Wejście w życie', date: data.entryIntoForce, isCompleted: true },
+        {
+          stepNumber: 3,
+          name: 'Wejście w życie',
+          date: data.entryIntoForce,
+          isCompleted: true,
+        },
       ],
       keywords: data.keywords || [],
     }
@@ -6401,17 +6524,11 @@ export const ITEMS_PER_PAGE = {
 ```ts
 import { PreConsultationProject, ConsultationProject, Status } from '@/types'
 
-/**
- * Filtruje projekty według statusu
- */
 export function filterByStatus<T extends { status: Status }>(items: T[], status: string): T[] {
   if (status === 'all') return items
   return items.filter((item) => item.status === status)
 }
 
-/**
- * Filtruje projekty według kategorii
- */
 export function filterByCategory<T extends { category: string }>(
   items: T[],
   category: string,
@@ -6420,9 +6537,6 @@ export function filterByCategory<T extends { category: string }>(
   return items.filter((item) => item.category === category)
 }
 
-/**
- * Filtruje projekty według query
- */
 export function filterBySearchQuery<T>(items: T[], query: string, fields: (keyof T)[]): T[] {
   if (!query) return items
 
@@ -6434,9 +6548,7 @@ export function filterBySearchQuery<T>(items: T[], query: string, fields: (keyof
     }),
   )
 }
-/**
- * Kombinuje wszystkie filtry dla projektów
- */
+
 export function filterProjects<T extends PreConsultationProject | ConsultationProject>(
   projects: T[],
   filters: {
@@ -6447,17 +6559,14 @@ export function filterProjects<T extends PreConsultationProject | ConsultationPr
 ): T[] {
   let filtered = projects
 
-  // Filter by status
   if (filters.status !== 'all') {
     filtered = filterByStatus(filtered, filters.status)
   }
 
-  // Filter by category
   if (filters.category !== 'all') {
     filtered = filterByCategory(filtered, filters.category)
   }
 
-  // Filter by search query
   if (filters.searchQuery) {
     filtered = filterBySearchQuery(filtered, filters.searchQuery, [
       'title',
@@ -6474,40 +6583,25 @@ export function filterProjects<T extends PreConsultationProject | ConsultationPr
 # src\utils\format.ts:
 
 ```ts
-/**
- * Formatuje datę do polskiego formatu
- */
 export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date
   return dateObj.toLocaleDateString('pl-PL', options)
 }
 
-/**
- * Formatuje datę do formatu ISO
- */
 export function toISODate(date: Date): string {
   return date.toISOString().split('T')[0]
 }
 
-/**
- * Sprawdza czy data jest przeszła
- */
 export function isPastDate(date: string | Date): boolean {
   const dateObj = typeof date === 'string' ? new Date(date) : date
   return dateObj < new Date()
 }
 
-/**
- * Sprawdza czy data jest przyszła
- */
 export function isFutureDate(date: string | Date): boolean {
   const dateObj = typeof date === 'string' ? new Date(date) : date
   return dateObj > new Date()
 }
 
-/**
- * Zwraca liczbę dni do daty
- */
 export function daysUntil(date: string | Date): number {
   const dateObj = typeof date === 'string' ? new Date(date) : date
   const now = new Date()
@@ -6515,16 +6609,10 @@ export function daysUntil(date: string | Date): number {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 }
 
-/**
- * Formatuje liczbę z separatorem tysięcy
- */
 export function formatNumber(num: number): string {
   return num.toLocaleString('pl-PL')
 }
 
-/**
- * Zwraca inicjały z imienia i nazwiska
- */
 export function getInitials(name: string): string {
   return name
     .split(' ')
@@ -6533,9 +6621,6 @@ export function getInitials(name: string): string {
     .toUpperCase()
 }
 
-/**
- * Obcina tekst do określonej długości
- */
 export function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text
   return text.substring(0, maxLength) + '...'
@@ -6548,15 +6633,15 @@ export function truncate(text: string, maxLength: number): string {
 ```ts
 export * from './constants'
 export * from './format'
+export * from './validation'
+export * from './filters'
+export * from './sort'
 
 ```
 
 # src\utils\sort.ts:
 
 ```ts
-/**
- * Sortuje projekty według daty
- */
 export function sortByDate<T extends { createdAt: string }>(
   items: T[],
   order: 'asc' | 'desc' = 'desc',
@@ -6568,9 +6653,6 @@ export function sortByDate<T extends { createdAt: string }>(
   })
 }
 
-/**
- * Sortuje projekty według deadlinu
- */
 export function sortByDeadline<T extends { deadline: string }>(
   items: T[],
   order: 'asc' | 'desc' = 'asc',
@@ -6582,9 +6664,6 @@ export function sortByDeadline<T extends { deadline: string }>(
   })
 }
 
-/**
- * Sortuje projekty według ratingu
- */
 export function sortByRating<T extends { averageRating: number }>(
   items: T[],
   order: 'asc' | 'desc' = 'desc',
@@ -6599,31 +6678,19 @@ export function sortByRating<T extends { averageRating: number }>(
 # src\utils\validation.ts:
 
 ```ts
-/**
- * Sprawdza czy string jest prawidłowym adresem email
- */
 export function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(email)
 }
 
-/**
- * Sprawdza czy string nie jest pusty
- */
 export function isNotEmpty(value: string): boolean {
   return value.trim().length > 0
 }
 
-/**
- * Sprawdza czy liczba jest w zakresie
- */
 export function isInRange(value: number, min: number, max: number): boolean {
   return value >= min && value <= max
 }
 
-/**
- * Waliduje rating (1-5)
- */
 export function isValidRating(rating: number): boolean {
   return isInRange(rating, 1, 5)
 }

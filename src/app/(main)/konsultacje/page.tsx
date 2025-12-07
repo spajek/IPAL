@@ -426,7 +426,6 @@ export default function KonsultacjePage() {
           </Paper>
         )}
       </Stack>
-
     </Container>
   )
 }
