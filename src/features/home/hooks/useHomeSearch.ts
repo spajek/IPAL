@@ -1,10 +1,12 @@
+// src/features/home/hooks/useHomeSearch.ts
+
 import { useState, useMemo } from 'react'
 import { Act, PreConsultationProject, ConsultationProject } from '@/types'
 
 export function useHomeSearch(
   actsData: Act[],
   prekonsultacjeData: PreConsultationProject[],
-  konsultacjeData: ConsultationProject[], // Poprawiony typ trzeciego argumentu
+  konsultacjeData: ConsultationProject[],
 ) {
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -20,7 +22,7 @@ export function useHomeSearch(
     return prekonsultacjeData.filter(
       (project) =>
         project.title.toLowerCase().includes(query) ||
-        project.description?.toLowerCase().includes(query),
+        project.description.toLowerCase().includes(query),
     )
   }, [prekonsultacjeData, searchQuery])
 
@@ -30,7 +32,7 @@ export function useHomeSearch(
     return konsultacjeData.filter(
       (project) =>
         project.title.toLowerCase().includes(query) ||
-        project.description?.toLowerCase().includes(query),
+        project.description.toLowerCase().includes(query),
     )
   }, [konsultacjeData, searchQuery])
 

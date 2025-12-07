@@ -1,5 +1,6 @@
-'use client'
+// src/components/HomeCards/HomeCards.tsx
 
+'use client'
 import { useState } from 'react'
 import { Container, Stack, Modal, Tabs } from '@mantine/core'
 import {
@@ -17,7 +18,7 @@ import { useProjectComments } from '@/features/consultations/hooks/useProjectCom
 import { Comments } from '@/components/Comments'
 import { ProjectRating } from '@/components/ProjectRating/ProjectRating'
 import { AICommentsAnalysis } from '@/components/ai/AIAnalysis/AICommentsAnalysis'
-import { AISummary } from '@/components/ai/AISummary/AISummary'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq' // zmienione z AISummary na Groq (nowocześniejsze)
 import ProjectDetailsTab from './ProjectDetailsTab'
 
 export default function HomeCards() {
@@ -32,8 +33,13 @@ export default function HomeCards() {
     rateProject,
   } = useProjectComments(prekonsultacjeData)
 
-  const { searchQuery, setSearchQuery, filteredActs, filteredPrekonsultacje, filteredKonsultacje } =
-    useHomeSearch(actsData, prekonsultacjeWithComments, konsultacjeData)
+  const {
+    searchQuery,
+    setSearchQuery,
+    filteredActs: filteredActs,
+    filteredPrekonsultacje,
+    filteredKonsultacje,
+  } = useHomeSearch(actsData, prekonsultacjeWithComments, konsultacjeData)
 
   return (
     <Container size="lg" py="xl">
@@ -74,7 +80,7 @@ export default function HomeCards() {
                 Analiza AI
               </Tabs.Tab>
               <Tabs.Tab value="document-summary" leftSection={<IconFileDescription size={16} />}>
-                Streszczenie dokumentu AI
+                Streszczenie AI (Groq)
               </Tabs.Tab>
             </Tabs.List>
 
@@ -106,11 +112,13 @@ export default function HomeCards() {
             </Tabs.Panel>
 
             <Tabs.Panel value="document-summary" pt="md">
-              <AISummary
+              <AISummaryGroq
                 type="prekonsultacja"
+                entityId={selectedProject.id}
                 title={selectedProject.title}
                 description={selectedProject.description}
                 content=""
+                comments={selectedProject.comments.map(c => c.content)}
               />
             </Tabs.Panel>
           </Tabs>
