@@ -1,42 +1,49 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Container, Stack, Modal, Tabs } from '@mantine/core'
+import { useState } from "react";
+import { Container, Stack, Modal, Tabs } from "@mantine/core";
 import {
   IconFileText,
   IconMessage,
   IconStar,
   IconBrain,
   IconFileDescription,
-} from '@tabler/icons-react'
-import { PreConsultationProject } from '@/types'
-import { useHomeData } from '@/features/home/hooks/useHomeData'
-import { useHomeSearch } from '@/features/home/hooks/useHomeSearch'
-import { HomeSearch, HomeTabs } from '@/features/home/components'
-import { useProjectComments } from '@/features/consultations/hooks/useProjectComments'
-import { Comments } from '@/components/comments'
-import { ProjectRating } from '@/components/ProjectRating/ProjectRating'
-import { AICommentsAnalysis } from '@/components/ai/AIAnalysis/AICommentsAnalysis'
-import { AISummary } from '@/components/ai/AISummary/AISummary'
-import ProjectDetailsTab from './ProjectDetailsTab'
+} from "@tabler/icons-react";
+import { PreConsultationProject } from "@/types";
+import { useHomeData } from "@/features/home/hooks/useHomeData";
+import { useHomeSearch } from "@/features/home/hooks/useHomeSearch";
+import { HomeSearch, HomeTabs } from "@/features/home/components";
+import { useProjectComments } from "@/features/consultations/hooks/useProjectComments";
+import { Comments } from "@/components/Comments";
+import { ProjectRating } from "@/components/ProjectRating/ProjectRating";
+import { AICommentsAnalysis } from "@/components/ai/AIAnalysis/AICommentsAnalysis";
+import { AISummary } from "@/components/ai/AISummary/AISummary";
+import ProjectDetailsTab from "./ProjectDetailsTab";
 
 export default function HomeCards() {
-  const [activeTab, setActiveTab] = useState<string | null>('ustawy')
-  const [selectedProject, setSelectedProject] = useState<PreConsultationProject | null>(null)
+  const [activeTab, setActiveTab] = useState<string | null>("ustawy");
+  const [selectedProject, setSelectedProject] =
+    useState<PreConsultationProject | null>(null);
 
   // Load data based on active tab
-  const { actsData, prekonsultacjeData, konsultacjeData, loading } = useHomeData(activeTab)
+  const { actsData, prekonsultacjeData, konsultacjeData, loading } =
+    useHomeData(activeTab);
 
   // Initialize project comments hook
   const {
     projects: prekonsultacjeWithComments,
     addComment,
     rateProject,
-  } = useProjectComments(prekonsultacjeData)
+  } = useProjectComments(prekonsultacjeData);
 
   // Search functionality
-  const { searchQuery, setSearchQuery, filteredActs, filteredPrekonsultacje, filteredKonsultacje } =
-    useHomeSearch(actsData, prekonsultacjeWithComments, konsultacjeData)
+  const {
+    searchQuery,
+    setSearchQuery,
+    filteredActs,
+    filteredPrekonsultacje,
+    filteredKonsultacje,
+  } = useHomeSearch(actsData, prekonsultacjeWithComments, konsultacjeData);
 
   return (
     <Container size="lg" py="xl">
@@ -65,19 +72,31 @@ export default function HomeCards() {
         {selectedProject && (
           <Tabs defaultValue="details">
             <Tabs.List>
-              <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
+              <Tabs.Tab
+                value="details"
+                leftSection={<IconFileText size={16} />}
+              >
                 Szczegóły
               </Tabs.Tab>
-              <Tabs.Tab value="comments" leftSection={<IconMessage size={16} />}>
+              <Tabs.Tab
+                value="comments"
+                leftSection={<IconMessage size={16} />}
+              >
                 Komentarze ({selectedProject.comments.length})
               </Tabs.Tab>
               <Tabs.Tab value="rating" leftSection={<IconStar size={16} />}>
                 Oceny
               </Tabs.Tab>
-              <Tabs.Tab value="ai-analysis" leftSection={<IconBrain size={16} />}>
+              <Tabs.Tab
+                value="ai-analysis"
+                leftSection={<IconBrain size={16} />}
+              >
                 Analiza AI
               </Tabs.Tab>
-              <Tabs.Tab value="document-summary" leftSection={<IconFileDescription size={16} />}>
+              <Tabs.Tab
+                value="document-summary"
+                leftSection={<IconFileDescription size={16} />}
+              >
                 Streszczenie dokumentu AI
               </Tabs.Tab>
             </Tabs.List>
@@ -89,7 +108,9 @@ export default function HomeCards() {
             <Tabs.Panel value="comments" pt="md">
               <Comments
                 comments={selectedProject.comments}
-                onAddComment={(content, rating) => addComment(selectedProject.id, content, rating)}
+                onAddComment={(content, rating) =>
+                  addComment(selectedProject.id, content, rating)
+                }
               />
             </Tabs.Panel>
 
@@ -97,7 +118,9 @@ export default function HomeCards() {
               <ProjectRating
                 averageRating={selectedProject.averageRating}
                 ratingsCount={selectedProject.ratingsCount}
-                onRate={(rating, review) => rateProject(selectedProject.id, rating, review)}
+                onRate={(rating, review) =>
+                  rateProject(selectedProject.id, rating, review)
+                }
               />
             </Tabs.Panel>
 
@@ -121,5 +144,5 @@ export default function HomeCards() {
         )}
       </Modal>
     </Container>
-  )
+  );
 }
