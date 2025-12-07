@@ -1,16 +1,10 @@
 import { PreConsultationProject, ConsultationProject, Status } from '@/types'
 
-/**
- * Filtruje projekty według statusu
- */
 export function filterByStatus<T extends { status: Status }>(items: T[], status: string): T[] {
   if (status === 'all') return items
   return items.filter((item) => item.status === status)
 }
 
-/**
- * Filtruje projekty według kategorii
- */
 export function filterByCategory<T extends { category: string }>(
   items: T[],
   category: string,
@@ -19,9 +13,6 @@ export function filterByCategory<T extends { category: string }>(
   return items.filter((item) => item.category === category)
 }
 
-/**
- * Filtruje projekty według query
- */
 export function filterBySearchQuery<T>(items: T[], query: string, fields: (keyof T)[]): T[] {
   if (!query) return items
 
@@ -33,9 +24,7 @@ export function filterBySearchQuery<T>(items: T[], query: string, fields: (keyof
     }),
   )
 }
-/**
- * Kombinuje wszystkie filtry dla projektów
- */
+
 export function filterProjects<T extends PreConsultationProject | ConsultationProject>(
   projects: T[],
   filters: {
@@ -46,17 +35,14 @@ export function filterProjects<T extends PreConsultationProject | ConsultationPr
 ): T[] {
   let filtered = projects
 
-  // Filter by status
   if (filters.status !== 'all') {
     filtered = filterByStatus(filtered, filters.status)
   }
 
-  // Filter by category
   if (filters.category !== 'all') {
     filtered = filterByCategory(filtered, filters.category)
   }
 
-  // Filter by search query
   if (filters.searchQuery) {
     filtered = filterBySearchQuery(filtered, filters.searchQuery, [
       'title',

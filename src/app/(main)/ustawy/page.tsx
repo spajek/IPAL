@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useTransition } from 'react'
+import { useState, useEffect, useTransition } from 'react'
 import Link from 'next/link'
 import {
   Container,
@@ -119,7 +119,6 @@ function UstawyTableContent({
         </Text>
       </Table.Td>
       <Table.Td>
-        {/* WAŻNE: Encode URI component dla ID zawierającego slashe */}
         <Button
           component={Link}
           href={`/ustawy/${encodeURIComponent(ustawa.ELI)}`}

@@ -6,18 +6,15 @@ import { ProjectFilters, ProjectGrid } from '@/components/projects'
 import { preConsultationProjects } from '@/mocks/prekonsultacjeMock'
 
 export default function PrekonsultacjePage() {
-  // Filters state
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
   const [filterCategory, setFilterCategory] = useState('all')
 
-  // Get unique categories
   const categories = useMemo(
     () => Array.from(new Set(preConsultationProjects.map((p) => p.category))),
     [],
   )
 
-  // Filter projects
   const filteredProjects = useMemo(() => {
     return preConsultationProjects.filter((project) => {
       const matchesSearch =

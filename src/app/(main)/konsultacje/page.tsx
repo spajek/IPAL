@@ -322,7 +322,6 @@ export default function KonsultacjePage() {
                       </Group>
                     </Stack>
 
-                    {/* Progress bar dla trwających konsultacji */}
                     {project.status === 'active' && (
                       <div>
                         <Group justify="space-between" mb="xs">
@@ -353,7 +352,6 @@ export default function KonsultacjePage() {
           ))}
         </Grid>
 
-        {/* Nadchodzące spotkania */}
         <div>
           <Title order={2} mb="md">
             Nadchodzące spotkania
@@ -429,7 +427,6 @@ export default function KonsultacjePage() {
         )}
       </Stack>
 
-      {/* Modal szczegółów projektu */}
     </Container>
   )
 }

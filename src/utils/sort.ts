@@ -1,6 +1,3 @@
-/**
- * Sortuje projekty według daty
- */
 export function sortByDate<T extends { createdAt: string }>(
   items: T[],
   order: 'asc' | 'desc' = 'desc',
@@ -12,9 +9,6 @@ export function sortByDate<T extends { createdAt: string }>(
   })
 }
 
-/**
- * Sortuje projekty według deadlinu
- */
 export function sortByDeadline<T extends { deadline: string }>(
   items: T[],
   order: 'asc' | 'desc' = 'asc',
@@ -26,9 +20,6 @@ export function sortByDeadline<T extends { deadline: string }>(
   })
 }
 
-/**
- * Sortuje projekty według ratingu
- */
 export function sortByRating<T extends { averageRating: number }>(
   items: T[],
   order: 'asc' | 'desc' = 'desc',

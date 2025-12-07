@@ -92,15 +92,14 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }))
 
-// AI Summaries table for caching AI-generated content
 export const aiSummary = pgTable(
   'ai_summary',
   {
     id: text('id').primaryKey(),
-    entityType: text('entity_type').notNull(), // 'ustawa', 'konsultacja', 'prekonsultacja'
-    entityId: text('entity_id').notNull(), // Act ELI or Project ID
-    humanSummary: text('human_summary').notNull(), // Short human-readable summary
-    summaryData: text('summary_data').notNull(), // JSON stringified detailed analysis
+    entityType: text('entity_type').notNull(),
+    entityId: text('entity_id').notNull(),
+    humanSummary: text('human_summary').notNull(),
+    summaryData: text('summary_data').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()

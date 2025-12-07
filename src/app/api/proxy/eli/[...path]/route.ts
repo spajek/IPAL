@@ -16,7 +16,6 @@ export async function GET(
     const res = await fetch(targetUrl, {
       method: 'GET',
       headers: {
-        // KLUCZOWE NAGŁÓWKI – bez nich Sejm zwraca 403
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         Accept: 'application/json, text/plain, */*',
@@ -30,14 +29,10 @@ export async function GET(
         Connection: 'keep-alive',
         'Cache-Control': 'no-cache',
       },
-      // ważne – Next.js domyślnie dodaje swoje nagłówki, które mogą być wykrywane
-      // wyłączenie cache na poziomie fetch, bo i tak mamy revalidate
       next: { revalidate: 3600 },
     })
 
-    // Kopiujemy wszystkie nagłówki odpowiedzi (w tym Content-Encoding dla gzip)
     const headers = new Headers(res.headers)
-    // Usuwamy potencjalnie problematyczne nagłówki Next.js
     headers.delete('transfer-encoding')
 
     if (!res.ok) {

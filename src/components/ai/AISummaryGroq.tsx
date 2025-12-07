@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   Card,
   Text,
@@ -66,37 +66,39 @@ export function AISummaryGroq({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchSummary = async (forceRegenerate = false) => {
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await fetch('/api/ai/summary', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type,
-          entityId,
-          title,
-          description,
-          content,
-          comments,
-          forceRegenerate,
-        }),
-      })
-      const json = await res.json()
-      if (json.error) throw new Error(json.error)
-      setData(json) // { humanSummary, summary, fromCache }
-    } catch (err: Error | unknown) {
-      setError(err instanceof Error ? err.message : 'Błąd analizy')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const fetchSummary = useCallback(
+    async (forceRegenerate = false) => {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch('/api/ai/summary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type,
+            entityId,
+            title,
+            description,
+            content,
+            comments,
+            forceRegenerate,
+          }),
+        })
+        const json = await res.json()
+        if (json.error) throw new Error(json.error)
+        setData(json)
+      } catch (err: Error | unknown) {
+        setError(err instanceof Error ? err.message : 'Błąd analizy')
+      } finally {
+        setLoading(false)
+      }
+    },
+    [type, entityId, title, description, content, comments],
+  )
 
   useEffect(() => {
     if (entityId && (content || comments.length > 0)) fetchSummary()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entityId])
+  }, [entityId, content, comments.length, fetchSummary])
 
   if (loading)
     return (

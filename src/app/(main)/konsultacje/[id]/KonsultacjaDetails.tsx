@@ -47,7 +47,6 @@ export default function KonsultacjaDetails({ project }: Props) {
 
         <Tabs.Panel value="details" pt="xl">
           <Stack gap="md">
-            {/* Tutaj możesz dodać więcej szczegółów – spotkania, dokumenty, statystyki itd. */}
             <div>Instytucja: {project.institution}</div>
             <div>Termin zakończenia: {new Date(project.deadline).toLocaleDateString('pl-PL')}</div>
             <div>Uczestnicy: {project.participantsCount}</div>

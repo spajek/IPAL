@@ -1,4 +1,3 @@
-import React from 'react'
 import { consultationProjects } from '@/mocks/prekonsultacjeMock'
 import KonsultacjaDetails from './KonsultacjaDetails'
 import KonsultacjaNotFound from './KonsultacjaNotFound'

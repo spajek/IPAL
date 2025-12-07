@@ -32,10 +32,8 @@ interface ActDetailsViewProps {
 }
 
 export default function ActDetailsView({ act }: ActDetailsViewProps) {
-  // Ustalanie aktywnego kroku na podstawie wypełnionych dat
   const activeIndex = act.stages.filter((s: { isCompleted: boolean }) => s.isCompleted).length - 1
 
-  // Linki do plików (konstrukcja na podstawie dokumentacji API)
   const pdfUrl = act.textPDF
     ? `https://api.sejm.gov.pl/eli/acts/${act.publisher}/${act.year}/${act.pos}/text.pdf`
     : null
@@ -99,7 +97,6 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
         </Card>
       </SimpleGrid>
 
-      {/* Sekcja pobierania tekstów źródłowych */}
       {(pdfUrl || htmlUrl) && (
         <Group mt="md">
           {pdfUrl && (
@@ -128,7 +125,6 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
         </Group>
       )}
 
-      {/* Słowa kluczowe */}
       {act.keywords && act.keywords.length > 0 && (
         <Group gap="xs" mt="lg">
           {act.keywords.map((keyword: string, index: number) => (
