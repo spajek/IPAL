@@ -1,132 +1,145 @@
+// src/mocks/sejmMock.ts
+
 export interface Act {
-  ELI: string;
-  title: string;
-  year: number;
-  pos: number;
-  status: string;
-  type: string;
-  publisher: string;
-  displayAddress: string;
-  announcementDate: string;
-}
-
-export interface LegislativeStage {
-  stepNumber: number;
-  name: string;
-  date?: string;
-  isCompleted: boolean;
-}
-
-export interface ActDetails extends Act {
-  stages: LegislativeStage[];
+  ELI: string
+  title: string
+  year: number
+  pos: number
+  status: string
+  type: string
+  publisher: string
+  displayAddress: string
+  announcementDate: string
+  textPDF?: boolean
+  textHTML?: boolean
 }
 
 export interface ApiResponse {
-  totalCount: number;
-  count: number;
-  offset: number;
-  items: Act[];
+  totalCount: number
+  count: number
+  offset: number
+  items: Act[]
 }
 
-const STAGES_TEMPLATE: LegislativeStage[] = [
-  { stepNumber: 1, name: "Zgłoszenia lobbingowe", isCompleted: true },
-  { stepNumber: 2, name: "Uzgodnienia", date: "05-12-2025", isCompleted: true },
-  {
-    stepNumber: 3,
-    name: "Konsultacje publiczne",
-    date: "05-12-2025",
-    isCompleted: true,
-  },
-  { stepNumber: 4, name: "Opiniowanie", date: "05-12-2025", isCompleted: true },
-  {
-    stepNumber: 5,
-    name: "Komitet Rady Ministrów do Spraw Cyfryzacji",
-    isCompleted: true,
-  },
-  {
-    stepNumber: 6,
-    name: "Komitet Społeczny Rady Ministrów",
-    isCompleted: false,
-  },
-  {
-    stepNumber: 7,
-    name: "Komitet Ekonomiczny Rady Ministrów",
-    isCompleted: false,
-  },
-  { stepNumber: 8, name: "Stały Komitet Rady Ministrów", isCompleted: false },
-  { stepNumber: 9, name: "Komisja Prawnicza", isCompleted: false },
-  { stepNumber: 10, name: "Notyfikacja", isCompleted: false },
-  {
-    stepNumber: 11,
-    name: "Skierowanie projektu do podpisu ministra",
-    isCompleted: false,
-  },
-  {
-    stepNumber: 12,
-    name: "Skierowanie aktu do ogłoszenia",
-    isCompleted: false,
-  },
-];
+// KLUCZOWA ZMIANA: sprawdzamy, czy jesteśmy na serwerze czy kliencie
+const isServer = typeof window === 'undefined'
 
-const MOCK_ACTS_DB: Act[] = Array.from({ length: 100 }).map((_, index) => {
-  const year = 2025;
-  const pos = index + 1;
-  const id = `${year}-${pos}`;
+/**
+ * Zwraca pełny URL do proxy – działa i na kliencie i na serwerze
+ */
+function getBaseUrl() {
+  if (!isServer) return '' // na kliencie – zwracamy pusty, bo fetch sam dorzuci origin
+  // na serwerze – musimy podać pełny adres
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  if (process.env.NEXT_PUBLIC_URL) return process.env.NEXT_PUBLIC_URL
+  return 'http://localhost:3000' // domyślnie w dev
+}
 
-  return {
-    ELI: id,
-    title: `Ustawa z dnia 5 grudnia ${year} r. o zmianie ustawy o sztucznej inteligencji oraz niektórych innych ustaw (Mock #${pos})`,
-    year: year,
-    pos: pos,
-    status: index % 4 === 0 ? "Obowiązujący" : "Oczekujący",
-    type: "Ustawa",
-    publisher: "DU",
-    displayAddress: `Dz.U. ${year} poz. ${pos}`,
-    announcementDate: "2025-12-05",
-  };
-});
+const API_BASE = `${getBaseUrl()}/api/proxy/eli`
 
+// Lista ustaw – używamy /acts/search (działa!)
 export async function fakeFetchUstawy(
-  publisher: string,
-  year: string,
-  page: number,
-  limit: number
+  publisher: string = 'DU',
+  year: string = '2025',
+  page: number = 1,
+  limit: number = 20,
 ): Promise<ApiResponse> {
-  await new Promise((resolve) => setTimeout(resolve, 600));
+  const offset = (page - 1) * limit
 
-  const filtered = MOCK_ACTS_DB.filter(
-    (item) => item.publisher === publisher && item.year.toString() === year
-  );
+  const params = new URLSearchParams({
+    publisher,
+    year,
+    offset: offset.toString(),
+    limit: limit.toString(),
+    sortBy: 'pos',
+    sortDir: 'desc',
+  })
 
-  const offset = (page - 1) * limit;
-  const paginatedItems = filtered.slice(offset, offset + limit);
+  const url = `${API_BASE}/acts/search?${params}`
 
-  return {
-    totalCount: filtered.length,
-    count: paginatedItems.length,
-    offset: offset,
-    items: paginatedItems,
-  };
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        Accept: 'application/json',
+        Referer: 'https://eli.gov.pl/',
+      },
+      next: { revalidate: 3600 },
+    })
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+    const data = await res.json()
+
+    return {
+      totalCount: data.totalCount || 0,
+      count: data.count || 0,
+      offset: data.offset || 0,
+      items: (data.items || []).map((item: any) => ({
+        ELI: item.ELI,
+        title: item.title,
+        year: item.year,
+        pos: item.pos,
+        status: item.status || 'nieznany',
+        type: item.type || 'Inny',
+        publisher: item.publisher,
+        displayAddress: item.displayAddress,
+        announcementDate: item.announcementDate,
+        textPDF: item.textPDF,
+        textHTML: item.textHTML,
+      })),
+    }
+  } catch (error) {
+    console.error('Błąd listy ustaw:', error)
+    return { totalCount: 0, count: 0, offset: 0, items: [] }
+  }
 }
 
-export async function fakeFetchActDetails(
-  eliId: string
-): Promise<ActDetails | null> {
-  await new Promise((resolve) => setTimeout(resolve, 400));
+// Szczegóły aktu – działa i na serwerze i kliencie
+export async function fakeFetchActDetails(eliId: string): Promise<any | null> {
+  const decoded = decodeURIComponent(eliId)
+  const parts = decoded.split('/')
+  if (parts.length < 3) return null
 
-  const act = MOCK_ACTS_DB.find((item) => item.ELI === eliId);
-  if (!act) return null;
+  const [publisher, year, pos] = parts
 
-  const randomProgress = Math.floor(Math.random() * 12) + 1;
+  // Pełny URL – działa wszędzie
+  const url = `${API_BASE}/acts/${publisher}/${year}/${pos}`
 
-  const dynamicStages = STAGES_TEMPLATE.map((stage) => ({
-    ...stage,
-    isCompleted: stage.stepNumber <= randomProgress,
-    date: stage.stepNumber <= randomProgress ? "05-12-2025" : undefined,
-  }));
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        Accept: 'application/json',
+        Referer: 'https://eli.gov.pl/',
+      },
+      next: { revalidate: 3600 },
+    })
 
-  return {
-    ...act,
-    stages: dynamicStages,
-  };
+    if (res.status === 404) return null
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+    const data = await res.json()
+
+    // Dodajemy pola, których oczekuje ActDetailsView
+    return {
+      ...data,
+      stages: [
+        { stepNumber: 1, name: 'Data wydania', date: data.announcementDate, isCompleted: true },
+        {
+          stepNumber: 2,
+          name: 'Data ogłoszenia',
+          date: data.promulgation,
+          isCompleted: !!data.promulgation,
+        },
+        { stepNumber: 3, name: 'Wejście w życie', date: data.entryIntoForce, isCompleted: true },
+      ],
+      keywords: data.keywords || [],
+    }
+  } catch (error) {
+    console.error('Błąd szczegółów aktu:', eliId, error)
+    return null
+  }
 }

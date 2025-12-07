@@ -33,7 +33,7 @@ import {
   IconMessage,
   IconChartBar
 } from '@tabler/icons-react';
-import { Comment } from '../../mocks/prekonsultacjeMock';
+import { Comment } from '../../../mocks/prekonsultacjeMock';
 
 interface AIAnalysisProps {
   comments: Comment[];

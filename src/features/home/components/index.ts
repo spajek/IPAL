@@ -1,0 +1,5 @@
+export { HomeSearch } from './HomeSearch'
+export { HomeTabs } from './HomeTabs'
+export { ActsTab } from './ActsTab'
+export { PreConsultationsTab } from './PreConsultationsTab'
+export { ConsultationsTab } from './ConsultationsTab'

@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect, useTransition } from "react";
-import Link from "next/link";
+import React, { useState, useEffect, useTransition } from 'react'
+import Link from 'next/link'
 import {
   Container,
   Title,
@@ -18,9 +18,9 @@ import {
   LoadingOverlay,
   Box,
   Button,
-} from "@mantine/core";
-import { IconAlertCircle, IconArrowRight } from "@tabler/icons-react";
-import { ApiResponse, fakeFetchUstawy } from "@/mocks/sejmMock";
+} from '@mantine/core'
+import { IconAlertCircle, IconArrowRight } from '@tabler/icons-react'
+import { ApiResponse, fakeFetchUstawy } from '@/mocks/sejmMock'
 
 function UstawyTableContent({
   publisher,
@@ -30,41 +30,41 @@ function UstawyTableContent({
   onPageChange,
   isPendingTransition,
 }: {
-  publisher: string;
-  year: string;
-  page: number;
-  limit: number;
-  onPageChange: (page: number) => void;
-  isPendingTransition: boolean;
+  publisher: string
+  year: string
+  page: number
+  limit: number
+  onPageChange: (page: number) => void
+  isPendingTransition: boolean
 }) {
-  const [data, setData] = useState<ApiResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<ApiResponse | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    let mounted = true;
-    setIsLoading(true);
-    setError(null);
+    let mounted = true
+    setIsLoading(true)
+    setError(null)
 
     fakeFetchUstawy(publisher, year, page, limit)
       .then((res) => {
         if (mounted) {
-          setData(res);
-          setIsLoading(false);
+          setData(res)
+          setIsLoading(false)
         }
       })
       .catch((err) => {
         if (mounted) {
-          console.error(err);
-          setError("Wystąpił błąd podczas pobierania danych.");
-          setIsLoading(false);
+          console.error(err)
+          setError('Wystąpił błąd podczas pobierania danych.')
+          setIsLoading(false)
         }
-      });
+      })
 
     return () => {
-      mounted = false;
-    };
-  }, [publisher, year, page, limit]);
+      mounted = false
+    }
+  }, [publisher, year, page, limit])
 
   if (isLoading && !data) {
     return (
@@ -76,7 +76,7 @@ function UstawyTableContent({
           </Text>
         </Stack>
       </Center>
-    );
+    )
   }
 
   if (error) {
@@ -84,18 +84,18 @@ function UstawyTableContent({
       <Alert icon={<IconAlertCircle size={16} />} title="Błąd" color="red">
         {error}
       </Alert>
-    );
+    )
   }
 
-  const { items: ustawy = [], totalCount = 0 } = data || {};
-  const totalPages = Math.ceil(totalCount / limit);
+  const { items: ustawy = [], totalCount = 0 } = data || {}
+  const totalPages = Math.ceil(totalCount / limit)
 
   const getStatusColor = (status: string) => {
-    const statusLower = status?.toLowerCase() || "";
-    if (statusLower.includes("obowiązuj")) return "green";
-    if (statusLower.includes("uchylon")) return "red";
-    return "blue";
-  };
+    const statusLower = status?.toLowerCase() || ''
+    if (statusLower.includes('obowiązuj')) return 'green'
+    if (statusLower.includes('uchylon')) return 'red'
+    return 'blue'
+  }
 
   const rows = ustawy.map((ustawa) => (
     <Table.Tr key={ustawa.ELI}>
@@ -105,7 +105,7 @@ function UstawyTableContent({
         </Text>
       </Table.Td>
       <Table.Td>
-        <Text size="sm" style={{ whiteSpace: "normal" }}>
+        <Text size="sm" style={{ whiteSpace: 'normal' }}>
           {ustawa.title}
         </Text>
       </Table.Td>
@@ -115,14 +115,15 @@ function UstawyTableContent({
         </Badge>
       </Table.Td>
       <Table.Td>
-        <Text size="sm" style={{ whiteSpace: "nowrap" }}>
+        <Text size="sm" style={{ whiteSpace: 'nowrap' }}>
           {ustawa.announcementDate}
         </Text>
       </Table.Td>
       <Table.Td>
+        {/* WAŻNE: Encode URI component dla ID zawierającego slashe */}
         <Button
           component={Link}
-          href={`/ustawy/${ustawa.ELI}`}
+          href={`/ustawy/${encodeURIComponent(ustawa.ELI)}`}
           variant="light"
           size="xs"
           rightSection={<IconArrowRight size={14} />}
@@ -131,7 +132,7 @@ function UstawyTableContent({
         </Button>
       </Table.Td>
     </Table.Tr>
-  ));
+  ))
 
   return (
     <Box pos="relative">
@@ -146,13 +147,7 @@ function UstawyTableContent({
       </Text>
 
       <Table.ScrollContainer minWidth={800}>
-        <Table
-          striped
-          highlightOnHover
-          withTableBorder
-          withRowBorders
-          verticalSpacing="sm"
-        >
+        <Table striped highlightOnHover withTableBorder withRowBorders verticalSpacing="sm">
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Pozycja</Table.Th>
@@ -190,32 +185,30 @@ function UstawyTableContent({
         </Center>
       )}
     </Box>
-  );
+  )
 }
 
 export default function SejmUstawyPage() {
-  const [publisher, setPublisher] = useState("DU");
-  const [year, setYear] = useState("2025");
-  const [page, setPage] = useState(1);
-  const limit = 20;
+  const [publisher, setPublisher] = useState('DU')
+  const [year, setYear] = useState('2025')
+  const [page, setPage] = useState(1)
+  const limit = 20
 
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition()
 
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 10 }, (_, i) =>
-    (currentYear - i).toString()
-  );
+  const currentYear = new Date().getFullYear()
+  const years = Array.from({ length: 10 }, (_, i) => (currentYear - i).toString())
 
   const handlePageChange = (val: number) => {
-    startTransition(() => setPage(val));
-  };
+    startTransition(() => setPage(val))
+  }
 
   const handleFilterChange = (setter: (val: string) => void, val: string) => {
     startTransition(() => {
-      setter(val);
-      setPage(1);
-    });
-  };
+      setter(val)
+      setPage(1)
+    })
+  }
 
   return (
     <Container fluid py="xl">
@@ -225,17 +218,17 @@ export default function SejmUstawyPage() {
           <Select
             label="Dziennik"
             value={publisher}
-            onChange={(val) => handleFilterChange(setPublisher, val || "DU")}
+            onChange={(val) => handleFilterChange(setPublisher, val || 'DU')}
             data={[
-              { value: "DU", label: "Dziennik Ustaw (Dz.U.)" },
-              { value: "MP", label: "Monitor Polski (M.P.)" },
+              { value: 'DU', label: 'Dziennik Ustaw (Dz.U.)' },
+              { value: 'MP', label: 'Monitor Polski (M.P.)' },
             ]}
             w={250}
           />
           <Select
             label="Rok"
             value={year}
-            onChange={(val) => handleFilterChange(setYear, val || "2025")}
+            onChange={(val) => handleFilterChange(setYear, val || '2025')}
             data={years}
             w={150}
           />
@@ -251,5 +244,5 @@ export default function SejmUstawyPage() {
         />
       </Stack>
     </Container>
-  );
+  )
 }

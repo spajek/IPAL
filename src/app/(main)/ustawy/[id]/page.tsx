@@ -1,32 +1,26 @@
-import React from "react";
-import Link from "next/link";
-import { Container, Title, Button } from "@mantine/core";
-import { fakeFetchActDetails } from "@/mocks/sejmMock";
-import ActDetailsView from "./ActDetailsView";
+import React from 'react'
+import { fakeFetchActDetails } from '@/mocks/sejmMock'
+import ActDetailsView from './ActDetailsView'
+import ActNotFound from './ActNotFound' // Import nowego komponentu
 
 interface PageProps {
   params: {
-    id: string;
-  };
+    id: string
+  }
 }
 
 export default async function UstawaDetailsPage({ params }: PageProps) {
-  const { id } = await Promise.resolve(params);
+  const { id } = await Promise.resolve(params)
 
-  const act = await fakeFetchActDetails(id);
+  // Pobranie danych z API (server-side)
+  const act = await fakeFetchActDetails(id)
 
   if (!act) {
-    return (
-      <Container py="xl">
-        <Title order={3} c="red">
-          Nie znaleziono ustawy o identyfikatorze: {id}
-        </Title>
-        <Button component={Link} href="/ustawy" mt="md" variant="subtle">
-          ← Wróć do listy
-        </Button>
-      </Container>
-    );
+    // Zamiast renderować UI Mantine bezpośrednio tutaj,
+    // zwracamy komponent klientowy, który to obsłuży.
+    return <ActNotFound id={id} />
   }
 
-  return <ActDetailsView act={act} />;
+  // ActDetailsView jest już oznaczony jako "use client", więc jest bezpieczny
+  return <ActDetailsView act={act} />
 }
