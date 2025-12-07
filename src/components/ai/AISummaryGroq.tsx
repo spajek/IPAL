@@ -149,7 +149,7 @@ export function AISummaryGroq({ type, title, description, content = '', comments
         </Group>
         <List spacing="xs">
           {s.mainPoints.map((p: string, i: number) => (
-            <List.Item key={i}>• {p}</List.Item>
+            <List.Item key={i}> {p}</List.Item>
           ))}
         </List>
       </Card>
@@ -219,7 +219,7 @@ export function AISummaryGroq({ type, title, description, content = '', comments
           </Group>
           <List spacing="xs" size="sm">
             {s.risks.map((r: string, i: number) => (
-              <List.Item key={i}>• {r}</List.Item>
+              <List.Item key={i}> {r}</List.Item>
             ))}
           </List>
         </Card>
@@ -232,7 +232,7 @@ export function AISummaryGroq({ type, title, description, content = '', comments
           </Group>
           <List spacing="xs" size="sm">
             {s.opportunities.map((o: string, i: number) => (
-              <List.Item key={i}>• {o}</List.Item>
+              <List.Item key={i}> {o}</List.Item>
             ))}
           </List>
         </Card>

@@ -8,7 +8,6 @@ import {
   Badge,
   SimpleGrid,
   Title,
-  Button,
   Alert,
   Loader,
   ThemeIcon,
@@ -19,7 +18,6 @@ import {
   IconTrendingUp,
   IconTrendingDown,
   IconAlertTriangle,
-  IconRefresh,
   IconThumbUp,
   IconExclamationMark,
   IconInfoCircle,
@@ -225,14 +223,6 @@ export function AICommentsAnalysis({ comments, projectTitle }: AIAnalysisProps) 
             Analiza {comments.length} komentarzy dla: {projectTitle}
           </Text>
         </div>
-        <Button
-          variant="light"
-          leftSection={<IconRefresh size={16} />}
-          onClick={runAIAnalysis}
-          loading={isAnalyzing}
-        >
-          Odśwież analizę
-        </Button>
       </Group>
 
       {isAnalyzing ? (
@@ -349,9 +339,7 @@ export function AICommentsAnalysis({ comments, projectTitle }: AIAnalysisProps) 
                           <Text size="xs" c="dimmed">
                             Pewność: {insight.confidence}%
                           </Text>
-                          <Text size="xs" c="dimmed">
-                            •
-                          </Text>
+                          <Text size="xs" c="dimmed"></Text>
                           <Text size="xs" c="dimmed">
                             {insight.commentsCount} komentarzy
                           </Text>
