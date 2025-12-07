@@ -100,14 +100,26 @@ export function AISummaryGroq({
 
   if (loading)
     return (
-      <Card p="xl" ta="center" withBorder>
-        <Loader size="lg" />
-        <Text mt="md">AI czyta ustawę...</Text>
-      </Card>
+      <Stack gap="lg" align="center">
+        <Card p="xl" withBorder radius="md" w="100%">
+          <Stack align="center" gap="md">
+            <Loader size="lg" color="blue" />
+            <Stack gap="xs" align="center">
+              <Text fw={600} size="lg">
+                AI analizuje dokument
+              </Text>
+              <Progress value={100} color="blue" animated w="80%" />
+              <Text size="sm" c="dimmed">
+                Czytanie i przetwarzanie treści...
+              </Text>
+            </Stack>
+          </Stack>
+        </Card>
+      </Stack>
     )
   if (error)
     return (
-      <Alert color="red" title="Błąd" icon={<IconBrain />}>
+      <Alert color="red" title="Błąd">
         {error}{' '}
         <Button size="xs" onClick={() => fetchSummary()} leftSection={<IconRefresh />}>
           Spróbuj ponownie

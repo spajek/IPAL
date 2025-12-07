@@ -111,7 +111,7 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
               color="red"
               leftSection={<IconDownload size={16} />}
             >
-              Pobierz akt (PDF)
+              Pobierz ustawę (PDF)
             </Button>
           )}
           {htmlUrl && (
