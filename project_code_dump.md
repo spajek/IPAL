@@ -1,20 +1,15 @@
 # src\app\(auth)\layout.tsx:
 
 ```tsx
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>{children}</>;
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
 }
-
 ```
 
 # src\app\(auth)\login\page.tsx:
 
 ```tsx
-"use client";
+'use client'
 
 import {
   Container,
@@ -31,86 +26,86 @@ import {
   Button,
   Overlay,
   Anchor,
-} from "@mantine/core";
-import Link from "next/link";
+} from '@mantine/core'
+import Link from 'next/link'
 import {
   IconBuildingBank,
   IconDeviceMobile,
   IconFingerprint,
   IconShieldCheck,
   IconStarsFilled,
-} from "@tabler/icons-react";
+} from '@tabler/icons-react'
 
 type Provider = {
-  id: string;
-  title: string;
-  subtitle: string;
-  icon: React.ReactNode;
-  badge?: string;
-  onClick: () => void;
-};
+  id: string
+  title: string
+  subtitle: string
+  icon: React.ReactNode
+  badge?: string
+  onClick: () => void
+}
 
 const providers: Provider[] = [
   {
-    id: "mobywatel",
-    title: "Aplikacja mObywatel",
-    subtitle: "Zaloguj się za pomocą aplikacji mObywatel",
+    id: 'mobywatel',
+    title: 'Aplikacja mObywatel',
+    subtitle: 'Zaloguj się za pomocą aplikacji mObywatel',
     icon: (
       <ThemeIcon variant="light" size="xl">
         <IconDeviceMobile />
       </ThemeIcon>
     ),
-    badge: "Polecane",
-    onClick: () => console.log("logowanie z mObywatel"),
+    badge: 'Polecane',
+    onClick: () => console.log('logowanie z mObywatel'),
   },
   {
-    id: "pz",
-    title: "Profil Zaufany",
-    subtitle: "Zaloguj się przy użyciu Profilu Zaufanego",
+    id: 'pz',
+    title: 'Profil Zaufany',
+    subtitle: 'Zaloguj się przy użyciu Profilu Zaufanego',
     icon: (
       <ThemeIcon variant="light" size="xl">
         <IconShieldCheck />
       </ThemeIcon>
     ),
-    onClick: () => console.log("logowanie z Profil Zaufany"),
+    onClick: () => console.log('logowanie z Profil Zaufany'),
   },
   {
-    id: "be",
-    title: "Bankowość elektroniczna",
-    subtitle: "Zaloguj się za pomocą swojego banku",
+    id: 'be',
+    title: 'Bankowość elektroniczna',
+    subtitle: 'Zaloguj się za pomocą swojego banku',
     icon: (
       <ThemeIcon variant="light" size="xl">
         <IconBuildingBank />
       </ThemeIcon>
     ),
-    badge: "Polecane",
-    onClick: () => console.log("logowanie z Bankowość elektroniczna"),
+    badge: 'Polecane',
+    onClick: () => console.log('logowanie z Bankowość elektroniczna'),
   },
   {
-    id: "edowod",
-    title: "E-dowód",
-    subtitle: "Użyj dowodu osobistego lub czytnika NFC",
+    id: 'edowod',
+    title: 'E-dowód',
+    subtitle: 'Użyj dowodu osobistego lub czytnika NFC',
     icon: (
       <ThemeIcon variant="light" size="xl">
         <IconFingerprint />
       </ThemeIcon>
     ),
-    badge: "Polecane",
-    onClick: () => console.log("logowanie z E-dowód"),
+    badge: 'Polecane',
+    onClick: () => console.log('logowanie z E-dowód'),
   },
   {
-    id: "eid",
-    title: "Use eID",
-    subtitle: "Use your National eID to access online services",
+    id: 'eid',
+    title: 'Use eID',
+    subtitle: 'Use your National eID to access online services',
     icon: (
       <ThemeIcon variant="light" size="xl">
         <IconStarsFilled />
       </ThemeIcon>
     ),
-    badge: "Polecane",
-    onClick: () => console.log("logowanie z eID"),
+    badge: 'Polecane',
+    onClick: () => console.log('logowanie z eID'),
   },
-];
+]
 
 function LoginButton({ provider }: { provider: Provider }) {
   return (
@@ -119,7 +114,7 @@ function LoginButton({ provider }: { provider: Provider }) {
       p="sm"
       component="button"
       onClick={provider.onClick}
-      style={{ cursor: "pointer", width: "100%", textAlign: "left" }}
+      style={{ cursor: 'pointer', width: '100%', textAlign: 'left' }}
     >
       <Group align="flex-start">
         {provider.icon}
@@ -136,7 +131,7 @@ function LoginButton({ provider }: { provider: Provider }) {
         </Box>
       </Group>
     </Paper>
-  );
+  )
 }
 
 export default function LoginPage() {
@@ -145,18 +140,21 @@ export default function LoginPage() {
       fluid
       h="100vh"
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingInline: "min(6vw, 48px)",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingInline: 'min(6vw, 48px)',
       }}
     >
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 2 }} w="100%" spacing="xl">
         <Box>
-          <Title order={1} size="lg" mb={"md"}>
-            Logowanie do <Anchor component={Link} href="/" c="blue" td="underline">IPAL</Anchor>
+          <Title order={1} size="lg" mb={'md'}>
+            Logowanie do{' '}
+            <Anchor component={Link} href="/" c="blue" td="underline">
+              IPAL
+            </Anchor>
           </Title>
-          <Stack gap={"xs"}>
+          <Stack gap={'xs'}>
             {providers.map((p) => (
               <LoginButton key={p.id} provider={p} />
             ))}
@@ -165,7 +163,7 @@ export default function LoginPage() {
         <BackgroundImage
           src="https://emerging-europe.com/wp-content/uploads/2023/03/bigstock-administrative-center-in-warsa-468491209-990x556.jpg"
           h="100%"
-          style={{ position: "relative", minHeight: 360, overflow: "hidden" }}
+          style={{ position: 'relative', minHeight: 360, overflow: 'hidden' }}
         >
           <Overlay
             gradient="linear-gradient(120deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.6) 100%)"
@@ -176,20 +174,20 @@ export default function LoginPage() {
             h="100%"
             py="xl"
             style={{
-              position: "relative",
+              position: 'relative',
               zIndex: 2,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: "md",
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: 'md',
             }}
           >
             <Title order={2} size="xl" c="white">
               Bądź na bieżąco z najnowszymi ustawami
             </Title>
             <Text c="white" size="md">
-              Otrzymuj podsumowania AI, alerty o zmianach i jasne streszczenia,
-              aby szybko zrozumieć, co naprawdę się zmienia.
+              Otrzymuj podsumowania AI, alerty o zmianach i jasne streszczenia, aby szybko
+              zrozumieć, co naprawdę się zmienia.
             </Text>
             <Group justify="center">
               <Button variant="white" color="dark" size="md">
@@ -200,9 +198,8 @@ export default function LoginPage() {
         </BackgroundImage>
       </SimpleGrid>
     </Container>
-  );
+  )
 }
-
 ```
 
 # src\app\(main)\konsultacje\page.tsx:
@@ -254,6 +251,7 @@ import {
 } from '@tabler/icons-react'
 import { consultationProjects } from '../../../mocks/prekonsultacjeMock'
 import { AISummary } from '../../../components/ai/AISummary/AISummary'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ConsultationProject {
   id: string
@@ -849,11 +847,15 @@ export default function KonsultacjePage() {
             </Tabs.Panel>
 
             <Tabs.Panel value="document-summary" pt="md">
-              <AISummary
+              <AISummaryGroq
                 type="konsultacja"
                 title={selectedProject.title}
                 description={selectedProject.description}
-                content=""
+                content={`Projekt konsultacji: ${selectedProject.title}. ${
+                  selectedProject.description
+                }. Instytucja: ${selectedProject.institution}. Termin: ${new Date(
+                  selectedProject.deadline,
+                ).toLocaleDateString('pl-PL')}.`}
               />
             </Tabs.Panel>
           </Tabs>
@@ -862,33 +864,26 @@ export default function KonsultacjePage() {
     </Container>
   )
 }
-
 ```
 
 # src\app\(main)\layout.tsx:
 
 ```tsx
-import AppShellLayout from "@/components/Layout/AppShell";
+import AppShellLayout from '@/components/Layout/AppShell'
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <AppShellLayout>{children}</AppShellLayout>;
+export default function MainLayout({ children }: { children: React.ReactNode }) {
+  return <AppShellLayout>{children}</AppShellLayout>
 }
-
 ```
 
 # src\app\(main)\page.tsx:
 
 ```tsx
-import HomeCards from "@/components/HomeCards/HomeCards";
+import HomeCards from '@/components/HomeCards/HomeCards'
 
 export default function HomePage() {
-  return <HomeCards />;
+  return <HomeCards />
 }
-
 ```
 
 # src\app\(main)\prekonsultacje\page.tsx:
@@ -907,12 +902,12 @@ import {
 } from '@tabler/icons-react'
 import { ProjectFilters, ProjectGrid } from '@/components/projects'
 import { Comments } from '@/components/comments'
-import { ProjectRating } from '@/components/rating'
-import { AICommentsAnalysis } from '@/components/ai'
-import { AISummary } from '@/components/ai'
+import { ProjectRating } from '@/components/ProjectRating/ProjectRating'
+import { AICommentsAnalysis } from '@/components/ai//AIAnalysis/AICommentsAnalysis'
 import { preConsultationProjects } from '@/mocks/prekonsultacjeMock'
 import { PreConsultationProject } from '@/types'
-import { useProjectComments } from '@/features/consultations/hooks'
+import { useProjectComments } from '@/features/consultations/hooks/useProjectComments'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 export default function PrekonsultacjePage() {
   const { projects, addComment, rateProject } = useProjectComments(preConsultationProjects)
@@ -995,8 +990,15 @@ export default function PrekonsultacjePage() {
               </Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="details" pt="md">
-              {/* Project details - można wydzielić do osobnego komponentu */}
+            <Tabs.Panel value="document-summary" pt="md">
+              {selectedProject && (
+                <AISummaryGroq
+                  type="prekonsultacja"
+                  title={selectedProject.title}
+                  description={selectedProject.description}
+                  comments={selectedProject.comments.map((c) => c.content)}
+                />
+              )}
             </Tabs.Panel>
 
             <Tabs.Panel value="comments" pt="md">
@@ -1023,12 +1025,14 @@ export default function PrekonsultacjePage() {
             </Tabs.Panel>
 
             <Tabs.Panel value="document-summary" pt="md">
-              <AISummary
+              <AISummaryGroq
                 type="prekonsultacja"
                 title={selectedProject.title}
                 description={selectedProject.description}
                 content=""
-              />
+                comments={selectedProject.comments.map((c) => c.content)}
+              />{' '}
+              // Analizuje komentarze!
             </Tabs.Panel>
           </Tabs>
         )}
@@ -1036,7 +1040,6 @@ export default function PrekonsultacjePage() {
     </Container>
   )
 }
-
 ```
 
 # src\app\(main)\ustawy\page.tsx:
@@ -1290,7 +1293,6 @@ export default function SejmUstawyPage() {
     </Container>
   )
 }
-
 ```
 
 # src\app\(main)\ustawy\[id]\ActDetailsView.tsx:
@@ -1325,6 +1327,7 @@ import {
 } from '@tabler/icons-react'
 import { ActDetails } from '@/mocks/sejmMock'
 import { AISummary } from '../../../../components/ai/AISummary/AISummary'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ActDetailsViewProps {
   act: ActDetails
@@ -1332,7 +1335,7 @@ interface ActDetailsViewProps {
 
 export default function ActDetailsView({ act }: ActDetailsViewProps) {
   // Ustalanie aktywnego kroku na podstawie wypełnionych dat
-  const activeIndex = act.stages.filter((s) => s.isCompleted).length - 1
+  const activeIndex = act.stages.filter((s: { isCompleted: boolean }) => s.isCompleted).length - 1
 
   // Linki do plików (konstrukcja na podstawie dokumentacji API)
   const pdfUrl = act.textPDF
@@ -1410,7 +1413,7 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
               color="red"
               leftSection={<IconDownload size={16} />}
             >
-              Tekst aktu (PDF)
+              Pobierz akt (PDF)
             </Button>
           )}
           {htmlUrl && (
@@ -1430,7 +1433,7 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
       {/* Słowa kluczowe */}
       {act.keywords && act.keywords.length > 0 && (
         <Group gap="xs" mt="lg">
-          {act.keywords.map((keyword, index) => (
+          {act.keywords.map((keyword: string, index: number) => (
             <Badge key={index} variant="dot" color="gray" tt="none">
               {keyword}
             </Badge>
@@ -1453,52 +1456,61 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
             <Title order={4}>Cykl życia aktu prawnego</Title>
 
             <Timeline active={activeIndex} bulletSize={32} lineWidth={2}>
-              {act.stages.map((stage) => (
-                <Timeline.Item
-                  key={stage.stepNumber}
-                  bullet={
-                    stage.isCompleted ? (
-                      <IconCheck size={18} />
-                    ) : (
-                      <Text size="xs" fw={700}>
-                        {stage.stepNumber}
+              {act.stages.map(
+                (stage: {
+                  stepNumber: number
+                  name: string
+                  date: string | null
+                  isCompleted: boolean
+                }) => (
+                  <Timeline.Item
+                    key={stage.stepNumber}
+                    bullet={
+                      stage.isCompleted ? (
+                        <IconCheck size={18} />
+                      ) : (
+                        <Text size="xs" fw={700}>
+                          {stage.stepNumber}
+                        </Text>
+                      )
+                    }
+                    title={
+                      <Text fw={600} size="sm" c={stage.isCompleted ? 'dark' : 'dimmed'}>
+                        {stage.name}
                       </Text>
-                    )
-                  }
-                  title={
-                    <Text fw={600} size="sm" c={stage.isCompleted ? 'dark' : 'dimmed'}>
-                      {stage.name}
-                    </Text>
-                  }
-                >
-                  {stage.date ? (
-                    <Text size="sm" c="dimmed" mt={4}>
-                      {stage.date}
-                    </Text>
-                  ) : (
-                    <Text size="xs" c="dimmed" mt={4}>
-                      Oczekuje na realizację
-                    </Text>
-                  )}
-                </Timeline.Item>
-              ))}
+                    }
+                  >
+                    {stage.date ? (
+                      <Text size="sm" c="dimmed" mt={4}>
+                        {stage.date}
+                      </Text>
+                    ) : (
+                      <Text size="xs" c="dimmed" mt={4}>
+                        Oczekuje na realizację
+                      </Text>
+                    )}
+                  </Timeline.Item>
+                ),
+              )}
             </Timeline>
           </Stack>
         </Tabs.Panel>
 
         <Tabs.Panel value="ai-summary" pt="md">
-          <AISummary
+          <AISummaryGroq
             type="ustawa"
             title={act.title}
             description={`Akt prawny ${act.displayAddress}`}
-            status={act.status}
+            content={
+              act.fullText || act.title + ' – treść aktu prawnego zostanie wkrótce załadowana.'
+            }
           />
+          // act.fullText – dodaj pobieranie tekstu z PDF (patrz niżej)
         </Tabs.Panel>
       </Tabs>
     </Container>
   )
 }
-
 ```
 
 # src\app\(main)\ustawy\[id]\ActNotFound.tsx:
@@ -1540,7 +1552,6 @@ export default function ActNotFound({ id }: ActNotFoundProps) {
     </Container>
   )
 }
-
 ```
 
 # src\app\(main)\ustawy\[id]\page.tsx:
@@ -1572,7 +1583,6 @@ export default async function UstawaDetailsPage({ params }: PageProps) {
   // ActDetailsView jest już oznaczony jako "use client", więc jest bezpieczny
   return <ActDetailsView act={act} />
 }
-
 ```
 
 # src\app\api\auth\[...all]\route.ts:
@@ -1582,7 +1592,70 @@ import { auth } from '@/lib/auth'
 import { toNextJsHandler } from 'better-auth/next-js'
 
 export const { POST, GET } = toNextJsHandler(auth)
+```
 
+# src\app\api\proxy\eli\[...path]\route.ts:
+
+```ts
+// src/app/api/proxy/eli/[...path]/route.ts
+
+import { NextRequest, NextResponse } from 'next/server'
+
+const API_BASE = 'https://api.sejm.gov.pl/eli'
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ path: string[] }> },
+) {
+  const resolvedParams = await params
+  const path = resolvedParams.path.join('/')
+  const searchParams = request.nextUrl.searchParams.toString()
+
+  const targetUrl = `${API_BASE}/${path}${searchParams ? `?${searchParams}` : ''}`
+
+  try {
+    const res = await fetch(targetUrl, {
+      method: 'GET',
+      headers: {
+        // KLUCZOWE NAGŁÓWKI – bez nich Sejm zwraca 403
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        Accept: 'application/json, text/plain, */*',
+        'Accept-Language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Accept-Encoding': 'gzip, deflate, br',
+        Referer: 'https://eli.gov.pl/',
+        Origin: 'https://eli.gov.pl',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-site',
+        Connection: 'keep-alive',
+        'Cache-Control': 'no-cache',
+      },
+      // ważne – Next.js domyślnie dodaje swoje nagłówki, które mogą być wykrywane
+      // wyłączenie cache na poziomie fetch, bo i tak mamy revalidate
+      next: { revalidate: 3600 },
+    })
+
+    // Kopiujemy wszystkie nagłówki odpowiedzi (w tym Content-Encoding dla gzip)
+    const headers = new Headers(res.headers)
+    // Usuwamy potencjalnie problematyczne nagłówki Next.js
+    headers.delete('transfer-encoding')
+
+    if (!res.ok) {
+      console.error(`Sejm API Error: ${res.status} ${res.statusText} | URL: ${targetUrl}`)
+      return NextResponse.json(
+        { error: `Sejm API Error: ${res.status} ${res.statusText}` },
+        { status: res.status },
+      )
+    }
+
+    const data = await res.json()
+    return NextResponse.json(data, { headers })
+  } catch (error) {
+    console.error('Proxy fetch error:', error)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+  }
+}
 ```
 
 # src\app\api\ustawy\route.ts:
@@ -1612,24 +1685,23 @@ export async function GET(req: Request) {
   const data = await res.json()
   return NextResponse.json(data)
 }
-
 ```
 
 # src\app\globals.css:
 
 ```css
-:root[data-high-contrast="true"] {
+:root[data-high-contrast='true'] {
   --mantine-color-scheme: dark !important;
   --mantine-color-body: #000000 !important;
   --mantine-color-text: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] body {
+:root[data-high-contrast='true'] body {
   background-color: #000000 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] {
+:root[data-high-contrast='true'] {
   background-color: #000000 !important;
 
   --mantine-color-white: #000000 !important;
@@ -1667,31 +1739,31 @@ export async function GET(req: Request) {
   --input-placeholder-color: #aaff00 !important;
 }
 
-:root[data-high-contrast="true"] a {
+:root[data-high-contrast='true'] a {
   color: #ffff00 !important;
   text-decoration: underline;
 }
 
-:root[data-high-contrast="true"] .tabler-icon {
+:root[data-high-contrast='true'] .tabler-icon {
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-ActionIcon-root {
+:root[data-high-contrast='true'] .mantine-ActionIcon-root {
   background-color: #000000 !important;
   border-color: #ffff00 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-ActionIcon-root[disabled],
-:root[data-high-contrast="true"] .mantine-ActionIcon-root[data-disabled] {
+:root[data-high-contrast='true'] .mantine-ActionIcon-root[disabled],
+:root[data-high-contrast='true'] .mantine-ActionIcon-root[data-disabled] {
   background-color: #000000 !important;
   border-color: #ffff00 !important;
   color: #ffff00 !important;
   opacity: 0.5 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Button-root[disabled],
-:root[data-high-contrast="true"] .mantine-Button-root[data-disabled] {
+:root[data-high-contrast='true'] .mantine-Button-root[disabled],
+:root[data-high-contrast='true'] .mantine-Button-root[data-disabled] {
   background-color: #000000 !important;
   border-color: #ffff00 !important;
   color: #ffff00 !important;
@@ -1699,56 +1771,56 @@ export async function GET(req: Request) {
 }
 
 /* Modal components */
-:root[data-high-contrast="true"] .mantine-Modal-overlay {
+:root[data-high-contrast='true'] .mantine-Modal-overlay {
   background-color: rgba(0, 0, 0, 0.9) !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Modal-content {
+:root[data-high-contrast='true'] .mantine-Modal-content {
   background-color: #000000 !important;
   border: 2px solid #ffff00 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Modal-header {
+:root[data-high-contrast='true'] .mantine-Modal-header {
   background-color: #000000 !important;
   border-bottom: 1px solid #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Modal-title {
+:root[data-high-contrast='true'] .mantine-Modal-title {
   color: #ffff00 !important;
   font-weight: bold !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Modal-close {
+:root[data-high-contrast='true'] .mantine-Modal-close {
   background-color: #000000 !important;
   border: 1px solid #ffff00 !important;
   color: #ffff00 !important;
 }
 
 /* Tabs components */
-:root[data-high-contrast="true"] .mantine-Tabs-root {
+:root[data-high-contrast='true'] .mantine-Tabs-root {
   background-color: #000000 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Tabs-list {
+:root[data-high-contrast='true'] .mantine-Tabs-list {
   background-color: #000000 !important;
   border-bottom: 2px solid #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Tabs-tab {
+:root[data-high-contrast='true'] .mantine-Tabs-tab {
   background-color: #000000 !important;
   border: 1px solid #ffff00 !important;
   color: #ffff00 !important;
   border-bottom: none !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Tabs-tab[data-active="true"] {
+:root[data-high-contrast='true'] .mantine-Tabs-tab[data-active='true'] {
   background-color: #ffff00 !important;
   color: #000000 !important;
   font-weight: bold !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Tabs-panel {
+:root[data-high-contrast='true'] .mantine-Tabs-panel {
   background-color: #000000 !important;
   color: #ffff00 !important;
   border: 1px solid #ffff00 !important;
@@ -1762,7 +1834,7 @@ export async function GET(req: Request) {
 }
 
 /* High contrast mode */
-:root[data-high-contrast="true"] .mantine-Paper-root {
+:root[data-high-contrast='true'] .mantine-Paper-root {
   background-color: #000000 !important;
   border: 1px solid #ffff00 !important;
   color: #ffff00 !important;
@@ -1771,94 +1843,94 @@ export async function GET(req: Request) {
 /* Card components - remove duplicate since handled below */
 
 /* High contrast mode */
-:root[data-high-contrast="true"] .mantine-Card-root {
+:root[data-high-contrast='true'] .mantine-Card-root {
   background-color: #000000 !important;
   border: 2px solid #ffff00 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Card-root:hover {
+:root[data-high-contrast='true'] .mantine-Card-root:hover {
   background-color: #1a1a00 !important;
   transform: translateY(-2px) !important;
 }
 
 /* Badge components */
-:root[data-high-contrast="true"] .mantine-Badge-root {
+:root[data-high-contrast='true'] .mantine-Badge-root {
   background-color: #ffff00 !important;
   color: #000000 !important;
   border: 1px solid #ffff00 !important;
 }
 
 /* Input components */
-:root[data-high-contrast="true"] .mantine-Input-input {
+:root[data-high-contrast='true'] .mantine-Input-input {
   background-color: #000000 !important;
   border: 2px solid #ffff00 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Input-input::placeholder {
+:root[data-high-contrast='true'] .mantine-Input-input::placeholder {
   color: #aaff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-InputWrapper-label {
+:root[data-high-contrast='true'] .mantine-InputWrapper-label {
   color: #ffff00 !important;
   font-weight: bold !important;
 }
 
 /* Select components */
-:root[data-high-contrast="true"] .mantine-Select-input {
+:root[data-high-contrast='true'] .mantine-Select-input {
   background-color: #000000 !important;
   border: 2px solid #ffff00 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Select-dropdown {
+:root[data-high-contrast='true'] .mantine-Select-dropdown {
   background-color: #000000 !important;
   border: 2px solid #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Select-option {
+:root[data-high-contrast='true'] .mantine-Select-option {
   background-color: #000000 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Select-option[data-hovered="true"],
-:root[data-high-contrast="true"] .mantine-Select-option[data-selected="true"] {
+:root[data-high-contrast='true'] .mantine-Select-option[data-hovered='true'],
+:root[data-high-contrast='true'] .mantine-Select-option[data-selected='true'] {
   background-color: #ffff00 !important;
   color: #000000 !important;
 }
 
 /* Text and Typography */
-:root[data-high-contrast="true"] .mantine-Text-root {
+:root[data-high-contrast='true'] .mantine-Text-root {
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Title-root {
+:root[data-high-contrast='true'] .mantine-Title-root {
   color: #ffff00 !important;
 }
 
 /* Progress components */
-:root[data-high-contrast="true"] .mantine-Progress-root {
+:root[data-high-contrast='true'] .mantine-Progress-root {
   background-color: #000000 !important;
   border: 1px solid #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Progress-section {
+:root[data-high-contrast='true'] .mantine-Progress-section {
   background-color: #ffff00 !important;
 }
 
 /* Accordion components */
-:root[data-high-contrast="true"] .mantine-Accordion-root {
+:root[data-high-contrast='true'] .mantine-Accordion-root {
   background-color: #000000 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Accordion-control {
+:root[data-high-contrast='true'] .mantine-Accordion-control {
   background-color: #000000 !important;
   border: 1px solid #ffff00 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Accordion-content {
+:root[data-high-contrast='true'] .mantine-Accordion-content {
   background-color: #000000 !important;
   color: #ffff00 !important;
   border: 1px solid #ffff00 !important;
@@ -1866,89 +1938,89 @@ export async function GET(req: Request) {
 }
 
 /* Timeline components */
-:root[data-high-contrast="true"] .mantine-Timeline-root {
+:root[data-high-contrast='true'] .mantine-Timeline-root {
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Timeline-itemBullet {
+:root[data-high-contrast='true'] .mantine-Timeline-itemBullet {
   background-color: #ffff00 !important;
   border: 2px solid #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Timeline-itemTitle {
+:root[data-high-contrast='true'] .mantine-Timeline-itemTitle {
   color: #ffff00 !important;
   font-weight: bold !important;
 }
 
 /* Group and Stack */
-:root[data-high-contrast="true"] .mantine-Group-root,
-:root[data-high-contrast="true"] .mantine-Stack-root {
+:root[data-high-contrast='true'] .mantine-Group-root,
+:root[data-high-contrast='true'] .mantine-Stack-root {
   color: #ffff00 !important;
 }
 
 /* Tooltip */
-:root[data-high-contrast="true"] .mantine-Tooltip-tooltip {
+:root[data-high-contrast='true'] .mantine-Tooltip-tooltip {
   background-color: #ffff00 !important;
   color: #000000 !important;
   border: 1px solid #000000 !important;
 }
 
 /* AppShell */
-:root[data-high-contrast="true"] .mantine-AppShell-root {
+:root[data-high-contrast='true'] .mantine-AppShell-root {
   background-color: #000000 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-AppShell-header {
+:root[data-high-contrast='true'] .mantine-AppShell-header {
   background-color: #000000 !important;
   border-bottom: 2px solid #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-AppShell-main {
+:root[data-high-contrast='true'] .mantine-AppShell-main {
   background-color: #000000 !important;
 }
 
 /* Burger menu */
-:root[data-high-contrast="true"] .mantine-Burger-root {
+:root[data-high-contrast='true'] .mantine-Burger-root {
   color: #ffff00 !important;
 }
 
 /* Anchor links */
-:root[data-high-contrast="true"] .mantine-Anchor-root {
+:root[data-high-contrast='true'] .mantine-Anchor-root {
   color: #ffff00 !important;
   text-decoration: underline !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Anchor-root:hover {
+:root[data-high-contrast='true'] .mantine-Anchor-root:hover {
   color: #ffffff !important;
 }
 
 /* Rating components */
-:root[data-high-contrast="true"] .mantine-Rating-root {
+:root[data-high-contrast='true'] .mantine-Rating-root {
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Rating-symbolBody {
+:root[data-high-contrast='true'] .mantine-Rating-symbolBody {
   color: #ffff00 !important;
 }
 
 /* Divider */
-:root[data-high-contrast="true"] .mantine-Divider-root {
+:root[data-high-contrast='true'] .mantine-Divider-root {
   border-color: #ffff00 !important;
 }
 
 /* Grid */
-:root[data-high-contrast="true"] .mantine-Grid-root,
-:root[data-high-contrast="true"] .mantine-Grid-col {
+:root[data-high-contrast='true'] .mantine-Grid-root,
+:root[data-high-contrast='true'] .mantine-Grid-col {
   color: #ffff00 !important;
 }
 
 /* Container */
-:root[data-high-contrast="true"] .mantine-Container-root {
+:root[data-high-contrast='true'] .mantine-Container-root {
   color: #ffff00 !important;
 }
 
 /* Focus indicators */
-:root[data-high-contrast="true"] *:focus {
+:root[data-high-contrast='true'] *:focus {
   outline: 3px solid #ffff00 !important;
   outline-offset: 2px !important;
 }
@@ -1964,7 +2036,7 @@ body {
 .mantine-Grid-col:nth-child(even) .mantine-Card-root,
 .mantine-Grid-col:nth-child(odd) .mantine-Card-root,
 .mantine-Grid-col:nth-child(2n) .mantine-Card-root,
-.mantine-Grid-col:nth-child(2n+1) .mantine-Card-root {
+.mantine-Grid-col:nth-child(2n + 1) .mantine-Card-root {
   background-color: var(--mantine-color-body) !important;
 }
 
@@ -2003,106 +2075,97 @@ body {
   background-color: var(--mantine-color-body) !important;
 }
 
-:root[data-high-contrast="true"] body {
+:root[data-high-contrast='true'] body {
   background-color: #000000 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Card-root {
+:root[data-high-contrast='true'] .mantine-Card-root {
   background-color: #000000 !important;
   border: 2px solid #ffff00 !important;
   color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Card-root:hover {
+:root[data-high-contrast='true'] .mantine-Card-root:hover {
   background-color: #1a1a00 !important;
   transform: translateY(-2px) !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Table-root {
+:root[data-high-contrast='true'] .mantine-Table-root {
   background-color: #000000 !important;
   color: #ffff00 !important;
   border-color: #ffff00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Table-thead {
+:root[data-high-contrast='true'] .mantine-Table-thead {
   background-color: #000000 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Table-th {
+:root[data-high-contrast='true'] .mantine-Table-th {
   background-color: #000000 !important;
   color: #ffff00 !important;
   border-color: #ffff00 !important;
   font-weight: bold !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Table-td {
+:root[data-high-contrast='true'] .mantine-Table-td {
   background-color: #000000 !important;
   color: #ffff00 !important;
   border-color: #ffff00 !important;
 }
 
 /* Fix striped table rows */
-:root[data-high-contrast="true"] .mantine-Table-tr {
+:root[data-high-contrast='true'] .mantine-Table-tr {
   background-color: #000000 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Table-tr:nth-of-type(odd) {
+:root[data-high-contrast='true'] .mantine-Table-tr:nth-of-type(odd) {
   background-color: #000000 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Table-tr:nth-of-type(even) {
+:root[data-high-contrast='true'] .mantine-Table-tr:nth-of-type(even) {
   background-color: #000000 !important;
 }
 
 /* Fix table hover effects */
-:root[data-high-contrast="true"] .mantine-Table-tr:hover {
+:root[data-high-contrast='true'] .mantine-Table-tr:hover {
   background-color: #1a1a00 !important;
 }
 
-:root[data-high-contrast="true"] .mantine-Table-tr:hover .mantine-Table-td {
+:root[data-high-contrast='true'] .mantine-Table-tr:hover .mantine-Table-td {
   background-color: #1a1a00 !important;
 }
 
 /* ScrollContainer */
-:root[data-high-contrast="true"] .mantine-Table-scrollContainer {
+:root[data-high-contrast='true'] .mantine-Table-scrollContainer {
   background-color: #000000 !important;
 }
-
 ```
 
 # src\app\layout.tsx:
 
 ```tsx
-import "@mantine/core/styles.css";
-import "./globals.css";
+import '@mantine/core/styles.css'
+import './globals.css'
 
-import {
-  ColorSchemeScript,
-  MantineProvider,
-  mantineHtmlProps,
-  createTheme,
-} from "@mantine/core";
-import { AccessibilityProvider } from "../context/AccessibilityContext";
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps, createTheme } from '@mantine/core'
+import { AccessibilityProvider } from '../context/AccessibilityContext'
 
 export const metadata = {
-  title: "IPAL - Interaktywny Portal Analiz Legislacyjnych",
-  description: "Portal analiz legislacyjnych zgodny z WCAG 2.1. Śledź prawo, konsultacje i prekonsultacje w jednym miejscu.",
+  title: 'IPAL - Interaktywny Portal Analiz Legislacyjnych',
+  description:
+    'Portal analiz legislacyjnych zgodny z WCAG 2.1. Śledź prawo, konsultacje i prekonsultacje w jednym miejscu.',
   icons: {
     icon: '/icon.svg',
   },
-};
+}
 
 const theme = createTheme({
-  primaryColor: "dark",
-  defaultRadius: "xs",
-});
+  primaryColor: 'dark',
+  defaultRadius: 'xs',
+})
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pl" {...mantineHtmlProps}>
       <head>
@@ -2114,15 +2177,14 @@ export default function RootLayout({
         </MantineProvider>
       </body>
     </html>
-  );
+  )
 }
-
 ```
 
 # src\components\AccessibilityPanel\AccessibilityPanel.tsx:
 
 ```tsx
-"use client";
+'use client'
 
 import {
   ActionIcon,
@@ -2131,7 +2193,7 @@ import {
   useMantineColorScheme,
   useComputedColorScheme,
   Button,
-} from "@mantine/core";
+} from '@mantine/core'
 import {
   IconEye,
   IconEyeOff,
@@ -2141,46 +2203,39 @@ import {
   IconSun,
   IconMoon,
   IconLogin,
-} from "@tabler/icons-react";
-import { useAccessibility } from "../../context/AccessibilityContext";
-import Link from "next/link";
-import cx from "clsx";
-import classes from "./ThemeToggleIcons.module.css";
+} from '@tabler/icons-react'
+import { useAccessibility } from '../../context/AccessibilityContext'
+import Link from 'next/link'
+import cx from 'clsx'
+import classes from './ThemeToggleIcons.module.css'
 
 export default function AccessibilityPanel() {
-  const {
-    highContrast,
-    toggleHighContrast,
-    increaseFont,
-    decreaseFont,
-    fontSizePercent,
-  } = useAccessibility();
+  const { highContrast, toggleHighContrast, increaseFont, decreaseFont, fontSizePercent } =
+    useAccessibility()
 
-  const { setColorScheme } = useMantineColorScheme();
+  const { setColorScheme } = useMantineColorScheme()
 
-  const colorScheme = useComputedColorScheme("light", {
+  const colorScheme = useComputedColorScheme('light', {
     getInitialValueInEffect: true,
-  });
+  })
 
   const themeTooltipLabel = highContrast
-    ? "Opcja niedostępna w trybie wysokiego kontrastu"
-    : colorScheme === "dark"
-    ? "Włącz jasny motyw"
-    : "Włącz ciemny motyw";
+    ? 'Opcja niedostępna w trybie wysokiego kontrastu'
+    : colorScheme === 'dark'
+    ? 'Włącz jasny motyw'
+    : 'Włącz ciemny motyw'
 
   return (
     <Group gap="xs">
       <Tooltip label={themeTooltipLabel}>
-        <span style={{ cursor: highContrast ? "not-allowed" : "pointer" }}>
+        <span style={{ cursor: highContrast ? 'not-allowed' : 'pointer' }}>
           <ActionIcon
-            onClick={() =>
-              setColorScheme(colorScheme === "light" ? "dark" : "light")
-            }
+            onClick={() => setColorScheme(colorScheme === 'light' ? 'dark' : 'light')}
             variant="default"
             size="lg"
             aria-label="Przełącz motyw jasny/ciemny"
             disabled={highContrast}
-            style={{ pointerEvents: highContrast ? "none" : "auto" }}
+            style={{ pointerEvents: highContrast ? 'none' : 'auto' }}
           >
             <IconSun className={cx(classes.icon, classes.light)} />
             <IconMoon className={cx(classes.icon, classes.dark)} />
@@ -2189,22 +2244,16 @@ export default function AccessibilityPanel() {
       </Tooltip>
 
       <Tooltip
-        label={
-          highContrast
-            ? "Wyłącz wysoki kontrast"
-            : "Włącz wysoki kontrast (czarno-żółty)"
-        }
+        label={highContrast ? 'Wyłącz wysoki kontrast' : 'Włącz wysoki kontrast (czarno-żółty)'}
       >
         <ActionIcon
           onClick={toggleHighContrast}
-          variant={highContrast ? "filled" : "default"}
-          color={highContrast ? "yellow" : undefined}
-          c={highContrast ? "black" : undefined}
+          variant={highContrast ? 'filled' : 'default'}
+          color={highContrast ? 'yellow' : undefined}
+          c={highContrast ? 'black' : undefined}
           size="lg"
-          aria-label={
-            highContrast ? "Wyłącz wysoki kontrast" : "Włącz wysoki kontrast"
-          }
-          style={highContrast ? { border: "2px solid yellow" } : {}}
+          aria-label={highContrast ? 'Wyłącz wysoki kontrast' : 'Włącz wysoki kontrast'}
+          style={highContrast ? { border: '2px solid yellow' } : {}}
         >
           {highContrast ? <IconEyeOff size={20} /> : <IconEye size={20} />}
         </ActionIcon>
@@ -2240,19 +2289,14 @@ export default function AccessibilityPanel() {
         </ActionIcon>
       </Tooltip>
 
-      <Link href="/login" style={{ textDecoration: "none" }}>
-        <Button
-          leftSection={<IconLogin size={18} />}
-          variant="filled"
-          size="sm"
-        >
+      <Link href="/login" style={{ textDecoration: 'none' }}>
+        <Button leftSection={<IconLogin size={18} />} variant="filled" size="sm">
           Logowanie
         </Button>
       </Link>
     </Group>
-  );
+  )
 }
-
 ```
 
 # src\components\AccessibilityPanel\ThemeToggleIcons.module.css:
@@ -2280,13 +2324,12 @@ export default function AccessibilityPanel() {
     display: block;
   }
 }
-
 ```
 
 # src\components\ai\AIAnalysis\AICommentsAnalysis.tsx:
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import {
   Card,
   Text,
@@ -2304,8 +2347,8 @@ import {
   List,
   Accordion,
   ActionIcon,
-  Tooltip
-} from '@mantine/core';
+  Tooltip,
+} from '@mantine/core'
 import {
   IconBrain,
   IconTrendingUp,
@@ -2319,172 +2362,191 @@ import {
   IconInfoCircle,
   IconUsers,
   IconMessage,
-  IconChartBar
-} from '@tabler/icons-react';
-import { Comment } from '../../../mocks/prekonsultacjeMock';
+  IconChartBar,
+} from '@tabler/icons-react'
+import { Comment } from '../../../mocks/prekonsultacjeMock'
 
 interface AIAnalysisProps {
-  comments: Comment[];
-  projectId: string;
-  projectTitle: string;
+  comments: Comment[]
+  projectId: string
+  projectTitle: string
 }
 
 interface SentimentAnalysis {
-  positive: number;
-  negative: number;
-  neutral: number;
-  overall: 'positive' | 'negative' | 'neutral';
+  positive: number
+  negative: number
+  neutral: number
+  overall: 'positive' | 'negative' | 'neutral'
 }
 
 interface KeyTheme {
-  theme: string;
-  count: number;
-  sentiment: 'positive' | 'negative' | 'neutral';
-  examples: string[];
+  theme: string
+  count: number
+  sentiment: 'positive' | 'negative' | 'neutral'
+  examples: string[]
 }
 
 interface AIInsight {
-  type: 'concern' | 'suggestion' | 'praise' | 'issue';
-  title: string;
-  description: string;
-  confidence: number;
-  commentsCount: number;
+  type: 'concern' | 'suggestion' | 'praise' | 'issue'
+  title: string
+  description: string
+  confidence: number
+  commentsCount: number
 }
 
 export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnalysisProps) {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [analysis, setAnalysis] = useState<{
-    sentiment: SentimentAnalysis;
-    keyThemes: KeyTheme[];
-    insights: AIInsight[];
-    summary: string;
-  } | null>(null);
+    sentiment: SentimentAnalysis
+    keyThemes: KeyTheme[]
+    insights: AIInsight[]
+    summary: string
+  } | null>(null)
 
   // Symulacja analizy AI
   const runAIAnalysis = async () => {
-    setIsAnalyzing(true);
-    
+    setIsAnalyzing(true)
+
     // Symulacja czasu analizy
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+
     // Mockowa analiza na podstawie komentarzy
     const mockAnalysis = {
       sentiment: {
         positive: Math.floor(Math.random() * 40) + 30, // 30-70%
         negative: Math.floor(Math.random() * 30) + 10, // 10-40%
         neutral: 0,
-        overall: 'positive' as 'positive' | 'negative' | 'neutral'
+        overall: 'positive' as 'positive' | 'negative' | 'neutral',
       },
       keyThemes: [
         {
           theme: 'Definicja danych wrażliwych',
           count: 12,
           sentiment: 'neutral' as const,
-          examples: ['Należy doprecyzować definicję', 'Zbyt ogólne sformułowania']
+          examples: ['Należy doprecyzować definicję', 'Zbyt ogólne sformułowania'],
         },
         {
           theme: 'Kary finansowe',
           count: 8,
           sentiment: 'negative' as const,
-          examples: ['Zbyt wysokie kary', 'Nieproporcjonalne sankcje']
+          examples: ['Zbyt wysokie kary', 'Nieproporcjonalne sankcje'],
         },
         {
           theme: 'Okres przejściowy',
           count: 15,
           sentiment: 'positive' as const,
-          examples: ['Potrzebny dłuższy okres', 'Wsparcie dla małych firm']
+          examples: ['Potrzebny dłuższy okres', 'Wsparcie dla małych firm'],
         },
         {
           theme: 'Bezpieczeństwo danych',
           count: 20,
           sentiment: 'positive' as const,
-          examples: ['Ważne dla obywateli', 'Krok w dobrą stronę']
-        }
+          examples: ['Ważne dla obywateli', 'Krok w dobrą stronę'],
+        },
       ],
       insights: [
         {
           type: 'concern' as const,
           title: 'Obawy dotyczące implementacji',
-          description: 'Wiele komentarzy wyraża obawy o trudności w implementacji nowych wymogów, szczególnie w małych jednostkach.',
+          description:
+            'Wiele komentarzy wyraża obawy o trudności w implementacji nowych wymogów, szczególnie w małych jednostkach.',
           confidence: 85,
-          commentsCount: 23
+          commentsCount: 23,
         },
         {
           type: 'suggestion' as const,
           title: 'Sugestie dotyczące kar finansowych',
-          description: 'Użytkownicy sugerują wprowadzenie progresywnej skali kar w zależności od wielkości instytucji.',
+          description:
+            'Użytkownicy sugerują wprowadzenie progresywnej skali kar w zależności od wielkości instytucji.',
           confidence: 78,
-          commentsCount: 15
+          commentsCount: 15,
         },
         {
           type: 'praise' as const,
           title: 'Pozytywne przyjęcie celów ustawy',
-          description: 'Większość komentarzy pozytywnie ocenia cel ustawy i potrzebę wzmocnienia ochrony danych.',
+          description:
+            'Większość komentarzy pozytywnie ocenia cel ustawy i potrzebę wzmocnienia ochrony danych.',
           confidence: 92,
-          commentsCount: 31
-        }
+          commentsCount: 31,
+        },
       ],
-      summary: 'Analiza wykazuje generalnie pozytywny odbiór projektu ustawy, jednak z istotnymi zastrzeżeniami dotyczącymi praktycznej implementacji i wysokości kar finansowych.'
-    };
-
-    mockAnalysis.sentiment.neutral = 100 - mockAnalysis.sentiment.positive - mockAnalysis.sentiment.negative;
-    
-    let overallSentiment: 'positive' | 'negative' | 'neutral' = 'neutral';
-    if (mockAnalysis.sentiment.positive > mockAnalysis.sentiment.negative + 20) {
-      overallSentiment = 'positive';
-    } else if (mockAnalysis.sentiment.negative > mockAnalysis.sentiment.positive + 15) {
-      overallSentiment = 'negative';
-    } else {
-      overallSentiment = 'neutral';
+      summary:
+        'Analiza wykazuje generalnie pozytywny odbiór projektu ustawy, jednak z istotnymi zastrzeżeniami dotyczącymi praktycznej implementacji i wysokości kar finansowych.',
     }
-    
-    mockAnalysis.sentiment.overall = overallSentiment;
 
-    setAnalysis(mockAnalysis);
-    setIsAnalyzing(false);
-  };
+    mockAnalysis.sentiment.neutral =
+      100 - mockAnalysis.sentiment.positive - mockAnalysis.sentiment.negative
+
+    let overallSentiment: 'positive' | 'negative' | 'neutral' = 'neutral'
+    if (mockAnalysis.sentiment.positive > mockAnalysis.sentiment.negative + 20) {
+      overallSentiment = 'positive'
+    } else if (mockAnalysis.sentiment.negative > mockAnalysis.sentiment.positive + 15) {
+      overallSentiment = 'negative'
+    } else {
+      overallSentiment = 'neutral'
+    }
+
+    mockAnalysis.sentiment.overall = overallSentiment
+
+    setAnalysis(mockAnalysis)
+    setIsAnalyzing(false)
+  }
 
   useEffect(() => {
     if (comments.length > 0) {
-      runAIAnalysis();
+      runAIAnalysis()
     }
-  }, [comments]);
+  }, [comments])
 
   const getSentimentColor = (sentiment: string) => {
     switch (sentiment) {
-      case 'positive': return 'green';
-      case 'negative': return 'red';
-      case 'neutral': return 'gray';
-      default: return 'blue';
+      case 'positive':
+        return 'green'
+      case 'negative':
+        return 'red'
+      case 'neutral':
+        return 'gray'
+      default:
+        return 'blue'
     }
-  };
+  }
 
   const getInsightIcon = (type: string) => {
     switch (type) {
-      case 'concern': return <IconAlertTriangle size={16} />;
-      case 'suggestion': return <IconInfoCircle size={16} />;
-      case 'praise': return <IconThumbUp size={16} />;
-      case 'issue': return <IconExclamationMark size={16} />;
-      default: return <IconInfoCircle size={16} />;
+      case 'concern':
+        return <IconAlertTriangle size={16} />
+      case 'suggestion':
+        return <IconInfoCircle size={16} />
+      case 'praise':
+        return <IconThumbUp size={16} />
+      case 'issue':
+        return <IconExclamationMark size={16} />
+      default:
+        return <IconInfoCircle size={16} />
     }
-  };
+  }
 
   const getInsightColor = (type: string) => {
     switch (type) {
-      case 'concern': return 'orange';
-      case 'suggestion': return 'blue';
-      case 'praise': return 'green';
-      case 'issue': return 'red';
-      default: return 'gray';
+      case 'concern':
+        return 'orange'
+      case 'suggestion':
+        return 'blue'
+      case 'praise':
+        return 'green'
+      case 'issue':
+        return 'red'
+      default:
+        return 'gray'
     }
-  };
+  }
 
   if (comments.length === 0) {
     return (
       <Alert icon={<IconInfoCircle size={16} />} title="Brak komentarzy" color="blue">
         Nie ma jeszcze komentarzy do analizy. Dodaj pierwsze komentarze, aby uruchomić analizę AI.
       </Alert>
-    );
+    )
   }
 
   return (
@@ -2528,11 +2590,14 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                 size="lg"
                 variant="light"
               >
-                {analysis.sentiment.overall === 'positive' ? 'Pozytywny' :
-                 analysis.sentiment.overall === 'negative' ? 'Negatywny' : 'Neutralny'}
+                {analysis.sentiment.overall === 'positive'
+                  ? 'Pozytywny'
+                  : analysis.sentiment.overall === 'negative'
+                  ? 'Negatywny'
+                  : 'Neutralny'}
               </Badge>
             </Group>
-            
+
             <Stack gap="xs">
               <Group justify="space-between">
                 <Group gap="xs">
@@ -2541,10 +2606,12 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </ThemeIcon>
                   <Text size="sm">Pozytywne</Text>
                 </Group>
-                <Text size="sm" fw={500}>{analysis.sentiment.positive}%</Text>
+                <Text size="sm" fw={500}>
+                  {analysis.sentiment.positive}%
+                </Text>
               </Group>
               <Progress value={analysis.sentiment.positive} color="green" size="sm" />
-              
+
               <Group justify="space-between">
                 <Group gap="xs">
                   <ThemeIcon color="red" variant="light" size="sm">
@@ -2552,10 +2619,12 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </ThemeIcon>
                   <Text size="sm">Negatywne</Text>
                 </Group>
-                <Text size="sm" fw={500}>{analysis.sentiment.negative}%</Text>
+                <Text size="sm" fw={500}>
+                  {analysis.sentiment.negative}%
+                </Text>
               </Group>
               <Progress value={analysis.sentiment.negative} color="red" size="sm" />
-              
+
               <Group justify="space-between">
                 <Group gap="xs">
                   <ThemeIcon color="gray" variant="light" size="sm">
@@ -2563,7 +2632,9 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </ThemeIcon>
                   <Text size="sm">Neutralne</Text>
                 </Group>
-                <Text size="sm" fw={500}>{analysis.sentiment.neutral}%</Text>
+                <Text size="sm" fw={500}>
+                  {analysis.sentiment.neutral}%
+                </Text>
               </Group>
               <Progress value={analysis.sentiment.neutral} color="gray" size="sm" />
             </Stack>
@@ -2571,12 +2642,16 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
 
           {/* Kluczowe tematy */}
           <Card shadow="sm" p="md" withBorder>
-            <Title order={4} mb="md">Kluczowe tematy w komentarzach</Title>
+            <Title order={4} mb="md">
+              Kluczowe tematy w komentarzach
+            </Title>
             <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
               {analysis.keyThemes.map((theme, index) => (
                 <Card key={index} p="sm" withBorder>
                   <Group justify="space-between" mb="xs">
-                    <Text fw={500} size="sm">{theme.theme}</Text>
+                    <Text fw={500} size="sm">
+                      {theme.theme}
+                    </Text>
                     <Badge color={getSentimentColor(theme.sentiment)} variant="light" size="sm">
                       {theme.count}
                     </Badge>
@@ -2591,17 +2666,15 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
 
           {/* Kluczowe spostrzeżenia */}
           <Card shadow="sm" p="md" withBorder>
-            <Title order={4} mb="md">Kluczowe spostrzeżenia AI</Title>
+            <Title order={4} mb="md">
+              Kluczowe spostrzeżenia AI
+            </Title>
             <Accordion>
               {analysis.insights.map((insight, index) => (
                 <Accordion.Item key={index} value={`insight-${index}`}>
                   <Accordion.Control>
                     <Group>
-                      <ThemeIcon 
-                        color={getInsightColor(insight.type)} 
-                        variant="light" 
-                        size="sm"
-                      >
+                      <ThemeIcon color={getInsightColor(insight.type)} variant="light" size="sm">
                         {getInsightIcon(insight.type)}
                       </ThemeIcon>
                       <div>
@@ -2622,11 +2695,11 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
                   </Accordion.Control>
                   <Accordion.Panel>
                     <Text size="sm">{insight.description}</Text>
-                    <Progress 
-                      value={insight.confidence} 
-                      color={getInsightColor(insight.type)} 
-                      size="xs" 
-                      mt="xs" 
+                    <Progress
+                      value={insight.confidence}
+                      color={getInsightColor(insight.type)}
+                      size="xs"
+                      mt="xs"
                     />
                   </Accordion.Panel>
                 </Accordion.Item>
@@ -2651,45 +2724,61 @@ export function AICommentsAnalysis({ comments, projectId, projectTitle }: AIAnal
               <ThemeIcon color="blue" size="lg" mx="auto" mb="xs">
                 <IconMessage size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{comments.length}</Text>
-              <Text size="sm" c="dimmed">Komentarzy</Text>
+              <Text fw={600} size="lg">
+                {comments.length}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Komentarzy
+              </Text>
             </Card>
-            
+
             <Card p="md" withBorder ta="center">
               <ThemeIcon color="green" size="lg" mx="auto" mb="xs">
                 <IconUsers size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{new Set(comments.map(c => c.author)).size}</Text>
-              <Text size="sm" c="dimmed">Unikalnych autorów</Text>
+              <Text fw={600} size="lg">
+                {new Set(comments.map((c) => c.author)).size}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Unikalnych autorów
+              </Text>
             </Card>
-            
+
             <Card p="md" withBorder ta="center">
               <ThemeIcon color="orange" size="lg" mx="auto" mb="xs">
                 <IconChartBar size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{analysis.keyThemes.length}</Text>
-              <Text size="sm" c="dimmed">Głównych tematów</Text>
+              <Text fw={600} size="lg">
+                {analysis.keyThemes.length}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Głównych tematów
+              </Text>
             </Card>
-            
+
             <Card p="md" withBorder ta="center">
               <ThemeIcon color="violet" size="lg" mx="auto" mb="xs">
                 <IconBrain size={24} />
               </ThemeIcon>
-              <Text fw={600} size="lg">{analysis.insights.length}</Text>
-              <Text size="sm" c="dimmed">Spostrzeżeń AI</Text>
+              <Text fw={600} size="lg">
+                {analysis.insights.length}
+              </Text>
+              <Text size="sm" c="dimmed">
+                Spostrzeżeń AI
+              </Text>
             </Card>
           </SimpleGrid>
         </>
       ) : null}
     </Stack>
-  );
+  )
 }
 ```
 
 # src\components\ai\AISummary\AISummary.tsx:
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import {
   Card,
   Text,
@@ -2704,8 +2793,8 @@ import {
   List,
   ActionIcon,
   Tooltip,
-  Progress
-} from '@mantine/core';
+  Progress,
+} from '@mantine/core'
 import {
   IconBrain,
   IconRefresh,
@@ -2716,51 +2805,59 @@ import {
   IconClock,
   IconScale,
   IconUsers,
-  IconFileText
-} from '@tabler/icons-react';
+  IconFileText,
+} from '@tabler/icons-react'
 
 interface AISummaryProps {
-  type: 'ustawa' | 'konsultacja' | 'prekonsultacja';
-  title: string;
-  description?: string;
-  content?: string;
-  comments?: any[];
-  participants?: number;
-  status?: string;
+  type: 'ustawa' | 'konsultacja' | 'prekonsultacja'
+  title: string
+  description?: string
+  content?: string
+  comments?: any[]
+  participants?: number
+  status?: string
 }
 
 interface AISummaryData {
-  mainPoints: string[];
-  impact: string;
-  complexity: 'low' | 'medium' | 'high';
-  stakeholders: string[];
-  timeline: string;
-  risks: string[];
-  opportunities: string[];
-  recommendation: string;
-  confidence: number;
+  mainPoints: string[]
+  impact: string
+  complexity: 'low' | 'medium' | 'high'
+  stakeholders: string[]
+  timeline: string
+  risks: string[]
+  opportunities: string[]
+  recommendation: string
+  confidence: number
 }
 
-export function AISummary({ type, title, description, content, comments, participants, status }: AISummaryProps) {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [summary, setSummary] = useState<AISummaryData | null>(null);
+export function AISummary({
+  type,
+  title,
+  description,
+  content,
+  comments,
+  participants,
+  status,
+}: AISummaryProps) {
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [summary, setSummary] = useState<AISummaryData | null>(null)
 
   const generateAISummary = async () => {
-    setIsAnalyzing(true);
-    
+    setIsAnalyzing(true)
+
     // Symulacja czasu analizy
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+
     // Mockowe streszczenie AI na podstawie typu
-    let mockSummary: AISummaryData;
-    
+    let mockSummary: AISummaryData
+
     if (type === 'ustawa') {
       mockSummary = {
         mainPoints: [
           'Wprowadzenie nowych standardów ochrony danych osobowych',
           'Wzmocnienie kar za naruszenie przepisów',
           'Uproszczenie procedur dla małych organizacji',
-          'Rozszerzenie definicji danych wrażliwych'
+          'Rozszerzenie definicji danych wrażliwych',
         ],
         impact: 'Średni - wpłynie na wszystkie instytucje publiczne i część sektora prywatnego',
         complexity: 'medium',
@@ -2769,48 +2866,59 @@ export function AISummary({ type, title, description, content, comments, partici
         risks: [
           'Wysokie koszty implementacji dla małych firm',
           'Możliwe opóźnienia w dostosowaniu systemów IT',
-          'Potrzeba szkoleń dla personelu'
+          'Potrzeba szkoleń dla personelu',
         ],
         opportunities: [
           'Zwiększenie zaufania obywateli do instytucji',
           'Harmonizacja z regulacjami UE',
-          'Rozwój sektora cyberbezpieczeństwa'
+          'Rozwój sektora cyberbezpieczeństwa',
         ],
-        recommendation: 'Ustawa jest potrzebna, ale wymaga wydłużenia okresu przejściowego i dodatkowego wsparcia dla małych organizacji.',
-        confidence: 87
-      };
+        recommendation:
+          'Ustawa jest potrzebna, ale wymaga wydłużenia okresu przejściowego i dodatkowego wsparcia dla małych organizacji.',
+        confidence: 87,
+      }
     } else if (type === 'konsultacja') {
       mockSummary = {
         mainPoints: [
           'Reforma ma na celu poprawę dostępności usług zdrowotnych',
           'Planowane zwiększenie finansowania o 15%',
           'Digitalizacja procesów medycznych',
-          'Nowe standardy jakości opieki'
+          'Nowe standardy jakości opieki',
         ],
         impact: 'Wysoki - dotknie wszystkich pacjentów i pracowników służby zdrowia',
         complexity: 'high',
-        stakeholders: ['Pacjenci', 'Lekarze', 'Pielęgniarki', 'Szpitale', 'NFZ', 'Firmy farmaceutyczne'],
+        stakeholders: [
+          'Pacjenci',
+          'Lekarze',
+          'Pielęgniarki',
+          'Szpitale',
+          'NFZ',
+          'Firmy farmaceutyczne',
+        ],
         timeline: 'Implementacja w ciągu 2-3 lat w fazach',
         risks: [
           'Opór środowiska medycznego wobec zmian',
           'Wysokie koszty modernizacji infrastruktury',
-          'Możliwe przerwy w świadczeniu usług'
+          'Możliwe przerwy w świadczeniu usług',
         ],
         opportunities: [
           'Skrócenie kolejek do specjalistów',
           'Lepsza koordynacja opieki',
-          'Rozwój telemedycyny'
+          'Rozwój telemedycyny',
         ],
-        recommendation: `Na podstawie ${participants || 'wielu'} uczestników konsultacji, reforma jest potrzebna ale wymaga ostrożnej implementacji.`,
-        confidence: 92
-      };
-    } else { // prekonsultacja
+        recommendation: `Na podstawie ${
+          participants || 'wielu'
+        } uczestników konsultacji, reforma jest potrzebna ale wymaga ostrożnej implementacji.`,
+        confidence: 92,
+      }
+    } else {
+      // prekonsultacja
       mockSummary = {
         mainPoints: [
           'Projekt wprowadza nowe mechanizmy partycypacji obywatelskiej',
           'Cyfryzacja procesów konsultacyjnych',
           'Zwiększenie transparentności procesów legislacyjnych',
-          'Nowe narzędzia komunikacji z społeczeństwem'
+          'Nowe narzędzia komunikacji z społeczeństwem',
         ],
         impact: 'Średni - wpłynie na jakość procesów demokratycznych',
         complexity: 'low',
@@ -2819,52 +2927,66 @@ export function AISummary({ type, title, description, content, comments, partici
         risks: [
           'Niska aktywność obywateli w nowych formach konsultacji',
           'Problemy techniczne z platformami cyfrowymi',
-          'Opór części urzędników'
+          'Opór części urzędników',
         ],
         opportunities: [
           'Większe zaangażowanie społeczne w tworzenie prawa',
           'Lepsza jakość projektów ustaw',
-          'Wzrost zaufania do instytucji'
+          'Wzrost zaufania do instytucji',
         ],
-        recommendation: `Projekt ma duży potencjał. ${comments?.length || 0} komentarzy wskazuje na zainteresowanie społeczne.`,
-        confidence: 78
-      };
+        recommendation: `Projekt ma duży potencjał. ${
+          comments?.length || 0
+        } komentarzy wskazuje na zainteresowanie społeczne.`,
+        confidence: 78,
+      }
     }
-    
-    setSummary(mockSummary);
-    setIsAnalyzing(false);
-  };
+
+    setSummary(mockSummary)
+    setIsAnalyzing(false)
+  }
 
   useEffect(() => {
-    generateAISummary();
-  }, [type, title]);
+    generateAISummary()
+  }, [type, title])
 
   const getComplexityColor = (complexity: string) => {
     switch (complexity) {
-      case 'low': return 'green';
-      case 'medium': return 'yellow';
-      case 'high': return 'red';
-      default: return 'gray';
+      case 'low':
+        return 'green'
+      case 'medium':
+        return 'yellow'
+      case 'high':
+        return 'red'
+      default:
+        return 'gray'
     }
-  };
+  }
 
   const getComplexityLabel = (complexity: string) => {
     switch (complexity) {
-      case 'low': return 'Niska';
-      case 'medium': return 'Średnia';
-      case 'high': return 'Wysoka';
-      default: return 'Nieznana';
+      case 'low':
+        return 'Niska'
+      case 'medium':
+        return 'Średnia'
+      case 'high':
+        return 'Wysoka'
+      default:
+        return 'Nieznana'
     }
-  };
+  }
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'ustawa': return 'Ustawy';
-      case 'konsultacja': return 'Konsultacji';
-      case 'prekonsultacja': return 'Prekonsultacji';
-      default: return 'Dokumentu';
+      case 'ustawa':
+        return 'Ustawy'
+      case 'konsultacja':
+        return 'Konsultacji'
+      case 'prekonsultacja':
+        return 'Prekonsultacji'
+      default:
+        return 'Dokumentu'
     }
-  };
+  }
 
   if (isAnalyzing) {
     return (
@@ -2880,7 +3002,7 @@ export function AISummary({ type, title, description, content, comments, partici
           </Text>
         </Stack>
       </Card>
-    );
+    )
   }
 
   if (!summary) {
@@ -2888,7 +3010,7 @@ export function AISummary({ type, title, description, content, comments, partici
       <Alert icon={<IconInfoCircle size={16} />} title="Streszczenie AI" color="blue">
         Brak danych do analizy. Spróbuj ponownie później.
       </Alert>
-    );
+    )
   }
 
   return (
@@ -2911,11 +3033,7 @@ export function AISummary({ type, title, description, content, comments, partici
             Pewność: {summary.confidence}%
           </Badge>
           <Tooltip label="Wygeneruj ponownie">
-            <ActionIcon
-              variant="light"
-              onClick={generateAISummary}
-              loading={isAnalyzing}
-            >
+            <ActionIcon variant="light" onClick={generateAISummary} loading={isAnalyzing}>
               <IconRefresh size={16} />
             </ActionIcon>
           </Tooltip>
@@ -2928,7 +3046,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="blue" variant="light" size="sm">
             <IconFileText size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Kluczowe punkty</Text>
+          <Text fw={600} size="sm">
+            Kluczowe punkty
+          </Text>
         </Group>
         <List spacing="xs" size="sm">
           {summary.mainPoints.map((point, index) => (
@@ -2944,17 +3064,21 @@ export function AISummary({ type, title, description, content, comments, partici
             <ThemeIcon color="orange" variant="light" size="sm">
               <IconUsers size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Wpływ</Text>
+            <Text fw={600} size="sm">
+              Wpływ
+            </Text>
           </Group>
           <Text size="sm">{summary.impact}</Text>
         </Card>
-        
+
         <Card p="md" withBorder>
           <Group mb="xs">
             <ThemeIcon color={getComplexityColor(summary.complexity)} variant="light" size="sm">
               <IconScale size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Złożoność</Text>
+            <Text fw={600} size="sm">
+              Złożoność
+            </Text>
           </Group>
           <Badge color={getComplexityColor(summary.complexity)} variant="light">
             {getComplexityLabel(summary.complexity)}
@@ -2968,7 +3092,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="grape" variant="light" size="sm">
             <IconUsers size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Kluczowi interesariusze</Text>
+          <Text fw={600} size="sm">
+            Kluczowi interesariusze
+          </Text>
         </Group>
         <Group gap="xs">
           {summary.stakeholders.map((stakeholder, index) => (
@@ -2985,7 +3111,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="teal" variant="light" size="sm">
             <IconClock size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Harmonogram</Text>
+          <Text fw={600} size="sm">
+            Harmonogram
+          </Text>
         </Group>
         <Text size="sm">{summary.timeline}</Text>
       </Card>
@@ -2997,7 +3125,9 @@ export function AISummary({ type, title, description, content, comments, partici
             <ThemeIcon color="red" variant="light" size="sm">
               <IconAlertTriangle size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Ryzyka</Text>
+            <Text fw={600} size="sm">
+              Ryzyka
+            </Text>
           </Group>
           <List spacing="xs" size="sm">
             {summary.risks.map((risk, index) => (
@@ -3005,13 +3135,15 @@ export function AISummary({ type, title, description, content, comments, partici
             ))}
           </List>
         </Card>
-        
+
         <Card p="md" withBorder>
           <Group mb="md">
             <ThemeIcon color="green" variant="light" size="sm">
               <IconBulb size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Możliwości</Text>
+            <Text fw={600} size="sm">
+              Możliwości
+            </Text>
           </Group>
           <List spacing="xs" size="sm">
             {summary.opportunities.map((opportunity, index) => (
@@ -3027,7 +3159,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="blue" variant="light" size="sm">
             <IconCheck size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Rekomendacja AI</Text>
+          <Text fw={600} size="sm">
+            Rekomendacja AI
+          </Text>
         </Group>
         <Text size="sm">{summary.recommendation}</Text>
         <Progress value={summary.confidence} color="blue" size="xs" mt="xs" />
@@ -3036,7 +3170,338 @@ export function AISummary({ type, title, description, content, comments, partici
         </Text>
       </Card>
     </Stack>
-  );
+  )
+}
+```
+
+# src\components\ai\AISummaryGroq.tsx:
+
+```tsx
+'use client'
+import { useState, useEffect } from 'react'
+import {
+  Card,
+  Text,
+  Stack,
+  Group,
+  Button,
+  Alert,
+  Loader,
+  Badge,
+  Progress,
+  List,
+  ThemeIcon,
+} from '@mantine/core'
+import {
+  IconBrain,
+  IconRefresh,
+  IconFileText,
+  IconUsers,
+  IconScale,
+  IconClock,
+  IconAlertTriangle,
+  IconBulb,
+  IconCheck,
+} from '@tabler/icons-react'
+import { generateText } from 'ai' // z @ai-sdk/core
+import { groq } from '@ai-sdk/groq'
+
+interface AISummaryGroqProps {
+  type: 'ustawa' | 'konsultacja' | 'prekonsultacja'
+  title: string
+  description?: string
+  content?: string // Treść ustawy/PDF (pobierz z API Sejmu)
+  comments?: string[] // Dla analizy komentarzy (opcjonalnie)
+}
+
+interface SummaryData {
+  mainPoints: string[]
+  impact: string
+  complexity: 'low' | 'medium' | 'high'
+  stakeholders: string[]
+  timeline: string
+  risks: string[]
+  opportunities: string[]
+  recommendation: string
+  confidence: number
+}
+
+export function AISummaryGroq({
+  type,
+  title,
+  description,
+  content = '',
+  comments = [],
+}: AISummaryGroqProps) {
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [summary, setSummary] = useState<SummaryData | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  // Prompt – dokładnie jak w Twoim przykładzie, ale dynamiczny
+  const buildPrompt = () => {
+    const basePrompt = `Jesteś polskim ekspertem legislacyjnym. Przeanalizuj poniższy dokument/projekt i stwórz streszczenie w ścisłym formacie JSON (bez dodatkowego tekstu!).
+
+TYTUŁ: ${title}
+${description ? `OPIS: ${description}` : ''}
+${
+  content ? `TREŚĆ: ${content.slice(0, 8000)}...` : ''
+}  // Ogranicz do 8k tokenów, by nie przekraczać limitów
+${
+  comments.length > 0
+    ? `KOMENTARZE (${comments.length}): ${comments.slice(0, 5).join('; ')}...`
+    : ''
+}
+
+Zwróć WYŁĄCZNIE JSON:
+{
+  "mainPoints": ["Kluczowy punkt 1", "Punkt 2", "..."],  // 3-5 punktów
+  "impact": "Średni - wpłynie na X i Y",  // Krótki opis
+  "complexity": "low|medium|high",
+  "stakeholders": ["Instytucja 1", "Grupa 2", "..."],  // 4-6
+  "timeline": "Wejście w życie: X miesięcy od publikacji",
+  "risks": ["Ryzyko 1", "Ryzyko 2", "..."],  // 2-4
+  "opportunities": ["Możliwość 1", "Możliwość 2", "..."],  // 2-4
+  "recommendation": "Ustawa jest potrzebna, ale wymaga Z. Poziom pewności: XX%",
+  "confidence": 87  // Liczba 70-95
+}`
+
+    if (type === 'konsultacja') {
+      return basePrompt.replace('dokument/projekt', 'konsultacje projektu')
+    } else if (type === 'prekonsultacja') {
+      return basePrompt.replace('dokument/projekt', 'prekonsultacje')
+    }
+    return basePrompt
+  }
+
+  const generateSummary = async () => {
+    if (!content && comments.length === 0) {
+      setError('Brak treści do analizy!')
+      return
+    }
+    setIsAnalyzing(true)
+    setError(null)
+    try {
+      const { text } = await generateText({
+        model: groq('llama-3.3-70b-versatile'), // TYLKO 1 ARGUMENT: model ID
+        prompt: buildPrompt(),
+        temperature: 0.1,
+      })
+      // Wyciągnij JSON z odpowiedzi (Groq zwraca markdown, ale prompt jest ścisły)
+      const jsonMatch = text.match(/\{[\s\S]*\}/)
+      if (!jsonMatch) throw new Error('Nieprawidłowa odpowiedź AI')
+      const parsed = JSON.parse(jsonMatch[0])
+      setSummary(parsed)
+    } catch (err) {
+      console.error(err)
+      setError('Błąd Groq API: Sprawdź key lub limity (429 = przekroczony limit).')
+    } finally {
+      setIsAnalyzing(false)
+    }
+  }
+
+  useEffect(() => {
+    if (content || comments.length > 0) {
+      generateSummary()
+    }
+  }, [content, comments])
+
+  const getComplexityColor = (complexity: string) => {
+    switch (complexity) {
+      case 'low':
+        return 'green'
+      case 'medium':
+        return 'yellow'
+      case 'high':
+        return 'red'
+      default:
+        return 'gray'
+    }
+  }
+  const getComplexityLabel = (complexity: string) =>
+    ({ low: 'Niska', medium: 'Średnia', high: 'Wysoka' }[complexity] || 'Nieznana')
+
+  if (isAnalyzing) {
+    return (
+      <Card shadow="sm" p="xl" ta="center" withBorder>
+        <Loader size="lg" />
+        <Text mt="md">Groq analizuje {type}... (to zajmie chwilke!)</Text>
+      </Card>
+    )
+  }
+
+  if (error) {
+    return (
+      <Alert icon={<IconBrain size={16} />} title="Błąd AI" color="red">
+        {error}{' '}
+        <Button variant="subtle" onClick={generateSummary} leftSection={<IconRefresh />}>
+          Spróbuj ponownie
+        </Button>
+      </Alert>
+    )
+  }
+
+  if (!summary) {
+    return (
+      <Alert icon={<IconBrain size={16} />} title="Brak danych" color="blue">
+        Dodaj treść lub komentarze, by uruchomić analizę.
+      </Alert>
+    )
+  }
+
+  // UI – identyczne jak Twój AISummary, tylko z realnymi danymi
+  return (
+    <Stack gap="md">
+      <Group justify="space-between">
+        <Group>
+          <ThemeIcon color="blue" variant="light">
+            <IconBrain size={20} />
+          </ThemeIcon>
+          <div>
+            <Text fw={600}>Streszczenie Groq AI</Text>
+            <Text size="sm" c="dimmed">
+              Analiza {title}
+            </Text>
+          </div>
+        </Group>
+        <Group>
+          <Badge color="blue" variant="light">
+            Pewność: {summary.confidence}%
+          </Badge>
+          <Button variant="light" leftSection={<IconRefresh />} onClick={generateSummary} size="xs">
+            Regeneruj
+          </Button>
+        </Group>
+      </Group>
+
+      {/* Kluczowe punkty */}
+      <Card p="md" withBorder>
+        <Group mb="md">
+          <ThemeIcon color="blue" variant="light" size="sm">
+            <IconFileText size={14} />
+          </ThemeIcon>
+          <Text fw={600} size="sm">
+            Kluczowe punkty
+          </Text>
+        </Group>
+        <List spacing="xs" size="sm">
+          {summary.mainPoints.map((point, i) => (
+            <List.Item key={i}>{point}</List.Item>
+          ))}
+        </List>
+      </Card>
+
+      {/* Wpływ i Złożoność */}
+      <Group grow>
+        <Card p="md" withBorder>
+          <Group mb="xs">
+            <ThemeIcon color="orange" variant="light" size="sm">
+              <IconUsers size={14} />
+            </ThemeIcon>
+            <Text fw={600} size="sm">
+              Wpływ
+            </Text>
+          </Group>
+          <Text size="sm">{summary.impact}</Text>
+        </Card>
+        <Card p="md" withBorder>
+          <Group mb="xs">
+            <ThemeIcon color={getComplexityColor(summary.complexity)} variant="light" size="sm">
+              <IconScale size={14} />
+            </ThemeIcon>
+            <Text fw={600} size="sm">
+              Złożoność
+            </Text>
+          </Group>
+          <Badge color={getComplexityColor(summary.complexity)} variant="light">
+            {getComplexityLabel(summary.complexity)}
+          </Badge>
+        </Card>
+      </Group>
+
+      {/* Interesariusze */}
+      <Card p="md" withBorder>
+        <Group mb="md">
+          <ThemeIcon color="grape" variant="light" size="sm">
+            <IconUsers size={14} />
+          </ThemeIcon>
+          <Text fw={600} size="sm">
+            Kluczowi interesariusze
+          </Text>
+        </Group>
+        <Group gap="xs">
+          {summary.stakeholders.map((s, i) => (
+            <Badge key={i} variant="outline" size="sm">
+              {s}
+            </Badge>
+          ))}
+        </Group>
+      </Card>
+
+      {/* Harmonogram */}
+      <Card p="md" withBorder>
+        <Group mb="xs">
+          <ThemeIcon color="teal" variant="light" size="sm">
+            <IconClock size={14} />
+          </ThemeIcon>
+          <Text fw={600} size="sm">
+            Harmonogram
+          </Text>
+        </Group>
+        <Text size="sm">{summary.timeline}</Text>
+      </Card>
+
+      {/* Ryzyka i Możliwości */}
+      <Group grow align="flex-start">
+        <Card p="md" withBorder>
+          <Group mb="md">
+            <ThemeIcon color="red" variant="light" size="sm">
+              <IconAlertTriangle size={14} />
+            </ThemeIcon>
+            <Text fw={600} size="sm">
+              Ryzyka
+            </Text>
+          </Group>
+          <List spacing="xs" size="sm">
+            {summary.risks.map((r, i) => (
+              <List.Item key={i}>{r}</List.Item>
+            ))}
+          </List>
+        </Card>
+        <Card p="md" withBorder>
+          <Group mb="md">
+            <ThemeIcon color="green" variant="light" size="sm">
+              <IconBulb size={14} />
+            </ThemeIcon>
+            <Text fw={600} size="sm">
+              Możliwości
+            </Text>
+          </Group>
+          <List spacing="xs" size="sm">
+            {summary.opportunities.map((o, i) => (
+              <List.Item key={i}>{o}</List.Item>
+            ))}
+          </List>
+        </Card>
+      </Group>
+
+      {/* Rekomendacja */}
+      <Card p="md" withBorder>
+        <Group mb="md">
+          <ThemeIcon color="blue" variant="light" size="sm">
+            <IconCheck size={14} />
+          </ThemeIcon>
+          <Text fw={600} size="sm">
+            Rekomendacja AI
+          </Text>
+        </Group>
+        <Text size="sm">{summary.recommendation}</Text>
+        <Progress value={summary.confidence} color="blue" size="xs" mt="xs" />
+        <Text size="xs" c="dimmed" mt="xs">
+          Poziom pewności: {summary.confidence}%
+        </Text>
+      </Card>
+    </Stack>
+  )
 }
 ```
 
@@ -3098,14 +3563,12 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
     </Card>
   )
 }
-
 ```
 
 # src\components\comments\CommentForm\index.ts:
 
 ```ts
 export { CommentForm } from './CommentForm'
-
 ```
 
 # src\components\comments\CommentItem\CommentActions\CommentActions.tsx:
@@ -3164,14 +3627,12 @@ export function CommentActions({
     </Group>
   )
 }
-
 ```
 
 # src\components\comments\CommentItem\CommentActions\index.ts:
 
 ```ts
 export { CommentActions } from './CommentActions'
-
 ```
 
 # src\components\comments\CommentItem\CommentItem.tsx:
@@ -3243,7 +3704,6 @@ export function CommentItem({ comment }: CommentItemProps) {
     </Card>
   )
 }
-
 ```
 
 # src\components\comments\CommentItem\index.ts:
@@ -3251,7 +3711,6 @@ export function CommentItem({ comment }: CommentItemProps) {
 ```ts
 export { CommentItem } from './CommentItem'
 export { CommentActions } from './CommentActions'
-
 ```
 
 # src\components\comments\CommentList\CommentList.tsx:
@@ -3287,14 +3746,12 @@ export function CommentList({ comments }: CommentListProps) {
     </>
   )
 }
-
 ```
 
 # src\components\comments\CommentList\index.ts:
 
 ```ts
 export { CommentList } from './CommentList'
-
 ```
 
 # src\components\comments\Comments.tsx:
@@ -3330,7 +3787,6 @@ export function Comments({ comments, onAddComment }: CommentsProps) {
     </Stack>
   )
 }
-
 ```
 
 # src\components\comments\index.ts:
@@ -3340,7 +3796,6 @@ export { Comments } from './Comments'
 export { CommentForm } from './CommentForm'
 export { CommentItem } from './CommentItem'
 export { CommentList } from './CommentList'
-
 ```
 
 # src\components\HomeCards\HomeCards.module.css:
@@ -3349,8 +3804,7 @@ export { CommentList } from './CommentList'
 .card {
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, background-color 0.2s ease,
-    border-color 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   background-color: transparent;
   text-decoration: none;
   color: inherit;
@@ -3368,7 +3822,6 @@ export { CommentList } from './CommentList'
 .iconArrow {
   transition: transform 0.2s ease;
 }
-
 ```
 
 # src\components\HomeCards\HomeCards.tsx:
@@ -3499,7 +3952,6 @@ export default function HomeCards() {
     </Container>
   )
 }
-
 ```
 
 # src\components\HomeCards\ProjectDetailsTab.tsx:
@@ -3555,26 +4007,25 @@ export default function ProjectDetailsTab({ project }: ProjectDetailsTabProps) {
     </Stack>
   )
 }
-
 ```
 
 # src\components\Layout\AppShell.tsx:
 
 ```tsx
-"use client";
+'use client'
 
-import { AppShell, Burger, Group, Text, Anchor } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { type ReactNode } from "react";
-import Link from "next/link";
-import AccessibilityPanel from "../AccessibilityPanel/AccessibilityPanel";
+import { AppShell, Burger, Group, Text, Anchor } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { type ReactNode } from 'react'
+import Link from 'next/link'
+import AccessibilityPanel from '../AccessibilityPanel/AccessibilityPanel'
 
 interface AppShellLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export default function AppShellLayout({ children }: AppShellLayoutProps) {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle }] = useDisclosure(false)
 
   return (
     <AppShell padding="md" header={{ height: 60 }}>
@@ -3594,15 +4045,15 @@ export default function AppShellLayout({ children }: AppShellLayoutProps) {
               fw={700}
               c="inherit"
               td="none"
-              style={{ 
-                cursor: "pointer",
-                transition: "color 0.2s ease"
+              style={{
+                cursor: 'pointer',
+                transition: 'color 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--mantine-color-blue-6)";
+                e.currentTarget.style.color = 'var(--mantine-color-blue-6)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = "inherit";
+                e.currentTarget.style.color = 'inherit'
               }}
             >
               INTERAKTYWNY PORTAL ANALIZ LEGISLACYJNYCH (IPAL)
@@ -3617,9 +4068,8 @@ export default function AppShellLayout({ children }: AppShellLayoutProps) {
 
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
-  );
+  )
 }
-
 ```
 
 # src\components\ProjectRating\ProjectRating.tsx:
@@ -3800,7 +4250,6 @@ export function ProjectRating({
     </>
   )
 }
-
 ```
 
 # src\components\projects\index.ts:
@@ -3809,7 +4258,6 @@ export function ProjectRating({
 export { ProjectCard } from './ProjectCard'
 export { ProjectFilters } from './ProjectFilters'
 export { ProjectGrid } from './ProjectGrid'
-
 ```
 
 # src\components\projects\ProjectCard\index.ts:
@@ -3818,7 +4266,6 @@ export { ProjectGrid } from './ProjectGrid'
 export { ProjectCard } from './ProjectCard'
 export { ProjectCardHeader } from './ProjectCardHeader'
 export { ProjectCardInfo } from './ProjectCardInfo'
-
 ```
 
 # src\components\projects\ProjectCard\ProjectCard.module.css:
@@ -3837,7 +4284,6 @@ export { ProjectCardInfo } from './ProjectCardInfo'
   background-color: var(--mantine-primary-color-light);
   transform: translateY(-4px);
 }
-
 ```
 
 # src\components\projects\ProjectCard\ProjectCard.tsx:
@@ -3895,7 +4341,6 @@ export function ProjectCard({ project, onViewDetails }: ProjectCardProps) {
     </Card>
   )
 }
-
 ```
 
 # src\components\projects\ProjectCard\ProjectCardHeader.tsx:
@@ -3920,7 +4365,6 @@ export function ProjectCardHeader({ status, category }: ProjectCardHeaderProps) 
     </Group>
   )
 }
-
 ```
 
 # src\components\projects\ProjectCard\ProjectCardInfo.tsx:
@@ -4003,14 +4447,12 @@ export function ProjectCardInfo({
     </Stack>
   )
 }
-
 ```
 
 # src\components\projects\ProjectFilters\index.ts:
 
 ```ts
 export { ProjectFilters } from './ProjectFilters'
-
 ```
 
 # src\components\projects\ProjectFilters\ProjectFilters.tsx:
@@ -4083,14 +4525,12 @@ export function ProjectFilters({
     </Paper>
   )
 }
-
 ```
 
 # src\components\projects\ProjectGrid\index.ts:
 
 ```ts
 export { ProjectGrid } from './ProjectGrid'
-
 ```
 
 # src\components\projects\ProjectGrid\ProjectGrid.tsx:
@@ -4144,7 +4584,6 @@ export function ProjectGrid({
     </Grid>
   )
 }
-
 ```
 
 # src\components\SetContrastButton\demo.module.css:
@@ -4174,32 +4613,25 @@ export function ProjectGrid({
     display: block;
   }
 }
-
 ```
 
 # src\components\SetContrastButton\SetContrastButton.tsx:
 
 ```tsx
-import {
-  ActionIcon,
-  useMantineColorScheme,
-  useComputedColorScheme,
-} from "@mantine/core";
-import { IconSun, IconMoon } from "@tabler/icons-react";
-import cx from "clsx";
-import classes from "./demo.module.css";
+import { ActionIcon, useMantineColorScheme, useComputedColorScheme } from '@mantine/core'
+import { IconSun, IconMoon } from '@tabler/icons-react'
+import cx from 'clsx'
+import classes from './demo.module.css'
 
 export default function SetContrastButton() {
-  const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme("light", {
+  const { setColorScheme } = useMantineColorScheme()
+  const computedColorScheme = useComputedColorScheme('light', {
     getInitialValueInEffect: true,
-  });
+  })
 
   return (
     <ActionIcon
-      onClick={() =>
-        setColorScheme(computedColorScheme === "light" ? "dark" : "light")
-      }
+      onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
       variant="default"
       size="xl"
       aria-label="Toggle color scheme"
@@ -4207,9 +4639,8 @@ export default function SetContrastButton() {
       <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
       <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
     </ActionIcon>
-  );
+  )
 }
-
 ```
 
 # src\components\shared\EmptyState\EmptyState.tsx:
@@ -4245,14 +4676,12 @@ export function EmptyState({ title, description, icon }: EmptyStateProps) {
     </Paper>
   )
 }
-
 ```
 
 # src\components\shared\EmptyState\index.ts:
 
 ```ts
 export { EmptyState } from './EmptyState'
-
 ```
 
 # src\components\shared\index.ts:
@@ -4262,14 +4691,12 @@ export { SearchInput } from './SearchInput'
 export { StatusBadge } from './StatusBadge'
 export { StatsCard } from './StatsCard'
 export { EmptyState } from './EmptyState'
-
 ```
 
 # src\components\shared\SearchInput\index.ts:
 
 ```ts
 export { SearchInput } from './SearchInput'
-
 ```
 
 # src\components\shared\SearchInput\SearchInput.tsx:
@@ -4309,14 +4736,12 @@ export function SearchInput({
     />
   )
 }
-
 ```
 
 # src\components\shared\StatsCard\index.ts:
 
 ```ts
 export { StatsCard } from './StatsCard'
-
 ```
 
 # src\components\shared\StatsCard\StatsCard.tsx:
@@ -4353,14 +4778,12 @@ export function StatsCard({ title, value, icon, color = 'blue' }: StatsCardProps
     </Paper>
   )
 }
-
 ```
 
 # src\components\shared\StatusBadge\index.ts:
 
 ```ts
 export { StatusBadge } from './StatusBadge'
-
 ```
 
 # src\components\shared\StatusBadge\StatusBadge.tsx:
@@ -4393,85 +4816,76 @@ export function StatusBadge({ status, size = 'md', variant = 'light' }: StatusBa
     </Badge>
   )
 }
-
 ```
 
 # src\context\AccessibilityContext.tsx:
 
 ```tsx
-"use client";
+'use client'
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 
 interface AccessibilityContextType {
-  highContrast: boolean;
-  toggleHighContrast: () => void;
-  fontSizePercent: number;
-  increaseFont: () => void;
-  decreaseFont: () => void;
-  resetAccessibility: () => void;
+  highContrast: boolean
+  toggleHighContrast: () => void
+  fontSizePercent: number
+  increaseFont: () => void
+  decreaseFont: () => void
+  resetAccessibility: () => void
 }
 
-const AccessibilityContext = createContext<
-  AccessibilityContextType | undefined
->(undefined);
+const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined)
 
 export function AccessibilityProvider({ children }: { children: ReactNode }) {
-  const [highContrast, setHighContrast] = useState(false);
-  const [fontSizePercent, setFontSizePercent] = useState(100);
+  const [highContrast, setHighContrast] = useState(false)
+  const [fontSizePercent, setFontSizePercent] = useState(100)
 
   useEffect(() => {
     // Only run on client side
     if (typeof window !== 'undefined') {
-      const storedContrast = localStorage.getItem("high-contrast");
-      const storedFontSize = localStorage.getItem("font-size-percent");
+      const storedContrast = localStorage.getItem('high-contrast')
+      const storedFontSize = localStorage.getItem('font-size-percent')
 
-      if (storedContrast === "true") setHighContrast(true);
-      if (storedFontSize) setFontSizePercent(parseInt(storedFontSize, 10));
+      if (storedContrast === 'true') setHighContrast(true)
+      if (storedFontSize) setFontSizePercent(parseInt(storedFontSize, 10))
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     // Only run on client side
     if (typeof window !== 'undefined') {
-      const html = document.documentElement;
+      const html = document.documentElement
 
       if (highContrast) {
-        html.setAttribute("data-high-contrast", "true");
-        localStorage.setItem("high-contrast", "true");
+        html.setAttribute('data-high-contrast', 'true')
+        localStorage.setItem('high-contrast', 'true')
         // Force a re-render by adding/removing a class
-        document.body.classList.add("high-contrast-active");
+        document.body.classList.add('high-contrast-active')
       } else {
-        html.removeAttribute("data-high-contrast");
-        localStorage.setItem("high-contrast", "false");
-        document.body.classList.remove("high-contrast-active");
+        html.removeAttribute('data-high-contrast')
+        localStorage.setItem('high-contrast', 'false')
+        document.body.classList.remove('high-contrast-active')
       }
 
-      html.style.fontSize = `${fontSizePercent}%`;
-      localStorage.setItem("font-size-percent", fontSizePercent.toString());
+      html.style.fontSize = `${fontSizePercent}%`
+      localStorage.setItem('font-size-percent', fontSizePercent.toString())
     }
-  }, [highContrast, fontSizePercent]);
+  }, [highContrast, fontSizePercent])
 
-  const toggleHighContrast = () => setHighContrast((prev) => !prev);
+  const toggleHighContrast = () => setHighContrast((prev) => !prev)
 
   const increaseFont = () => {
-    setFontSizePercent((prev) => Math.min(prev + 10, 150));
-  };
+    setFontSizePercent((prev) => Math.min(prev + 10, 150))
+  }
 
   const decreaseFont = () => {
-    setFontSizePercent((prev) => Math.max(prev - 10, 80));
-  };
+    setFontSizePercent((prev) => Math.max(prev - 10, 80))
+  }
 
   const resetAccessibility = () => {
-    setHighContrast(false);
-    setFontSizePercent(100);
-  };
+    setHighContrast(false)
+    setFontSizePercent(100)
+  }
 
   return (
     <AccessibilityContext.Provider
@@ -4486,144 +4900,139 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </AccessibilityContext.Provider>
-  );
+  )
 }
 
 export function useAccessibility() {
-  const context = useContext(AccessibilityContext);
+  const context = useContext(AccessibilityContext)
   if (!context) {
-    throw new Error(
-      "useAccessibility must be used within an AccessibilityProvider"
-    );
+    throw new Error('useAccessibility must be used within an AccessibilityProvider')
   }
-  return context;
+  return context
 }
-
 ```
 
 # src\db\drizzle.ts:
 
 ```ts
-import { config } from "dotenv";
-import { drizzle } from "drizzle-orm/neon-serverless";
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import { schema } from "./schema";
-import ws from "ws";
+import { config } from 'dotenv'
+import { drizzle } from 'drizzle-orm/neon-serverless'
+import { Pool, neonConfig } from '@neondatabase/serverless'
+import { schema } from './schema'
+import ws from 'ws'
 
-config({ path: ".env" });
+config({ path: '.env' })
 
-neonConfig.webSocketConstructor = ws;
+neonConfig.webSocketConstructor = ws
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
-export const db = drizzle(pool, { schema });
-
+export const db = drizzle(pool, { schema })
 ```
 
 # src\db\schema.ts:
 
 ```ts
-import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { relations } from 'drizzle-orm'
+import { pgTable, text, timestamp, boolean, index } from 'drizzle-orm/pg-core'
 
-export const user = pgTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified").default(false).notNull(),
-  image: text("image"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
+export const user = pgTable('user', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  emailVerified: boolean('email_verified').default(false).notNull(),
+  image: text('image'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
-});
+})
 
 export const session = pgTable(
-  "session",
+  'session',
   {
-    id: text("id").primaryKey(),
-    expiresAt: timestamp("expires_at").notNull(),
-    token: text("token").notNull().unique(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    id: text('id').primaryKey(),
+    expiresAt: timestamp('expires_at').notNull(),
+    token: text('token').notNull().unique(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
-    ipAddress: text("ip_address"),
-    userAgent: text("user_agent"),
-    userId: text("user_id")
+    ipAddress: text('ip_address'),
+    userAgent: text('user_agent'),
+    userId: text('user_id')
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: 'cascade' }),
   },
-  (table) => [index("session_userId_idx").on(table.userId)]
-);
+  (table) => [index('session_userId_idx').on(table.userId)],
+)
 
 export const account = pgTable(
-  "account",
+  'account',
   {
-    id: text("id").primaryKey(),
-    accountId: text("account_id").notNull(),
-    providerId: text("provider_id").notNull(),
-    userId: text("user_id")
+    id: text('id').primaryKey(),
+    accountId: text('account_id').notNull(),
+    providerId: text('provider_id').notNull(),
+    userId: text('user_id')
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    accessToken: text("access_token"),
-    refreshToken: text("refresh_token"),
-    idToken: text("id_token"),
-    accessTokenExpiresAt: timestamp("access_token_expires_at"),
-    refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
-    scope: text("scope"),
-    password: text("password"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+      .references(() => user.id, { onDelete: 'cascade' }),
+    accessToken: text('access_token'),
+    refreshToken: text('refresh_token'),
+    idToken: text('id_token'),
+    accessTokenExpiresAt: timestamp('access_token_expires_at'),
+    refreshTokenExpiresAt: timestamp('refresh_token_expires_at'),
+    scope: text('scope'),
+    password: text('password'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("account_userId_idx").on(table.userId)]
-);
+  (table) => [index('account_userId_idx').on(table.userId)],
+)
 
 export const verification = pgTable(
-  "verification",
+  'verification',
   {
-    id: text("id").primaryKey(),
-    identifier: text("identifier").notNull(),
-    value: text("value").notNull(),
-    expiresAt: timestamp("expires_at").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    id: text('id').primaryKey(),
+    identifier: text('identifier').notNull(),
+    value: text('value').notNull(),
+    expiresAt: timestamp('expires_at').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
       .defaultNow()
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("verification_identifier_idx").on(table.identifier)]
-);
+  (table) => [index('verification_identifier_idx').on(table.identifier)],
+)
 
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
-}));
+}))
 
 export const sessionRelations = relations(session, ({ one }) => ({
   user: one(user, {
     fields: [session.userId],
     references: [user.id],
   }),
-}));
+}))
 
 export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
     references: [user.id],
   }),
-}));
+}))
 
 export const schema = {
   user,
   session,
   account,
   verification,
-};
-
+}
 ```
 
 # src\features\consultations\hooks\useProjectComments.ts:
@@ -4691,7 +5100,6 @@ export function useProjectComments(initialProjects: PreConsultationProject[]) {
     rateProject,
   }
 }
-
 ```
 
 # src\features\home\components\ActsTab.tsx:
@@ -4778,7 +5186,6 @@ export function ActsTab({ data, loading, searchQuery }: ActsTabProps) {
     </SimpleGrid>
   )
 }
-
 ```
 
 # src\features\home\components\ConsultationsTab.tsx:
@@ -4905,7 +5312,6 @@ export function ConsultationsTab({ data, loading, searchQuery }: ConsultationsTa
     </SimpleGrid>
   )
 }
-
 ```
 
 # src\features\home\components\HomeCard.module.css:
@@ -4924,7 +5330,6 @@ export function ConsultationsTab({ data, loading, searchQuery }: ConsultationsTa
   background-color: var(--mantine-primary-color-light);
   transform: translateY(-4px);
 }
-
 ```
 
 # src\features\home\components\HomeSearch.tsx:
@@ -4959,7 +5364,6 @@ export function HomeSearch({ searchQuery, onSearchChange }: HomeSearchProps) {
     </Box>
   )
 }
-
 ```
 
 # src\features\home\components\HomeTabs.tsx:
@@ -5042,7 +5446,6 @@ export function HomeTabs({
     </>
   )
 }
-
 ```
 
 # src\features\home\components\index.ts:
@@ -5053,7 +5456,6 @@ export { HomeTabs } from './HomeTabs'
 export { ActsTab } from './ActsTab'
 export { PreConsultationsTab } from './PreConsultationsTab'
 export { ConsultationsTab } from './ConsultationsTab'
-
 ```
 
 # src\features\home\components\PreConsultationsTab.tsx:
@@ -5086,7 +5488,6 @@ export function PreConsultationsTab({
     />
   )
 }
-
 ```
 
 # src\features\home\hooks\useHomeData.ts:
@@ -5107,7 +5508,7 @@ export function useHomeData(activeTab: string | null) {
       if (activeTab === 'ustawy') {
         setLoading(true)
         try {
-          const response = await fakeFetchUstawy('DU', '2024', 1, 6)
+          const response = await fakeFetchUstawy('DU', '2025', 1, 6)
           setActsData(response.items)
         } catch (error) {
           console.error('Błąd pobierania danych', error)
@@ -5129,7 +5530,6 @@ export function useHomeData(activeTab: string | null) {
     loading,
   }
 }
-
 ```
 
 # src\features\home\hooks\useHomeSearch.ts:
@@ -5202,7 +5602,6 @@ export function useHomeSearch(
     filteredKonsultacje,
   }
 }
-
 ```
 
 # src\hooks\index.ts:
@@ -5212,7 +5611,6 @@ export { useSearch } from './useSearch'
 export { useFilters } from './useFilters'
 export { usePagination } from './usePagination'
 export { useModal } from './useModal'
-
 ```
 
 # src\hooks\useFilters.ts:
@@ -5252,7 +5650,6 @@ export function useFilters<T>({ data, filterFn }: UseFiltersOptions<T>) {
     filteredData,
   }
 }
-
 ```
 
 # src\hooks\useModal.ts:
@@ -5290,7 +5687,6 @@ export function useModal<T = unknown>() {
     toggle,
   }
 }
-
 ```
 
 # src\hooks\usePagination.ts:
@@ -5336,7 +5732,6 @@ export function usePagination<T>({ data, itemsPerPage = 10 }: UsePaginationOptio
     hasPrevPage: currentPage > 1,
   }
 }
-
 ```
 
 # src\hooks\useSearch.ts:
@@ -5383,29 +5778,27 @@ export function useSearch<T>({ data, searchFields, delay = 300 }: UseSearchOptio
     isSearching: query !== debouncedQuery,
   }
 }
-
 ```
 
 # src\lib\auth-client.ts:
 
 ```ts
-import { createAuthClient } from "better-auth/react";
+import { createAuthClient } from 'better-auth/react'
 
 export const authClient = createAuthClient({
   plugins: [],
-});
+})
 
-export const { signIn, signOut, signUp, useSession } = authClient;
-
+export const { signIn, signOut, signUp, useSession } = authClient
 ```
 
 # src\lib\auth.ts:
 
 ```ts
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/db/drizzle";
-import { nextCookies } from "better-auth/next-js";
+import { betterAuth } from 'better-auth'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { db } from '@/db/drizzle'
+import { nextCookies } from 'better-auth/next-js'
 
 export const auth = betterAuth({
   emailAndPassword: {
@@ -5413,11 +5806,10 @@ export const auth = betterAuth({
     requireEmailVerification: false,
   },
   database: drizzleAdapter(db, {
-    provider: "pg",
+    provider: 'pg',
   }),
   plugins: [nextCookies()],
-});
-
+})
 ```
 
 # src\lib\utils\index.ts:
@@ -5426,40 +5818,40 @@ export const auth = betterAuth({
 export * from './validation'
 export * from './filters'
 export * from './sort'
-
 ```
 
 # src\mocks\prekonsultacjeMock.ts:
 
 ```ts
 export interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  date: string;
-  rating?: number;
+  id: string
+  author: string
+  content: string
+  date: string
+  rating?: number
 }
 
 export interface PreConsultationProject {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  status: 'active' | 'closed' | 'draft';
-  deadline: string;
-  createdAt: string;
-  institution: string;
-  comments: Comment[];
-  averageRating: number;
-  ratingsCount: number;
-  documentsCount: number;
+  id: string
+  title: string
+  description: string
+  category: string
+  status: 'active' | 'closed' | 'draft'
+  deadline: string
+  createdAt: string
+  institution: string
+  comments: Comment[]
+  averageRating: number
+  ratingsCount: number
+  documentsCount: number
 }
 
 export const preConsultationProjects: PreConsultationProject[] = [
   {
     id: '1',
     title: 'Projekt ustawy o ochronie danych osobowych w sektorze publicznym',
-    description: 'Projekt ustawy mającej na celu wzmocnienie ochrony danych osobowych obywateli w instytucjach publicznych oraz wprowadzenie nowych standardów bezpieczeństwa informacji.',
+    description:
+      'Projekt ustawy mającej na celu wzmocnienie ochrony danych osobowych obywateli w instytucjach publicznych oraz wprowadzenie nowych standardów bezpieczeństwa informacji.',
     category: 'Ochrona danych',
     status: 'active',
     deadline: '2025-01-15',
@@ -5472,30 +5864,34 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '1-1',
         author: 'Jan Kowalski',
-        content: 'Uważam, że projekt jest bardzo potrzebny, ale należałoby doprecyzować definicję "danych wrażliwych" w artykule 3.',
+        content:
+          'Uważam, że projekt jest bardzo potrzebny, ale należałoby doprecyzować definicję "danych wrażliwych" w artykule 3.',
         date: '2024-12-01',
-        rating: 4
+        rating: 4,
       },
       {
         id: '1-2',
         author: 'Anna Nowak',
-        content: 'Proponuję dodanie przepisów przejściowych dla małych gmin, które mogą mieć problemy z implementacją nowych wymogów technicznych.',
+        content:
+          'Proponuję dodanie przepisów przejściowych dla małych gmin, które mogą mieć problemy z implementacją nowych wymogów technicznych.',
         date: '2024-12-03',
-        rating: 5
+        rating: 5,
       },
       {
         id: '1-3',
         author: 'Piotr Wiśniewski',
-        content: 'Artykuł 15 dotyczący kar finansowych wydaje się zbyt surowy dla jednostek samorządu terytorialnego.',
+        content:
+          'Artykuł 15 dotyczący kar finansowych wydaje się zbyt surowy dla jednostek samorządu terytorialnego.',
         date: '2024-12-05',
-        rating: 3
-      }
-    ]
+        rating: 3,
+      },
+    ],
   },
   {
     id: '2',
     title: 'Nowelizacja ustawy o transporcie publicznym',
-    description: 'Projekt nowelizacji mający na celu usprawnienie systemu transportu publicznego w miastach oraz zwiększenie dostępności dla osób niepełnosprawnych.',
+    description:
+      'Projekt nowelizacji mający na celu usprawnienie systemu transportu publicznego w miastach oraz zwiększenie dostępności dla osób niepełnosprawnych.',
     category: 'Transport',
     status: 'active',
     deadline: '2025-02-28',
@@ -5508,30 +5904,34 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '2-1',
         author: 'Maria Zielińska',
-        content: 'Świetna inicjatywa! Szczególnie podoba mi się nacisk na dostępność dla osób niepełnosprawnych.',
+        content:
+          'Świetna inicjatywa! Szczególnie podoba mi się nacisk na dostępność dla osób niepełnosprawnych.',
         date: '2024-11-20',
-        rating: 5
+        rating: 5,
       },
       {
         id: '2-2',
         author: 'Tomasz Lewandowski',
-        content: 'Czy przewidziano dodatkowe finansowanie dla mniejszych miast na implementację tych rozwiązań?',
+        content:
+          'Czy przewidziano dodatkowe finansowanie dla mniejszych miast na implementację tych rozwiązań?',
         date: '2024-11-25',
-        rating: 4
+        rating: 4,
       },
       {
         id: '2-3',
         author: 'Katarzyna Dąbrowska',
-        content: 'Warto rozważyć również ekologiczne aspekty transportu - może warto dodać zachęty dla pojazdów elektrycznych?',
+        content:
+          'Warto rozważyć również ekologiczne aspekty transportu - może warto dodać zachęty dla pojazdów elektrycznych?',
         date: '2024-12-02',
-        rating: 4
-      }
-    ]
+        rating: 4,
+      },
+    ],
   },
   {
     id: '3',
     title: 'Ustawa o cyfryzacji usług administracyjnych',
-    description: 'Projekt kompleksowej ustawy wprowadzającej cyfrowe usługi administracyjne oraz upraszczającej procedury biurokratyczne dla obywateli i przedsiębiorców.',
+    description:
+      'Projekt kompleksowej ustawy wprowadzającej cyfrowe usługi administracyjne oraz upraszczającej procedury biurokratyczne dla obywateli i przedsiębiorców.',
     category: 'Cyfryzacja',
     status: 'draft',
     deadline: '2025-03-31',
@@ -5544,23 +5944,25 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '3-1',
         author: 'Adam Kowalczyk',
-        content: 'Projekt bardzo potrzebny! Mam nadzieję, że rzeczywiście uprości życie przedsiębiorców.',
+        content:
+          'Projekt bardzo potrzebny! Mam nadzieję, że rzeczywiście uprości życie przedsiębiorców.',
         date: '2024-12-04',
-        rating: 5
+        rating: 5,
       },
       {
         id: '3-2',
         author: 'Beata Sikora',
         content: 'Czy przewidziano szkolenia dla urzędników z obsługi nowych systemów cyfrowych?',
         date: '2024-12-05',
-        rating: 4
-      }
-    ]
+        rating: 4,
+      },
+    ],
   },
   {
     id: '4',
     title: 'Projekt rozporządzenia w sprawie ochrony środowiska',
-    description: 'Nowe rozporządzenie mające na celu ograniczenie emisji zanieczyszczeń oraz wprowadzenie surowszych norm ekologicznych dla przemysłu.',
+    description:
+      'Nowe rozporządzenie mające na celu ograniczenie emisji zanieczyszczeń oraz wprowadzenie surowszych norm ekologicznych dla przemysłu.',
     category: 'Środowisko',
     status: 'closed',
     deadline: '2024-12-01',
@@ -5573,33 +5975,35 @@ export const preConsultationProjects: PreConsultationProject[] = [
       {
         id: '4-1',
         author: 'Michał Górski',
-        content: 'Normy są bardzo restrykcyjne, może warto wprowadzić okres przejściowy dla małych firm?',
+        content:
+          'Normy są bardzo restrykcyjne, może warto wprowadzić okres przejściowy dla małych firm?',
         date: '2024-10-10',
-        rating: 3
+        rating: 3,
       },
       {
         id: '4-2',
         author: 'Agnieszka Król',
         content: 'Doskonały projekt! Wreszcie konkretne działania na rzecz środowiska.',
         date: '2024-10-15',
-        rating: 5
+        rating: 5,
       },
       {
         id: '4-3',
         author: 'Robert Pawlak',
         content: 'Czy przeprowadzono analizę wpływu na konkurencyjność polskich firm?',
         date: '2024-10-20',
-        rating: 3
-      }
-    ]
-  }
-];
+        rating: 3,
+      },
+    ],
+  },
+]
 
 export const consultationProjects = [
   {
     id: 'c1',
     title: 'Konsultacje ws. reformy systemu opieki zdrowotnej',
-    description: 'Szerokie konsultacje społeczne dotyczące planowanej reformy systemu opieki zdrowotnej w Polsce.',
+    description:
+      'Szerokie konsultacje społeczne dotyczące planowanej reformy systemu opieki zdrowotnej w Polsce.',
     category: 'Zdrowie',
     status: 'active',
     deadline: '2025-04-30',
@@ -5607,12 +6011,13 @@ export const consultationProjects = [
     institution: 'Ministerstwo Zdrowia',
     participantsCount: 1250,
     documentsCount: 12,
-    meetingsCount: 8
+    meetingsCount: 8,
   },
   {
     id: 'c2',
     title: 'Konsultacje reformy edukacji',
-    description: 'Konsultacje społeczne dotyczące zmian w systemie edukacji podstawowej i średniej.',
+    description:
+      'Konsultacje społeczne dotyczące zmian w systemie edukacji podstawowej i średniej.',
     category: 'Edukacja',
     status: 'active',
     deadline: '2025-05-15',
@@ -5620,12 +6025,13 @@ export const consultationProjects = [
     institution: 'Ministerstwo Edukacji i Nauki',
     participantsCount: 890,
     documentsCount: 8,
-    meetingsCount: 12
+    meetingsCount: 12,
   },
   {
     id: 'c3',
     title: 'Konsultacje ws. polityki mieszkaniowej',
-    description: 'Konsultacje dotyczące nowych rozwiązań w polityce mieszkaniowej i wsparcia dla młodych rodzin.',
+    description:
+      'Konsultacje dotyczące nowych rozwiązań w polityce mieszkaniowej i wsparcia dla młodych rodzin.',
     category: 'Mieszkalnictwo',
     status: 'closed',
     deadline: '2024-11-30',
@@ -5633,14 +6039,16 @@ export const consultationProjects = [
     institution: 'Ministerstwo Rozwoju i Technologii',
     participantsCount: 2100,
     documentsCount: 15,
-    meetingsCount: 20
-  }
-];
+    meetingsCount: 20,
+  },
+]
 ```
 
 # src\mocks\sejmMock.ts:
 
 ```ts
+// src/mocks/sejmMock.ts
+
 export interface Act {
   ELI: string
   title: string
@@ -5651,23 +6059,23 @@ export interface Act {
   publisher: string
   displayAddress: string
   announcementDate: string
-  promulgation?: string
-  entryIntoForce?: string
   textPDF?: boolean
   textHTML?: boolean
 }
 
-export interface LegislativeStage {
+export interface Stage {
   stepNumber: number
   name: string
-  date?: string
+  date: string | null
   isCompleted: boolean
 }
 
 export interface ActDetails extends Act {
-  stages: LegislativeStage[]
-  keywords?: string[]
-  summary?: string
+  promulgation?: string
+  entryIntoForce?: string
+  stages: Stage[]
+  keywords: string[]
+  fullText?: string // DODANE – teraz TS wie, że istnieje
 }
 
 export interface ApiResponse {
@@ -5677,59 +6085,60 @@ export interface ApiResponse {
   items: Act[]
 }
 
-// ZAWSZE używaj bezpośredniego API - działa tylko z klienta
-const API_BASE_URL = 'https://api.sejm.gov.pl/eli'
+const isServer = typeof window === 'undefined'
 
-/**
- * Pobiera listę ustaw z API Sejmu (ELI) - CLIENT SIDE ONLY
- */
+function getBaseUrl() {
+  if (!isServer) return ''
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  if (process.env.NEXT_PUBLIC_URL) return process.env.NEXT_PUBLIC_URL
+  return 'http://localhost:3000'
+}
+
+const API_BASE = `${getBaseUrl()}/api/proxy/eli`
+
 export async function fakeFetchUstawy(
-  publisher: string,
-  year: string,
-  page: number,
-  limit: number,
-  searchQuery?: string,
+  publisher: string = 'DU',
+  year: string = '2025',
+  page: number = 1,
+  limit: number = 20,
 ): Promise<ApiResponse> {
   const offset = (page - 1) * limit
-
   const params = new URLSearchParams({
-    publisher: publisher,
-    year: year,
+    publisher,
+    year,
     offset: offset.toString(),
     limit: limit.toString(),
-    sort: 'pos',
+    sortBy: 'pos',
     sortDir: 'desc',
   })
 
-  if (searchQuery) {
-    params.append('title', searchQuery)
-  }
-
-  const url = `/api/ustawy?${params.toString()}`
+  const url = `${API_BASE}/acts/search?${params}`
 
   try {
     const res = await fetch(url, {
-      cache: 'no-store',
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        Accept: 'application/json',
+        Referer: 'https://eli.gov.pl/',
+      },
+      next: { revalidate: 3600 },
     })
 
-    if (!res.ok) {
-      console.error(`API Error: ${res.status} ${res.statusText}`)
-      throw new Error(`API Error: ${res.statusText}`)
-    }
-
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
 
     return {
-      totalCount: data.totalCount,
-      count: data.count,
-      offset: data.offset,
-      items: data.items.map((item: any) => ({
+      totalCount: data.totalCount || 0,
+      count: data.count || 0,
+      offset: data.offset || 0,
+      items: (data.items || []).map((item: any) => ({
         ELI: item.ELI,
         title: item.title,
         year: item.year,
         pos: item.pos,
-        status: item.status,
-        type: item.type,
+        status: item.status || 'nieznany',
+        type: item.type || 'Inny',
         publisher: item.publisher,
         displayAddress: item.displayAddress,
         announcementDate: item.announcementDate,
@@ -5738,94 +6147,53 @@ export async function fakeFetchUstawy(
       })),
     }
   } catch (error) {
-    console.error('Błąd pobierania ustaw z ELI API:', error)
+    console.error('Błąd listy ustaw:', error)
     return { totalCount: 0, count: 0, offset: 0, items: [] }
   }
 }
 
-/**
- * Pobiera szczegóły konkretnej ustawy - CLIENT SIDE ONLY
- */
 export async function fakeFetchActDetails(eliId: string): Promise<ActDetails | null> {
-  const decodedId = decodeURIComponent(eliId)
-  const parts = decodedId.split('/')
-
-  if (parts.length < 3) {
-    console.warn(`Nieprawidłowy format ELI ID: "${eliId}"`)
-    return null
-  }
-
+  const decoded = decodeURIComponent(eliId)
+  const parts = decoded.split('/')
+  if (parts.length < 3) return null
   const [publisher, year, pos] = parts
 
+  const url = `${API_BASE}/acts/${publisher}/${year}/${pos}`
   try {
-    const res = await fetch(`${API_BASE_URL}/acts/${publisher}/${year}/${pos}`, {
-      method: 'GET',
+    const res = await fetch(url, {
       headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         Accept: 'application/json',
+        Referer: 'https://eli.gov.pl',
       },
-      cache: 'no-store',
+      next: { revalidate: 3600 },
     })
 
-    if (!res.ok) {
-      if (res.status === 404) return null
-      throw new Error(`API Error: ${res.statusText}`)
-    }
+    if (res.status === 404) return null
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
-    const item = await res.json()
-
-    const stages: LegislativeStage[] = [
-      {
-        stepNumber: 1,
-        name: 'Data wydania aktu',
-        date: item.announcementDate,
-        isCompleted: !!item.announcementDate,
-      },
-      {
-        stepNumber: 2,
-        name: 'Data ogłoszenia (Promulgacja)',
-        date: item.promulgation,
-        isCompleted: !!item.promulgation,
-      },
-      {
-        stepNumber: 3,
-        name: 'Wejście w życie',
-        date: item.entryIntoForce,
-        isCompleted: !!item.entryIntoForce || item.status === 'Obowiązujący',
-      },
-    ]
-
-    if (item.expirationDate) {
-      stages.push({
-        stepNumber: 4,
-        name: 'Wygaśnięcie aktu',
-        date: item.expirationDate,
-        isCompleted: new Date(item.expirationDate) < new Date(),
-      })
-    }
+    const data = await res.json()
 
     return {
-      ELI: item.ELI,
-      title: item.title,
-      year: item.year,
-      pos: item.pos,
-      status: item.status,
-      type: item.type,
-      publisher: item.publisher,
-      displayAddress: item.displayAddress,
-      announcementDate: item.announcementDate,
-      promulgation: item.promulgation,
-      entryIntoForce: item.entryIntoForce,
-      textPDF: item.textPDF,
-      textHTML: item.textHTML,
-      keywords: item.keywords || [],
-      stages: stages,
+      ...data,
+      fullText: `Pełny tekst aktu prawnego ${data.displayAddress}\n\nTytuł: ${data.title}\n\nTreść dostępna w formacie PDF i HTML na stronie Sejmu RP.\n\nAI wkrótce przeanalizuje pełną treść!`,
+      stages: [
+        { stepNumber: 1, name: 'Data wydania', date: data.announcementDate, isCompleted: true },
+        {
+          stepNumber: 2,
+          name: 'Data ogłoszenia',
+          date: data.promulgation,
+          isCompleted: !!data.promulgation,
+        },
+        { stepNumber: 3, name: 'Wejście w życie', date: data.entryIntoForce, isCompleted: true },
+      ],
+      keywords: data.keywords || [],
     }
   } catch (error) {
-    console.error('Błąd pobierania szczegółów aktu:', error)
+    console.error('Błąd szczegółów aktu:', eliId, error)
     return null
   }
 }
-
 ```
 
 # src\types\acts.ts:
@@ -5866,7 +6234,6 @@ export interface ActsApiResponse {
   offset: number
   items: Act[]
 }
-
 ```
 
 # src\types\comments.ts:
@@ -5884,7 +6251,6 @@ export interface CommentFormData {
   content: string
   rating: number
 }
-
 ```
 
 # src\types\common.ts:
@@ -5902,7 +6268,6 @@ export interface BaseProject {
   createdAt: string
   institution: string
 }
-
 ```
 
 # src\types\consultations.ts:
@@ -5934,7 +6299,6 @@ export interface Meeting {
   registeredParticipants: number
   description: string
 }
-
 ```
 
 # src\types\filters.ts:
@@ -5950,7 +6314,6 @@ export interface PaginationOptions {
   page: number
   limit: number
 }
-
 ```
 
 # src\types\index.ts:
@@ -5961,7 +6324,6 @@ export * from './acts'
 export * from './comments'
 export * from './consultations'
 export * from './filters'
-
 ```
 
 # src\utils\constants.ts:
@@ -6011,7 +6373,6 @@ export const ITEMS_PER_PAGE = {
   HOME: 6,
   TABLE: 20,
 } as const
-
 ```
 
 # src\utils\filters.ts:
@@ -6086,7 +6447,6 @@ export function filterProjects<T extends PreConsultationProject | ConsultationPr
 
   return filtered
 }
-
 ```
 
 # src\utils\format.ts:
@@ -6158,7 +6518,6 @@ export function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text
   return text.substring(0, maxLength) + '...'
 }
-
 ```
 
 # src\utils\index.ts:
@@ -6166,7 +6525,6 @@ export function truncate(text: string, maxLength: number): string {
 ```ts
 export * from './constants'
 export * from './format'
-
 ```
 
 # src\utils\sort.ts:
@@ -6211,7 +6569,6 @@ export function sortByRating<T extends { averageRating: number }>(
     return order === 'asc' ? a.averageRating - b.averageRating : b.averageRating - a.averageRating
   })
 }
-
 ```
 
 # src\utils\validation.ts:
@@ -6245,6 +6602,4 @@ export function isInRange(value: number, min: number, max: number): boolean {
 export function isValidRating(rating: number): boolean {
   return isInRange(rating, 1, 5)
 }
-
 ```
-

@@ -9,11 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^2.0.32",
     "@mantine/core": "^8.3.9",
     "@mantine/hooks": "^8.3.9",
     "@neondatabase/serverless": "^1.0.2",
     "@tabler/icons-react": "^3.35.0",
     "@types/ws": "^8.18.1",
+    "ai": "^5.0.108",
     "better-auth": "^1.4.5",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.0",

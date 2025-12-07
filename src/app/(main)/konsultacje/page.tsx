@@ -44,6 +44,7 @@ import {
 } from '@tabler/icons-react'
 import { consultationProjects } from '../../../mocks/prekonsultacjeMock'
 import { AISummary } from '../../../components/ai/AISummary/AISummary'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ConsultationProject {
   id: string
@@ -639,11 +640,15 @@ export default function KonsultacjePage() {
             </Tabs.Panel>
 
             <Tabs.Panel value="document-summary" pt="md">
-              <AISummary
+              <AISummaryGroq
                 type="konsultacja"
                 title={selectedProject.title}
                 description={selectedProject.description}
-                content=""
+                content={`Projekt konsultacji: ${selectedProject.title}. ${
+                  selectedProject.description
+                }. Instytucja: ${selectedProject.institution}. Termin: ${new Date(
+                  selectedProject.deadline,
+                ).toLocaleDateString('pl-PL')}.`}
               />
             </Tabs.Panel>
           </Tabs>

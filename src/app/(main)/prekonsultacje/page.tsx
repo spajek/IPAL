@@ -11,12 +11,12 @@ import {
 } from '@tabler/icons-react'
 import { ProjectFilters, ProjectGrid } from '@/components/projects'
 import { Comments } from '@/components/comments'
-import { ProjectRating } from '@/components/rating'
-import { AICommentsAnalysis } from '@/components/ai'
-import { AISummary } from '@/components/ai'
+import { ProjectRating } from '@/components/ProjectRating/ProjectRating'
+import { AICommentsAnalysis } from '@/components/ai//AIAnalysis/AICommentsAnalysis'
 import { preConsultationProjects } from '@/mocks/prekonsultacjeMock'
 import { PreConsultationProject } from '@/types'
-import { useProjectComments } from '@/features/consultations/hooks'
+import { useProjectComments } from '@/features/consultations/hooks/useProjectComments'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 export default function PrekonsultacjePage() {
   const { projects, addComment, rateProject } = useProjectComments(preConsultationProjects)
@@ -99,8 +99,15 @@ export default function PrekonsultacjePage() {
               </Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="details" pt="md">
-              {/* Project details - można wydzielić do osobnego komponentu */}
+            <Tabs.Panel value="document-summary" pt="md">
+              {selectedProject && (
+                <AISummaryGroq
+                  type="prekonsultacja"
+                  title={selectedProject.title}
+                  description={selectedProject.description}
+                  comments={selectedProject.comments.map((c) => c.content)}
+                />
+              )}
             </Tabs.Panel>
 
             <Tabs.Panel value="comments" pt="md">
@@ -127,12 +134,14 @@ export default function PrekonsultacjePage() {
             </Tabs.Panel>
 
             <Tabs.Panel value="document-summary" pt="md">
-              <AISummary
+              <AISummaryGroq
                 type="prekonsultacja"
                 title={selectedProject.title}
                 description={selectedProject.description}
                 content=""
-              />
+                comments={selectedProject.comments.map((c) => c.content)}
+              />{' '}
+              // Analizuje komentarze!
             </Tabs.Panel>
           </Tabs>
         )}

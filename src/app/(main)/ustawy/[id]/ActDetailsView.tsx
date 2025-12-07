@@ -27,6 +27,7 @@ import {
 } from '@tabler/icons-react'
 import { ActDetails } from '@/mocks/sejmMock'
 import { AISummary } from '../../../../components/ai/AISummary/AISummary'
+import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ActDetailsViewProps {
   act: ActDetails
@@ -34,7 +35,7 @@ interface ActDetailsViewProps {
 
 export default function ActDetailsView({ act }: ActDetailsViewProps) {
   // Ustalanie aktywnego kroku na podstawie wypełnionych dat
-  const activeIndex = act.stages.filter((s) => s.isCompleted).length - 1
+  const activeIndex = act.stages.filter((s: { isCompleted: boolean }) => s.isCompleted).length - 1
 
   // Linki do plików (konstrukcja na podstawie dokumentacji API)
   const pdfUrl = act.textPDF
@@ -112,7 +113,7 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
               color="red"
               leftSection={<IconDownload size={16} />}
             >
-              Tekst aktu (PDF)
+              Pobierz akt (PDF)
             </Button>
           )}
           {htmlUrl && (
@@ -132,7 +133,7 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
       {/* Słowa kluczowe */}
       {act.keywords && act.keywords.length > 0 && (
         <Group gap="xs" mt="lg">
-          {act.keywords.map((keyword, index) => (
+          {act.keywords.map((keyword: string, index: number) => (
             <Badge key={index} variant="dot" color="gray" tt="none">
               {keyword}
             </Badge>
@@ -155,46 +156,56 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
             <Title order={4}>Cykl życia aktu prawnego</Title>
 
             <Timeline active={activeIndex} bulletSize={32} lineWidth={2}>
-              {act.stages.map((stage) => (
-                <Timeline.Item
-                  key={stage.stepNumber}
-                  bullet={
-                    stage.isCompleted ? (
-                      <IconCheck size={18} />
-                    ) : (
-                      <Text size="xs" fw={700}>
-                        {stage.stepNumber}
+              {act.stages.map(
+                (stage: {
+                  stepNumber: number
+                  name: string
+                  date: string | null
+                  isCompleted: boolean
+                }) => (
+                  <Timeline.Item
+                    key={stage.stepNumber}
+                    bullet={
+                      stage.isCompleted ? (
+                        <IconCheck size={18} />
+                      ) : (
+                        <Text size="xs" fw={700}>
+                          {stage.stepNumber}
+                        </Text>
+                      )
+                    }
+                    title={
+                      <Text fw={600} size="sm" c={stage.isCompleted ? 'dark' : 'dimmed'}>
+                        {stage.name}
                       </Text>
-                    )
-                  }
-                  title={
-                    <Text fw={600} size="sm" c={stage.isCompleted ? 'dark' : 'dimmed'}>
-                      {stage.name}
-                    </Text>
-                  }
-                >
-                  {stage.date ? (
-                    <Text size="sm" c="dimmed" mt={4}>
-                      {stage.date}
-                    </Text>
-                  ) : (
-                    <Text size="xs" c="dimmed" mt={4}>
-                      Oczekuje na realizację
-                    </Text>
-                  )}
-                </Timeline.Item>
-              ))}
+                    }
+                  >
+                    {stage.date ? (
+                      <Text size="sm" c="dimmed" mt={4}>
+                        {stage.date}
+                      </Text>
+                    ) : (
+                      <Text size="xs" c="dimmed" mt={4}>
+                        Oczekuje na realizację
+                      </Text>
+                    )}
+                  </Timeline.Item>
+                ),
+              )}
             </Timeline>
           </Stack>
         </Tabs.Panel>
 
         <Tabs.Panel value="ai-summary" pt="md">
-          <AISummary
+          <AISummaryGroq
             type="ustawa"
             title={act.title}
             description={`Akt prawny ${act.displayAddress}`}
-            status={act.status}
+            content={
+              act.fullText || act.title + ' – treść aktu prawnego zostanie wkrótce załadowana.'
+            }
           />
+          // act.fullText – dodaj pobieranie tekstu z PDF (patrz niżej)
         </Tabs.Panel>
       </Tabs>
     </Container>
