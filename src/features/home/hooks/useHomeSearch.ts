@@ -11,10 +11,7 @@ export function useHomeSearch(
   const filteredActs = useMemo(() => {
     if (!searchQuery) return actsData
     const query = searchQuery.toLowerCase()
-    return actsData.filter(
-      (act) =>
-        act.title.toLowerCase().includes(query),
-    )
+    return actsData.filter((act) => act.title.toLowerCase().includes(query))
   }, [actsData, searchQuery])
 
   const filteredPrekonsultacje = useMemo(() => {
