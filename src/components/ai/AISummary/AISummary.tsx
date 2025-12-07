@@ -1,20 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Card,
   Text,
   Stack,
   Group,
-  Button,
   Alert,
   Loader,
   ThemeIcon,
   Badge,
-  Divider,
   List,
   ActionIcon,
   Tooltip,
-  Progress
-} from '@mantine/core';
+  Progress,
+} from "@mantine/core";
 import {
   IconBrain,
   IconRefresh,
@@ -25,11 +23,11 @@ import {
   IconClock,
   IconScale,
   IconUsers,
-  IconFileText
-} from '@tabler/icons-react';
+  IconFileText,
+} from "@tabler/icons-react";
 
 interface AISummaryProps {
-  type: 'ustawa' | 'konsultacja' | 'prekonsultacja';
+  type: "ustawa" | "konsultacja" | "prekonsultacja";
   title: string;
   description?: string;
   content?: string;
@@ -41,7 +39,7 @@ interface AISummaryProps {
 interface AISummaryData {
   mainPoints: string[];
   impact: string;
-  complexity: 'low' | 'medium' | 'high';
+  complexity: "low" | "medium" | "high";
   stakeholders: string[];
   timeline: string;
   risks: string[];
@@ -50,96 +48,130 @@ interface AISummaryData {
   confidence: number;
 }
 
-export function AISummary({ type, title, description, content, comments, participants, status }: AISummaryProps) {
+export function AISummary({
+  type,
+  title,
+  description,
+  content,
+  comments,
+  participants,
+  status,
+}: AISummaryProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [summary, setSummary] = useState<AISummaryData | null>(null);
 
   const generateAISummary = async () => {
     setIsAnalyzing(true);
-    
+
     // Symulacja czasu analizy
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     // Mockowe streszczenie AI na podstawie typu
     let mockSummary: AISummaryData;
-    
-    if (type === 'ustawa') {
+
+    if (type === "ustawa") {
       mockSummary = {
         mainPoints: [
-          'Wprowadzenie nowych standardów ochrony danych osobowych',
-          'Wzmocnienie kar za naruszenie przepisów',
-          'Uproszczenie procedur dla małych organizacji',
-          'Rozszerzenie definicji danych wrażliwych'
+          "Wprowadzenie nowych standardów ochrony danych osobowych",
+          "Wzmocnienie kar za naruszenie przepisów",
+          "Uproszczenie procedur dla małych organizacji",
+          "Rozszerzenie definicji danych wrażliwych",
         ],
-        impact: 'Średni - wpłynie na wszystkie instytucje publiczne i część sektora prywatnego',
-        complexity: 'medium',
-        stakeholders: ['Instytucje publiczne', 'Firmy IT', 'Organizacje pozarządowe', 'Obywatele'],
-        timeline: 'Wejście w życie planowane na 6 miesięcy od publikacji',
+        impact:
+          "Średni - wpłynie na wszystkie instytucje publiczne i część sektora prywatnego",
+        complexity: "medium",
+        stakeholders: [
+          "Instytucje publiczne",
+          "Firmy IT",
+          "Organizacje pozarządowe",
+          "Obywatele",
+        ],
+        timeline: "Wejście w życie planowane na 6 miesięcy od publikacji",
         risks: [
-          'Wysokie koszty implementacji dla małych firm',
-          'Możliwe opóźnienia w dostosowaniu systemów IT',
-          'Potrzeba szkoleń dla personelu'
+          "Wysokie koszty implementacji dla małych firm",
+          "Możliwe opóźnienia w dostosowaniu systemów IT",
+          "Potrzeba szkoleń dla personelu",
         ],
         opportunities: [
-          'Zwiększenie zaufania obywateli do instytucji',
-          'Harmonizacja z regulacjami UE',
-          'Rozwój sektora cyberbezpieczeństwa'
+          "Zwiększenie zaufania obywateli do instytucji",
+          "Harmonizacja z regulacjami UE",
+          "Rozwój sektora cyberbezpieczeństwa",
         ],
-        recommendation: 'Ustawa jest potrzebna, ale wymaga wydłużenia okresu przejściowego i dodatkowego wsparcia dla małych organizacji.',
-        confidence: 87
+        recommendation:
+          "Ustawa jest potrzebna, ale wymaga wydłużenia okresu przejściowego i dodatkowego wsparcia dla małych organizacji.",
+        confidence: 87,
       };
-    } else if (type === 'konsultacja') {
+    } else if (type === "konsultacja") {
       mockSummary = {
         mainPoints: [
-          'Reforma ma na celu poprawę dostępności usług zdrowotnych',
-          'Planowane zwiększenie finansowania o 15%',
-          'Digitalizacja procesów medycznych',
-          'Nowe standardy jakości opieki'
+          "Reforma ma na celu poprawę dostępności usług zdrowotnych",
+          "Planowane zwiększenie finansowania o 15%",
+          "Digitalizacja procesów medycznych",
+          "Nowe standardy jakości opieki",
         ],
-        impact: 'Wysoki - dotknie wszystkich pacjentów i pracowników służby zdrowia',
-        complexity: 'high',
-        stakeholders: ['Pacjenci', 'Lekarze', 'Pielęgniarki', 'Szpitale', 'NFZ', 'Firmy farmaceutyczne'],
-        timeline: 'Implementacja w ciągu 2-3 lat w fazach',
+        impact:
+          "Wysoki - dotknie wszystkich pacjentów i pracowników służby zdrowia",
+        complexity: "high",
+        stakeholders: [
+          "Pacjenci",
+          "Lekarze",
+          "Pielęgniarki",
+          "Szpitale",
+          "NFZ",
+          "Firmy farmaceutyczne",
+        ],
+        timeline: "Implementacja w ciągu 2-3 lat w fazach",
         risks: [
-          'Opór środowiska medycznego wobec zmian',
-          'Wysokie koszty modernizacji infrastruktury',
-          'Możliwe przerwy w świadczeniu usług'
+          "Opór środowiska medycznego wobec zmian",
+          "Wysokie koszty modernizacji infrastruktury",
+          "Możliwe przerwy w świadczeniu usług",
         ],
         opportunities: [
-          'Skrócenie kolejek do specjalistów',
-          'Lepsza koordynacja opieki',
-          'Rozwój telemedycyny'
+          "Skrócenie kolejek do specjalistów",
+          "Lepsza koordynacja opieki",
+          "Rozwój telemedycyny",
         ],
-        recommendation: `Na podstawie ${participants || 'wielu'} uczestników konsultacji, reforma jest potrzebna ale wymaga ostrożnej implementacji.`,
-        confidence: 92
+        recommendation: `Na podstawie ${
+          participants || "wielu"
+        } uczestników konsultacji, reforma jest potrzebna ale wymaga ostrożnej implementacji.`,
+        confidence: 92,
       };
-    } else { // prekonsultacja
+    } else {
+      // prekonsultacja
       mockSummary = {
         mainPoints: [
-          'Projekt wprowadza nowe mechanizmy partycypacji obywatelskiej',
-          'Cyfryzacja procesów konsultacyjnych',
-          'Zwiększenie transparentności procesów legislacyjnych',
-          'Nowe narzędzia komunikacji z społeczeństwem'
+          "Projekt wprowadza nowe mechanizmy partycypacji obywatelskiej",
+          "Cyfryzacja procesów konsultacyjnych",
+          "Zwiększenie transparentności procesów legislacyjnych",
+          "Nowe narzędzia komunikacji z społeczeństwem",
         ],
-        impact: 'Średni - wpłynie na jakość procesów demokratycznych',
-        complexity: 'low',
-        stakeholders: ['Obywatele', 'Organizacje społeczne', 'Urzędy', 'Media', 'Eksperci'],
-        timeline: 'Pilotaż w wybranych urzędach w ciągu 6 miesięcy',
+        impact: "Średni - wpłynie na jakość procesów demokratycznych",
+        complexity: "low",
+        stakeholders: [
+          "Obywatele",
+          "Organizacje społeczne",
+          "Urzędy",
+          "Media",
+          "Eksperci",
+        ],
+        timeline: "Pilotaż w wybranych urzędach w ciągu 6 miesięcy",
         risks: [
-          'Niska aktywność obywateli w nowych formach konsultacji',
-          'Problemy techniczne z platformami cyfrowymi',
-          'Opór części urzędników'
+          "Niska aktywność obywateli w nowych formach konsultacji",
+          "Problemy techniczne z platformami cyfrowymi",
+          "Opór części urzędników",
         ],
         opportunities: [
-          'Większe zaangażowanie społeczne w tworzenie prawa',
-          'Lepsza jakość projektów ustaw',
-          'Wzrost zaufania do instytucji'
+          "Większe zaangażowanie społeczne w tworzenie prawa",
+          "Lepsza jakość projektów ustaw",
+          "Wzrost zaufania do instytucji",
         ],
-        recommendation: `Projekt ma duży potencjał. ${comments?.length || 0} komentarzy wskazuje na zainteresowanie społeczne.`,
-        confidence: 78
+        recommendation: `Projekt ma duży potencjał. ${
+          comments?.length || 0
+        } komentarzy wskazuje na zainteresowanie społeczne.`,
+        confidence: 78,
       };
     }
-    
+
     setSummary(mockSummary);
     setIsAnalyzing(false);
   };
@@ -150,28 +182,40 @@ export function AISummary({ type, title, description, content, comments, partici
 
   const getComplexityColor = (complexity: string) => {
     switch (complexity) {
-      case 'low': return 'green';
-      case 'medium': return 'yellow';
-      case 'high': return 'red';
-      default: return 'gray';
+      case "low":
+        return "green";
+      case "medium":
+        return "yellow";
+      case "high":
+        return "red";
+      default:
+        return "gray";
     }
   };
 
   const getComplexityLabel = (complexity: string) => {
     switch (complexity) {
-      case 'low': return 'Niska';
-      case 'medium': return 'Średnia';
-      case 'high': return 'Wysoka';
-      default: return 'Nieznana';
+      case "low":
+        return "Niska";
+      case "medium":
+        return "Średnia";
+      case "high":
+        return "Wysoka";
+      default:
+        return "Nieznana";
     }
   };
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'ustawa': return 'Ustawy';
-      case 'konsultacja': return 'Konsultacji';
-      case 'prekonsultacja': return 'Prekonsultacji';
-      default: return 'Dokumentu';
+      case "ustawa":
+        return "Ustawy";
+      case "konsultacja":
+        return "Konsultacji";
+      case "prekonsultacja":
+        return "Prekonsultacji";
+      default:
+        return "Dokumentu";
     }
   };
 
@@ -194,7 +238,11 @@ export function AISummary({ type, title, description, content, comments, partici
 
   if (!summary) {
     return (
-      <Alert icon={<IconInfoCircle size={16} />} title="Streszczenie AI" color="blue">
+      <Alert
+        icon={<IconInfoCircle size={16} />}
+        title="Streszczenie AI"
+        color="blue"
+      >
         Brak danych do analizy. Spróbuj ponownie później.
       </Alert>
     );
@@ -237,7 +285,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="blue" variant="light" size="sm">
             <IconFileText size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Kluczowe punkty</Text>
+          <Text fw={600} size="sm">
+            Kluczowe punkty
+          </Text>
         </Group>
         <List spacing="xs" size="sm">
           {summary.mainPoints.map((point, index) => (
@@ -253,17 +303,25 @@ export function AISummary({ type, title, description, content, comments, partici
             <ThemeIcon color="orange" variant="light" size="sm">
               <IconUsers size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Wpływ</Text>
+            <Text fw={600} size="sm">
+              Wpływ
+            </Text>
           </Group>
           <Text size="sm">{summary.impact}</Text>
         </Card>
-        
+
         <Card p="md" withBorder>
           <Group mb="xs">
-            <ThemeIcon color={getComplexityColor(summary.complexity)} variant="light" size="sm">
+            <ThemeIcon
+              color={getComplexityColor(summary.complexity)}
+              variant="light"
+              size="sm"
+            >
               <IconScale size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Złożoność</Text>
+            <Text fw={600} size="sm">
+              Złożoność
+            </Text>
           </Group>
           <Badge color={getComplexityColor(summary.complexity)} variant="light">
             {getComplexityLabel(summary.complexity)}
@@ -277,7 +335,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="grape" variant="light" size="sm">
             <IconUsers size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Kluczowi interesariusze</Text>
+          <Text fw={600} size="sm">
+            Kluczowi interesariusze
+          </Text>
         </Group>
         <Group gap="xs">
           {summary.stakeholders.map((stakeholder, index) => (
@@ -294,7 +354,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="teal" variant="light" size="sm">
             <IconClock size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Harmonogram</Text>
+          <Text fw={600} size="sm">
+            Harmonogram
+          </Text>
         </Group>
         <Text size="sm">{summary.timeline}</Text>
       </Card>
@@ -306,7 +368,9 @@ export function AISummary({ type, title, description, content, comments, partici
             <ThemeIcon color="red" variant="light" size="sm">
               <IconAlertTriangle size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Ryzyka</Text>
+            <Text fw={600} size="sm">
+              Ryzyka
+            </Text>
           </Group>
           <List spacing="xs" size="sm">
             {summary.risks.map((risk, index) => (
@@ -314,13 +378,15 @@ export function AISummary({ type, title, description, content, comments, partici
             ))}
           </List>
         </Card>
-        
+
         <Card p="md" withBorder>
           <Group mb="md">
             <ThemeIcon color="green" variant="light" size="sm">
               <IconBulb size={14} />
             </ThemeIcon>
-            <Text fw={600} size="sm">Możliwości</Text>
+            <Text fw={600} size="sm">
+              Możliwości
+            </Text>
           </Group>
           <List spacing="xs" size="sm">
             {summary.opportunities.map((opportunity, index) => (
@@ -336,7 +402,9 @@ export function AISummary({ type, title, description, content, comments, partici
           <ThemeIcon color="blue" variant="light" size="sm">
             <IconCheck size={14} />
           </ThemeIcon>
-          <Text fw={600} size="sm">Rekomendacja AI</Text>
+          <Text fw={600} size="sm">
+            Rekomendacja AI
+          </Text>
         </Group>
         <Text size="sm">{summary.recommendation}</Text>
         <Progress value={summary.confidence} color="blue" size="xs" mt="xs" />
