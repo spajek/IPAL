@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Card, Text, Stack, Button } from '@mantine/core'
 import { IconEye } from '@tabler/icons-react'
 import { PreConsultationProject } from '@/types'
@@ -9,10 +10,10 @@ import classes from './ProjectCard.module.css'
 
 interface ProjectCardProps {
   project: PreConsultationProject
-  onViewDetails: (project: PreConsultationProject) => void
+  basePath?: string
 }
 
-export function ProjectCard({ project, onViewDetails }: ProjectCardProps) {
+export function ProjectCard({ project, basePath = '/prekonsultacje' }: ProjectCardProps) {
   return (
     <Card padding="lg" withBorder className={classes.card}>
       <Stack justify="space-between" h="100%">
@@ -39,10 +40,11 @@ export function ProjectCard({ project, onViewDetails }: ProjectCardProps) {
         </div>
 
         <Button
+          component={Link}
+          href={`${basePath}/${project.id}`}
           variant="default"
           fullWidth
           leftSection={<IconEye size={16} />}
-          onClick={() => onViewDetails(project)}
         >
           Zobacz szczegóły
         </Button>

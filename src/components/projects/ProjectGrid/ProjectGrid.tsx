@@ -8,14 +8,14 @@ import { EmptyState } from '@/components/shared'
 interface ProjectGridProps {
   projects: PreConsultationProject[]
   isLoading?: boolean
-  onProjectClick: (project: PreConsultationProject) => void
+  basePath?: string
   emptyMessage?: string
 }
 
 export function ProjectGrid({
   projects,
   isLoading,
-  onProjectClick,
+  basePath = '/prekonsultacje',
   emptyMessage = 'Nie znaleziono projektów',
 }: ProjectGridProps) {
   if (isLoading) {
@@ -40,7 +40,7 @@ export function ProjectGrid({
     <Grid>
       {projects.map((project) => (
         <Grid.Col key={project.id} span={{ base: 12, md: 6, lg: 4 }}>
-          <ProjectCard project={project} onViewDetails={onProjectClick} />
+          <ProjectCard project={project} basePath={basePath} />
         </Grid.Col>
       ))}
     </Grid>

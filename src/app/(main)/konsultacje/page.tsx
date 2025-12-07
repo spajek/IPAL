@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import {
   Container,
   Title,
@@ -353,10 +354,11 @@ export default function KonsultacjePage() {
                   </div>
 
                   <Button
+                    component={Link}
+                    href={`/konsultacje/${project.id}`}
                     variant="light"
                     fullWidth
                     leftSection={<IconEye size={16} />}
-                    onClick={() => setSelectedProject(project)}
                   >
                     Zobacz szczegóły
                   </Button>
@@ -443,217 +445,6 @@ export default function KonsultacjePage() {
       </Stack>
 
       {/* Modal szczegółów projektu */}
-      <Modal
-        opened={!!selectedProject}
-        onClose={() => setSelectedProject(null)}
-        title={selectedProject?.title}
-        size="xl"
-      >
-        {selectedProject && (
-          <Tabs defaultValue="details">
-            <Tabs.List>
-              <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
-                Szczegóły
-              </Tabs.Tab>
-              <Tabs.Tab value="timeline" leftSection={<IconClock size={16} />}>
-                Harmonogram
-              </Tabs.Tab>
-              <Tabs.Tab value="participants" leftSection={<IconUsers size={16} />}>
-                Uczestnicy
-              </Tabs.Tab>
-              <Tabs.Tab value="documents" leftSection={<IconDownload size={16} />}>
-                Dokumenty
-              </Tabs.Tab>
-              <Tabs.Tab value="document-summary" leftSection={<IconFileDescription size={16} />}>
-                Streszczenie dokumentu AI
-              </Tabs.Tab>
-            </Tabs.List>
-
-            <Tabs.Panel value="details" pt="md">
-              <Stack gap="md">
-                <Group>
-                  <Badge color={getStatusColor(selectedProject.status)} variant="light">
-                    {getStatusLabel(selectedProject.status)}
-                  </Badge>
-                  <Badge variant="outline">{selectedProject.category}</Badge>
-                </Group>
-
-                <Text>{selectedProject.description}</Text>
-
-                <Grid>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Instytucja:
-                    </Text>
-                    <Text size="sm">{selectedProject.institution}</Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Termin zakończenia:
-                    </Text>
-                    <Text size="sm">
-                      {new Date(selectedProject.deadline).toLocaleDateString('pl-PL')}
-                    </Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Liczba uczestników:
-                    </Text>
-                    <Text size="sm">{selectedProject.participantsCount}</Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm" fw={600}>
-                      Liczba spotkań:
-                    </Text>
-                    <Text size="sm">{selectedProject.meetingsCount}</Text>
-                  </Grid.Col>
-                </Grid>
-
-                <Divider />
-
-                <div>
-                  <Text fw={600} mb="md">
-                    Kontakt
-                  </Text>
-                  <Stack gap="xs">
-                    <Group gap="xs">
-                      <IconMail size={16} />
-                      <Anchor size="sm">
-                        konsultacje@{selectedProject.institution.toLowerCase().replace(/\s+/g, '')}
-                        .gov.pl
-                      </Anchor>
-                    </Group>
-                    <Group gap="xs">
-                      <IconPhone size={16} />
-                      <Text size="sm">+48 22 123 45 67</Text>
-                    </Group>
-                  </Stack>
-                </div>
-
-                <Button fullWidth>Weź udział w konsultacjach</Button>
-              </Stack>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="timeline" pt="md">
-              <Timeline active={2} bulletSize={24} lineWidth={2}>
-                <Timeline.Item bullet={<IconCheck size={12} />} title="Rozpoczęcie konsultacji">
-                  <Text c="dimmed" size="sm">
-                    {new Date(selectedProject.createdAt).toLocaleDateString('pl-PL')}
-                  </Text>
-                </Timeline.Item>
-
-                <Timeline.Item
-                  bullet={<IconUsers size={12} />}
-                  title="Spotkania z interesariuszami"
-                >
-                  <Text c="dimmed" size="sm">
-                    Seria {selectedProject.meetingsCount} spotkań konsultacyjnych
-                  </Text>
-                </Timeline.Item>
-
-                <Timeline.Item bullet={<IconFileText size={12} />} title="Analiza otrzymanych uwag">
-                  <Text c="dimmed" size="sm">
-                    Obecnie w trakcie
-                  </Text>
-                </Timeline.Item>
-
-                <Timeline.Item bullet={<IconX size={12} />} title="Zakończenie konsultacji">
-                  <Text c="dimmed" size="sm">
-                    {new Date(selectedProject.deadline).toLocaleDateString('pl-PL')}
-                  </Text>
-                </Timeline.Item>
-              </Timeline>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="participants" pt="md">
-              <Stack gap="md">
-                <Group justify="space-between">
-                  <Text fw={600}>Statystyki uczestników</Text>
-                  <Text c="dimmed" size="sm">
-                    Łącznie: {selectedProject.participantsCount}
-                  </Text>
-                </Group>
-
-                <SimpleGrid cols={2} spacing="md">
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Organizacje pozarządowe
-                    </Text>
-                    <Text fw={600} size="lg">
-                      23%
-                    </Text>
-                  </Paper>
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Obywatele
-                    </Text>
-                    <Text fw={600} size="lg">
-                      45%
-                    </Text>
-                  </Paper>
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Przedsiębiorcy
-                    </Text>
-                    <Text fw={600} size="lg">
-                      19%
-                    </Text>
-                  </Paper>
-                  <Paper p="md" withBorder>
-                    <Text size="sm" c="dimmed">
-                      Eksperci
-                    </Text>
-                    <Text fw={600} size="lg">
-                      13%
-                    </Text>
-                  </Paper>
-                </SimpleGrid>
-              </Stack>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="documents" pt="md">
-              <Stack gap="md">
-                <Text fw={600}>Dokumenty do pobrania ({selectedProject.documentsCount})</Text>
-
-                {Array.from({ length: selectedProject.documentsCount }, (_, i) => (
-                  <Paper key={i} p="md" withBorder>
-                    <Group justify="space-between">
-                      <div>
-                        <Text fw={500}>Dokument {i + 1}</Text>
-                        <Text size="sm" c="dimmed">
-                          {i === 0
-                            ? 'Główny projekt dokumentu'
-                            : i === 1
-                            ? 'Uzasadnienie'
-                            : i === 2
-                            ? 'Ocena skutków regulacji'
-                            : `Załącznik ${i - 2}`}
-                        </Text>
-                      </div>
-                      <ActionIcon variant="light">
-                        <IconDownload size={16} />
-                      </ActionIcon>
-                    </Group>
-                  </Paper>
-                ))}
-              </Stack>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="document-summary" pt="md">
-              <AISummaryGroq
-                type="konsultacja"
-                title={selectedProject.title}
-                description={selectedProject.description}
-                content={`Projekt konsultacji: ${selectedProject.title}. ${
-                  selectedProject.description
-                }. Instytucja: ${selectedProject.institution}. Termin: ${new Date(
-                  selectedProject.deadline,
-                ).toLocaleDateString('pl-PL')}.`}
-              />
-            </Tabs.Panel>
-          </Tabs>
-        )}
-      </Modal>
     </Container>
   )
 }
