@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useMemo } from 'react'
 import {
   Container,
   Title,
@@ -41,6 +42,12 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
   const htmlUrl = act.textHTML
     ? `https://api.sejm.gov.pl/eli/acts/${act.publisher}/${act.year}/${act.pos}/text.html`
     : null
+
+  const actDescription = useMemo(() => `Akt prawny ${act.displayAddress}`, [act.displayAddress])
+  const actContent = useMemo(
+    () => act.fullText || act.title + ' – treść aktu prawnego zostanie wkrótce załadowana.',
+    [act.fullText, act.title],
+  )
 
   return (
     <Container size="md" py="xl">
@@ -195,10 +202,8 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
             type="ustawa"
             entityId={act.ELI}
             title={act.title}
-            description={`Akt prawny ${act.displayAddress}`}
-            content={
-              act.fullText || act.title + ' – treść aktu prawnego zostanie wkrótce załadowana.'
-            }
+            description={actDescription}
+            content={actContent}
           />
         </Tabs.Panel>
       </Tabs>

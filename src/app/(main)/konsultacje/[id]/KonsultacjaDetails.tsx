@@ -1,4 +1,5 @@
 'use client'
+import { useMemo } from 'react'
 import { Container, Title, Button, Stack } from '@mantine/core'
 import Link from 'next/link'
 import { IconArrowLeft } from '@tabler/icons-react'
@@ -11,6 +12,14 @@ interface Props {
 }
 
 export default function KonsultacjaDetails({ project }: Props) {
+  const consultationContent = useMemo(
+    () =>
+      `Konsultacje społeczne: ${project.title}. Instytucja: ${
+        project.institution
+      }. Termin: ${new Date(project.deadline).toLocaleDateString('pl-PL')}`,
+    [project.title, project.institution, project.deadline],
+  )
+
   return (
     <Container size="lg" py="xl">
       <Button
@@ -39,9 +48,7 @@ export default function KonsultacjaDetails({ project }: Props) {
             entityId={project.id}
             title={project.title}
             description={project.description}
-            content={`Konsultacje społeczne: ${project.title}. Instytucja: ${
-              project.institution
-            }. Termin: ${new Date(project.deadline).toLocaleDateString('pl-PL')}`}
+            content={consultationContent}
           />
         </Tabs.Panel>
 
