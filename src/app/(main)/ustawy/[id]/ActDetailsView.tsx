@@ -14,7 +14,6 @@ import {
   Card,
   SimpleGrid,
   ThemeIcon,
-  Tooltip,
 } from '@mantine/core'
 import {
   IconCheck,
@@ -26,7 +25,6 @@ import {
   IconCalendar,
 } from '@tabler/icons-react'
 import { ActDetails } from '@/mocks/sejmMock'
-import { AISummary } from '../../../../components/ai/AISummary/AISummary'
 import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ActDetailsViewProps {
@@ -205,7 +203,6 @@ export default function ActDetailsView({ act }: ActDetailsViewProps) {
               act.fullText || act.title + ' – treść aktu prawnego zostanie wkrótce załadowana.'
             }
           />
-          // act.fullText – dodaj pobieranie tekstu z PDF (patrz niżej)
         </Tabs.Panel>
       </Tabs>
     </Container>

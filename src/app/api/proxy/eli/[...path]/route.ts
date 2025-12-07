@@ -1,5 +1,3 @@
-// src/app/api/proxy/eli/[...path]/route.ts
-
 import { NextRequest, NextResponse } from 'next/server'
 
 const API_BASE = 'https://api.sejm.gov.pl/eli'

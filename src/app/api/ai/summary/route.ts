@@ -9,7 +9,7 @@ const groq = createGroq({
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  const { type, title, description = '', content = '', comments = [] } = await req.json()
+  const { title, description = '', content = '', comments = [] } = await req.json()
 
   const prompt = `Jesteś najlepszym polskim ekspertem legislacyjnym. Masz dwie rzeczy do zrobienia:
 
@@ -67,8 +67,10 @@ Zwróć dokładnie tak:
       humanSummary, // ← to jest to, czego chciałeś
       summary: data, // ← Twój szczegółowy UI
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Groq error:', error)
-    return Response.json({ error: error.message || 'Błąd AI' }, { status: 500 })
+    const errorMessage =
+      error instanceof Error ? error.message : 'Błąd AI'
+    return Response.json({ error: errorMessage }, { status: 500 })
   }
 }

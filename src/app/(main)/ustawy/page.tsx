@@ -43,14 +43,13 @@ function UstawyTableContent({
 
   useEffect(() => {
     let mounted = true
-    setIsLoading(true)
-    setError(null)
 
     fakeFetchUstawy(publisher, year, page, limit)
       .then((res) => {
         if (mounted) {
           setData(res)
           setIsLoading(false)
+          setError(null)
         }
       })
       .catch((err) => {

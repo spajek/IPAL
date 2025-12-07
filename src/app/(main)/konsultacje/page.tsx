@@ -14,15 +14,8 @@ import {
   Select,
   TextInput,
   Grid,
-  Modal,
-  Tabs,
   Paper,
-  ActionIcon,
-  Tooltip,
   Progress,
-  Timeline,
-  Anchor,
-  Divider,
   SimpleGrid,
 } from '@mantine/core'
 import {
@@ -37,15 +30,8 @@ import {
   IconClock,
   IconMapPin,
   IconVideo,
-  IconMail,
-  IconPhone,
-  IconCheck,
-  IconX,
-  IconFileDescription,
 } from '@tabler/icons-react'
 import { consultationProjects } from '../../../mocks/prekonsultacjeMock'
-import { AISummary } from '../../../components/ai/AISummary/AISummary'
-import { AISummaryGroq } from '@/components/ai/AISummaryGroq'
 
 interface ConsultationProject {
   id: string
@@ -75,7 +61,6 @@ interface Meeting {
 
 export default function KonsultacjePage() {
   const [projects] = useState<ConsultationProject[]>(consultationProjects as ConsultationProject[])
-  const [selectedProject, setSelectedProject] = useState<ConsultationProject | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [filterCategory, setFilterCategory] = useState<string>('all')
